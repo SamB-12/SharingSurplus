@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.sharingsurplus.presentation.navigation.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
 
@@ -26,6 +28,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SharingSurplusTheme {
+
+                SampleNavGraph()
+
 //                Scaffold(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.primary)) { innerPadding ->
 ////                    Greeting(
 ////                        name = "Android",
@@ -34,9 +39,9 @@ class MainActivity : ComponentActivity() {
 //
 //                }
 
-                LoginScreen(modifier = Modifier, painter = painterResource(id = R.drawable.ic_sharing_surplus_logo), onButtonClicked = { context ->
-                    Toast.makeText(context, "Login", Toast.LENGTH_SHORT).show()
-                })
+//                LoginScreen(modifier = Modifier, painter = painterResource(id = R.drawable.ic_sharing_surplus_logo), onButtonClicked = { context ->
+//                    Toast.makeText(context, "Login", Toast.LENGTH_SHORT).show()
+//                })
             }
         }
     }

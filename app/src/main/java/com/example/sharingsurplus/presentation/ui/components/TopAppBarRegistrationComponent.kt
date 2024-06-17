@@ -19,7 +19,11 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarRegistrationComponent(modifier: Modifier = Modifier, title: String, onBackClick: () -> Unit = {}) {
+fun TopAppBarRegistrationComponent(
+    modifier: Modifier = Modifier,
+    title: String,
+    onBackClick: () -> Unit = {}
+) {
     CenterAlignedTopAppBar(
         title = { Text(text = title)},
         navigationIcon = {

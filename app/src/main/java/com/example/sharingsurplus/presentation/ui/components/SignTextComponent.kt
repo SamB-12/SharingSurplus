@@ -15,11 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.presentation.ui.theme.AccentColor
-import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
 import com.example.sharingsurplus.presentation.ui.theme.SecondaryTextColor
 
 @Composable
-fun SignUpTextComponent(modifier: Modifier = Modifier, text1: String, text2: String, onSignUpClicked: () -> Unit = {}) {
+fun SignTextComponent(modifier: Modifier = Modifier, text1: String, text2: String, onSignClicked: () -> Unit = {}) {
     Row (
         modifier = modifier
             .fillMaxWidth()
@@ -28,12 +27,12 @@ fun SignUpTextComponent(modifier: Modifier = Modifier, text1: String, text2: Str
     ) {
         Text(text = text1, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = SecondaryTextColor)
         Spacer(modifier = modifier.width(8.dp))
-        Text(text = text2, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = AccentColor, modifier = modifier.clickable { onSignUpClicked() })
+        Text(text = text2, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = AccentColor, modifier = modifier.clickable { onSignClicked()})
     }
 }
 
 @Preview
 @Composable
 private fun SignUpTextComponentPreview() {
-    SignUpTextComponent(text1 = "Don't have an account?", text2 = "Sign Up")
+    SignTextComponent(text1 = "Don't have an account?", text2 = "Sign Up")
 }
