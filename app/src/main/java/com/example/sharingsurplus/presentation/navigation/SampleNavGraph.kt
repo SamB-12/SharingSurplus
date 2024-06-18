@@ -12,6 +12,7 @@ import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
 import com.example.sharingsurplus.presentation.ui.auth.screens.RegistrationScreen
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
+import com.example.sharingsurplus.presentation.ui.home.screens.HomeScreen
 
 @Composable
 fun SampleNavGraph(modifier: Modifier = Modifier) {
@@ -22,16 +23,18 @@ fun SampleNavGraph(modifier: Modifier = Modifier) {
         composable(Routes.Login.route){
             LoginScreen(
                 painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
-                onSignUpClicked = { navController.navigate(Routes.Register.route) }
-                )
+                navController = navController
+            )
         }
         composable(Routes.Register.route){
 
             RegistrationScreen(
                 painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
                 onBackClicked = {navController.navigateUp() },
-                onSignInClicked = { navController.navigate(Routes.Login.route) }
             )
+        }
+        composable(Routes.Home.route){
+            HomeScreen()
         }
     }
 }

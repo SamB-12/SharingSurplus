@@ -21,7 +21,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

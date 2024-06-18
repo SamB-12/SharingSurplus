@@ -37,15 +37,12 @@ import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
 @Composable
 fun TextFieldComponent(
     label: String,
+    value: String = "",
     modifier: Modifier = Modifier,
     onValueChanged: (String) -> Unit = {},
     error: Boolean = false,
     errorMessage: String = "Invalid value"
 ) {
-    var text by remember{mutableStateOf("")}
-
-    //val focusManager = LocalFocusManager.current
-
     Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
         // This box works as background
         Box(
@@ -60,10 +57,9 @@ fun TextFieldComponent(
         )
         // OutlineTextField will be the content...
         OutlinedTextField(
-            value = text,
-            onValueChange = {textChanged ->
-                text = textChanged
-                onValueChanged(textChanged)
+            value = value,
+            onValueChange = {text ->
+                onValueChanged(text)
             },
             label = { Text(label) },
             modifier = modifier
