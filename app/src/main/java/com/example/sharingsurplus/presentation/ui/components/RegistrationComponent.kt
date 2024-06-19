@@ -1,5 +1,6 @@
 package com.example.sharingsurplus.presentation.ui.components
 
+import PasswordFieldComponent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,6 +44,7 @@ fun RegistrationComponent(
     LaunchedEffect(uiState.authResult) {
         when (uiState.authResult) {
             is AuthResult.Success -> {
+                Toast.makeText(context, "Successfully registered! please log in!", Toast.LENGTH_SHORT).show()
                 navController?.navigate(Routes.Home.route){
                     popUpTo(Routes.Register.route){
                         inclusive = true
@@ -73,15 +75,15 @@ fun RegistrationComponent(
         Spacer(modifier = Modifier.height(16.dp))
         TextFieldComponent(label = "Email", value = uiState.email, onValueChanged = { registerViewModel.onEmailChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Password", value = uiState.password, onValueChanged = { registerViewModel.onPasswordChanged(it)})
+        PasswordFieldComponent(label = "Password", value = uiState.password, onValueChanged = { registerViewModel.onPasswordChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Confirm Password", value = uiState.confirmPassword, onValueChanged = { registerViewModel.onConfirmPasswordChanged(it)})
+        PasswordFieldComponent(label = "Confirm Password", value = uiState.confirmPassword, onValueChanged = { registerViewModel.onConfirmPasswordChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
         TermsAndConditionsComponent(isChecked = uiState.isChecked, onCheckedChange = { registerViewModel.onCheckChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
         ButtonComponent(onClick = { registerViewModel.register() }, text = "Register")
         Spacer(modifier = Modifier.height(16.dp))
-        SignTextComponent(text1 = "Already have an account?", text2 = "Log In", onSignClicked = { navController?.navigate(route = Routes.Login.route) })
+        SignTextComponent(text1 = "Already have an account?", text2 = "Log In", onSignClicked = { navController?.navigateUp() })
 
         if (uiState.isLoading) {
             CircularProgressIndicator()

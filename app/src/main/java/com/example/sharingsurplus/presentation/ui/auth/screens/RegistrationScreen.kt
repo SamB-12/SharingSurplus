@@ -24,7 +24,7 @@ fun RegistrationScreen(
     ScaffoldComponent(
         modifier = modifier,
         topBar = {TopAppBarRegistrationComponent(title = "Registration", onBackClick = onBackClicked)},
-        content = { RegistrationComponent(painter = painter,registerViewModel = registerViewModel!!)}
+        content = { RegistrationComponent(painter = painter,registerViewModel = registerViewModel!!,navController = navController)}
     )
 }
 

@@ -26,14 +26,13 @@ class RegisterViewModel @Inject constructor(
         if (validateForm(currentState.name, currentState.email, currentState.password, currentState.confirmPassword, currentState.isChecked) && matchPasswords(currentState.password, currentState.confirmPassword)){
             viewModelScope.launch {
                 _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Loading, isLoading = true)
-                Log.i("Email", currentState.email)
                 val result = authRepository.register(email = currentState.email, name = currentState.name, password = currentState.password)
                 _registerUiState.value = _registerUiState.value.copy(authResult = result, isLoading = false)
             }
         } else{
-            if (validateForm(currentState.name, currentState.email, currentState.password, currentState.confirmPassword, currentState.isChecked)){
+            if (!validateForm(currentState.name, currentState.email, currentState.password, currentState.confirmPassword, currentState.isChecked)){
                 _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Error("Please fill all fields"))
-            } else if (matchPasswords(currentState.password,currentState.confirmPassword)){
+            } else if (!matchPasswords(currentState.password,currentState.confirmPassword)){
                 _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Error("Passwords do not match"))
             }
         }

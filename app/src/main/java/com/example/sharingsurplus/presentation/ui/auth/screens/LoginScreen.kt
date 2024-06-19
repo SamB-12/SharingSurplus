@@ -1,5 +1,6 @@
 package com.example.sharingsurplus.presentation.ui.auth.screens
 
+import PasswordFieldComponent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import com.example.sharingsurplus.R
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -83,9 +85,10 @@ fun LoginScreen(
         Image(painter = painter, contentDescription = "content Logo", alignment = Alignment.TopCenter, modifier = modifier.size(240.dp))
         Text(text = "Login", style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor, modifier = Modifier.padding(bottom = 16.dp))
         Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "email", value = uiState.email, onValueChanged = {loginViewModel.onEmailChanged(it)})
+        TextFieldComponent(label = "Email", value = uiState.email, onValueChanged = {loginViewModel.onEmailChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "password", value = uiState.password, onValueChanged = {loginViewModel.onPasswordChanged(it)})
+        //TextFieldComponent(label = "password", value = uiState.password, onValueChanged = {loginViewModel.onPasswordChanged(it)})
+        PasswordFieldComponent(label = "Password", value = uiState.password, onValueChanged = {loginViewModel.onPasswordChanged(it)})
         Spacer(modifier = Modifier.height(16.dp))
         ForgotPasswordTextComponent(text = "Forgot Password?", modifier = modifier, onForgotPasswordClicked = { onForgotPassword})
         Spacer(modifier = Modifier.height(24.dp))

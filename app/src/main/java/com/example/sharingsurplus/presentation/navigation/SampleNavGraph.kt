@@ -31,6 +31,7 @@ fun SampleNavGraph(modifier: Modifier = Modifier) {
             RegistrationScreen(
                 painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
                 onBackClicked = {navController.navigateUp() },
+                navController = navController
             )
         }
         composable(Routes.Home.route){
