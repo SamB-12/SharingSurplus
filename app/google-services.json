@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "782232827086",
+    "project_id": "sharingsurplus",
+    "storage_bucket": "sharingsurplus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782232827086:android:e8a66e49d55c7c9347cc9f",
+        "android_client_info": {
+          "package_name": "com.example.sharingsurplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf31_YpE6R34UjdrmLAfjj_s2VuNDuuQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
