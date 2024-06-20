@@ -57,7 +57,7 @@ fun LoginScreen(
     LaunchedEffect(uiState.authResult) {
         when (uiState.authResult) {
             is AuthResult.Success -> {
-                navController?.navigate(Routes.Home.route){
+                navController?.navigate(Routes.Profile.route){
                     popUpTo(Routes.Login.route){
                         inclusive = true
                     }
