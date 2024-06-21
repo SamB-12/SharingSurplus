@@ -30,6 +30,7 @@ import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.states.dashboard.profile.EditProfileScreenUiState
 import com.example.sharingsurplus.presentation.navigation.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
+import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.SignTextComponent
 import com.example.sharingsurplus.presentation.ui.components.TermsAndConditionsComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
@@ -67,8 +68,17 @@ fun EditProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
         TextFieldComponent(label = "Address", value = uiState.address, onValueChanged = { editProfileViewModel.onAddressChanged(it) })
         Spacer(modifier = Modifier.height(40.dp))
-        ButtonComponent(onClick = { editProfileViewModel.updateProfile() }, text = "Confirm details") //add a alert dialog when pressed
+        ButtonComponent(onClick = { editProfileViewModel.showDialog() }, text = "Confirm details") //add a alert dialog when pressed
         Spacer(modifier = Modifier.height(16.dp))
+
+        if (uiState.isAlertDialogVisible){
+            ConfirmationDialogComponent(
+                title = "Confirm Changes?",
+                message = "Are you sure you want to save the changes?",
+                onConfirm = {editProfileViewModel.updateProfile()},
+                onCancel = {editProfileViewModel.hideDialog()}
+            )
+        }
 
         LaunchedEffect(uiState.isSuccess) {
             when (uiState.isSuccess) {
@@ -82,12 +92,16 @@ fun EditProfileScreen(
                     }
                 }
                 is AuthResult.Error -> {
-                    // TODO
+                    Toast.makeText(context, (uiState.isSuccess as AuthResult.Error).message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     //Nothing
                 }
             }
+        }
+
+        if (uiState.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

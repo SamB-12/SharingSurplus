@@ -9,5 +9,7 @@ data class EditProfileScreenUiState(
     val phone:String = "",
     val address: String = "",
     val imageAddress: String = "",
-    val isSuccess: AuthResult<User>? = null
+    val isSuccess: AuthResult<User>? = null,
+    val isAlertDialogVisible: Boolean = false,
+    val isLoading: Boolean = false
 )

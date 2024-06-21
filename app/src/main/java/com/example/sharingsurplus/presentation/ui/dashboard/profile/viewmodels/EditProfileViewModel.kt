@@ -26,7 +26,9 @@ class EditProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            _editProfileUiState.value = _editProfileUiState.value.copy(isLoading = true)
             inflateFields()
+            _editProfileUiState.value = _editProfileUiState.value.copy(isLoading = false)
         }
     }
 
@@ -45,8 +47,10 @@ class EditProfileViewModel @Inject constructor(
 
     fun updateProfile(){
         viewModelScope.launch {
+            _editProfileUiState.value = _editProfileUiState.value.copy(isLoading = true)
             val result = firestoreRepository.updateUser(editedProfile.value.uid, editedProfile.value)
             _editProfileUiState.value = _editProfileUiState.value.copy(isSuccess = result)
+            _editProfileUiState.value = _editProfileUiState.value.copy(isLoading = false)
         }
     }
 
@@ -68,6 +72,14 @@ class EditProfileViewModel @Inject constructor(
     fun onAddressChanged(address:String){
         editedProfile.value = editedProfile.value.copy(address = address)
         _editProfileUiState.value = _editProfileUiState.value.copy(address = address)
+    }
+
+    fun showDialog(){
+        _editProfileUiState.value = _editProfileUiState.value.copy(isAlertDialogVisible = true)
+    }
+
+    fun hideDialog(){
+        _editProfileUiState.value = _editProfileUiState.value.copy(isAlertDialogVisible = false)
     }
 
 }
