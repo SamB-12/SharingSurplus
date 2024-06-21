@@ -7,5 +7,8 @@ sealed class Routes(val route: String) {
     object Register : Routes("register")
     object Profile : Routes("profile")
     object ProfileInfo : Routes("profileInfo")
+    object KarmaPoints : Routes("karmaPoints")
+
+    object EditProfile : Routes("editProfile")
 
 }

@@ -1,7 +1,9 @@
 package com.example.sharingsurplus.di.module
 
-import com.example.sharingsurplus.data.repository.AuthRepository
-import com.example.sharingsurplus.data.repository.AuthRepositoryImpl
+import com.example.sharingsurplus.data.repository.auth.AuthRepository
+import com.example.sharingsurplus.data.repository.auth.AuthRepositoryImpl
+import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
+import com.example.sharingsurplus.data.repository.firestore.FirestoreRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -27,6 +29,11 @@ object SharingSurplusModule {
 
     @Provides
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository {
+        return impl
+    }
+
+    @Provides
+    fun provideFirestoreRepository(impl: FirestoreRepositoryImpl): FirestoreRepository {
         return impl
     }
 

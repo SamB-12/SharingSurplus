@@ -5,4 +5,6 @@ data class ProfileInfoScreenUiState(
     val email: String = "",
     val phone: String = "",
     val address: String = "",
+    val dateJoined: String = "",
+    val profileImage: String = ""
 )

@@ -80,7 +80,7 @@ fun ProfileMenuScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "Edit your profile", icon = Icons.Filled.Edit)
+        ProfilePageUnitComponent(text = "Edit your profile", icon = Icons.Filled.Edit, onClick = {navController?.navigate(Routes.EditProfile.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
@@ -90,7 +90,7 @@ fun ProfileMenuScreen(
         Spacer(modifier = Modifier.height(16.dp))
         ProfilePageUnitComponent(text = "View your Good Deed points", icon = ImageVector.vectorResource(
             id = R.drawable.ic_currency_rupee_24
-        ))
+        ), onClick = {navController?.navigate(Routes.KarmaPoints.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)

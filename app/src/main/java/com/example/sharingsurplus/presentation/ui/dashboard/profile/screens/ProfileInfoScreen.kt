@@ -81,6 +81,13 @@ fun ProfileInfoScreen(
             .background(color = Color.Gray)
             .fillMaxWidth()
         )
+        ProfileInfoDetailsComponent(text1 = "Joined", text2 = uiState.dateJoined.toString())
+        Spacer(modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .height(1.dp)
+            .background(color = Color.Gray)
+            .fillMaxWidth()
+        )
     }
 }
 

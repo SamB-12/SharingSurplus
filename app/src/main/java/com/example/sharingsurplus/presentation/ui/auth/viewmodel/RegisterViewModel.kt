@@ -1,9 +1,8 @@
 package com.example.sharingsurplus.presentation.ui.auth.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sharingsurplus.data.repository.AuthRepository
+import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.states.auth.RegisterUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

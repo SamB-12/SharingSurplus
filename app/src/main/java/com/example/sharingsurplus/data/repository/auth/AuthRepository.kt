@@ -1,5 +1,6 @@
-package com.example.sharingsurplus.data.repository
+package com.example.sharingsurplus.data.repository.auth
 
+import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {

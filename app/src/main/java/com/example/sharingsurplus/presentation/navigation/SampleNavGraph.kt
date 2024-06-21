@@ -10,7 +10,9 @@ import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
 import com.example.sharingsurplus.presentation.ui.auth.screens.RegistrationScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.home.screens.HomeScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.EditProfileScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileInfoScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileKarmaPointsScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileMenuScreen
 
 @Composable
@@ -42,6 +44,12 @@ fun SampleNavGraph(modifier: Modifier = Modifier) {
         }
         composable(Routes.ProfileInfo.route){
             ProfileInfoScreen()
+        }
+        composable(Routes.EditProfile.route){
+            EditProfileScreen(navController = navController)
+        }
+        composable(Routes.KarmaPoints.route){
+            ProfileKarmaPointsScreen()
         }
     }
 }

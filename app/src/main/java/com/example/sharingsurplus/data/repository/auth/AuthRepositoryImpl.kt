@@ -1,17 +1,24 @@
-package com.example.sharingsurplus.data.repository
+package com.example.sharingsurplus.data.repository.auth
 
+import com.example.sharingsurplus.data.model.User
+import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
+import com.example.sharingsurplus.data.repository.firestore.FirestoreRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth, //it gets injected by dagger which finds def from module
-    private val firestore: FirebaseFirestore
+    private val firestoreRepositoryImpl: FirestoreRepository
 ) : AuthRepository {
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
@@ -40,8 +47,10 @@ class AuthRepositoryImpl @Inject constructor(
                     val userProfileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(name).build()
                     user!!.updateProfile(userProfileChangeRequest).addOnCompleteListener {task -> // this sets up the profile details of the user
                         if (task.isSuccessful) {
-                            saveUserToFirestore(user.uid,name,email)
-                            continuation.resume(AuthResult.Success(firebaseAuth.currentUser!!))
+                            CoroutineScope(Dispatchers.IO).launch {
+                                saveUserToFirestore(user.uid,name,email)
+                                continuation.resume(AuthResult.Success(firebaseAuth.currentUser!!))
+                            }
                         } else {
                             continuation.resume(AuthResult.Error(task.exception!!.message!!))
                         }
@@ -57,22 +66,9 @@ class AuthRepositoryImpl @Inject constructor(
         firebaseAuth.signOut()
     }
 
-    private fun saveUserToFirestore(uid: String, name: String, email: String){//might have to change it cause it is not MVVM
-        val user = hashMapOf(
-            "uid" to uid,
-            "name" to name,
-            "email" to email
-        )
-
-        firestore.collection("users")
-            .document(uid)
-            .set(user,SetOptions.merge())
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    println("User added to firestore")
-                } else {
-                    println("Failed to add user to firestore")
-                }
-            }
+    suspend fun saveUserToFirestore(uid: String, name: String, email: String): Boolean{//might have to change it cause it is not MVVM
+        val user = User(uid = uid,name = name,email = email, createdAt = System.currentTimeMillis())
+        firestoreRepositoryImpl.createUser(user)
+        return true
     }
 }
