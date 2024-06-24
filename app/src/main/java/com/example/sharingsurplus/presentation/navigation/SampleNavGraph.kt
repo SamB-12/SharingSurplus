@@ -11,16 +11,20 @@ import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
 import com.example.sharingsurplus.presentation.ui.auth.screens.RegistrationScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.home.screens.HomeScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.EditProfileScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileAboutUsScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileInfoScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileKarmaPointsScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileMenuScreen
 
 @Composable
-fun SampleNavGraph(modifier: Modifier = Modifier) {
+fun SampleNavGraph(
+    modifier: Modifier = Modifier,
+    startDestination: String = Routes.Login.route
+    ) {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.Login.route) {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(Routes.Login.route){
             LoginScreen(
                 painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
@@ -50,6 +54,9 @@ fun SampleNavGraph(modifier: Modifier = Modifier) {
         }
         composable(Routes.KarmaPoints.route){
             ProfileKarmaPointsScreen()
+        }
+        composable(Routes.AboutUs.route){
+            ProfileAboutUsScreen(painter = painterResource(id = R.drawable.ic_sharing_surplus_logo))
         }
     }
 }

@@ -10,5 +10,6 @@ sealed class Routes(val route: String) {
     object KarmaPoints : Routes("karmaPoints")
 
     object EditProfile : Routes("editProfile")
+    object AboutUs : Routes("aboutUs")
 
 }

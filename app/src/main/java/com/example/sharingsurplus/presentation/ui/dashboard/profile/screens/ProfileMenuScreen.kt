@@ -106,7 +106,7 @@ fun ProfileMenuScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "About us", icon = Icons.Filled.Info)
+        ProfilePageUnitComponent(text = "About us", icon = Icons.Filled.Info, onClick = {navController?.navigate(Routes.AboutUs.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
