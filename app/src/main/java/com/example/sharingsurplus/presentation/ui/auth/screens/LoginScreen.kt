@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import com.example.sharingsurplus.R
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,10 +27,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.presentation.navigation.Routes
+import com.example.sharingsurplus.presentation.navigation.utils.Graphs
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.LoginViewModel
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ForgotPasswordTextComponent
@@ -39,7 +38,6 @@ import com.example.sharingsurplus.presentation.ui.components.SignTextComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @Composable
@@ -57,8 +55,8 @@ fun LoginScreen(
     LaunchedEffect(uiState.authResult) {
         when (uiState.authResult) {
             is AuthResult.Success -> {
-                navController?.navigate(Routes.Profile.route){
-                    popUpTo(Routes.Login.route){
+                navController?.navigate(Routes.MainMenu.route){
+                    popUpTo(Graphs.AuthenticationGraph.graph){
                         inclusive = true
                     }
                 }
@@ -94,7 +92,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
         ButtonComponent(onClick = { loginViewModel.login()  }, text = "Login")
         Spacer(modifier = Modifier.height(16.dp))
-        SignTextComponent(text1 = "Don't have an account?", text2 = "Sign Up", modifier = modifier, onSignClicked = { navController?.navigate(Routes.Register.route)})
+        SignTextComponent(text1 = "Don't have an account?", text2 = "Sign Up", modifier = modifier, onSignClicked = { navController?.navigate(
+            Routes.Register.route)})
 
         if (uiState.isLoading) {
             CircularProgressIndicator()

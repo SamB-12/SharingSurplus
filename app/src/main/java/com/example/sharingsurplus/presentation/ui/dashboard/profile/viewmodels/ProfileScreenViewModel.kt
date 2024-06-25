@@ -12,13 +12,14 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val firestoreRepository: FirestoreRepository
 ):ViewModel() {
 
     private val _profileUiState = MutableStateFlow(ProfileScreenUiState())
     val profileUiState = _profileUiState.asStateFlow()
 
     init {
-        _profileUiState.value = _profileUiState.value.copy(name = authRepository.currentUser?.displayName!!)
+        _profileUiState.value = _profileUiState.value.copy(name = authRepository.currentUser?.displayName!!)//TODO: Get the name from firestore db instead
     }
 
     fun logout() {

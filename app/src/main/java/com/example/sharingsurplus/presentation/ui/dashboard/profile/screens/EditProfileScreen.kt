@@ -27,12 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.data.states.dashboard.profile.EditProfileScreenUiState
-import com.example.sharingsurplus.presentation.navigation.Routes
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
-import com.example.sharingsurplus.presentation.ui.components.SignTextComponent
-import com.example.sharingsurplus.presentation.ui.components.TermsAndConditionsComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.EditProfileViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor

@@ -1,8 +1,8 @@
 package com.example.sharingsurplus.data.states
 
-import com.example.sharingsurplus.presentation.navigation.Routes
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 
 data class MainActivityState(
     val isLoading: Boolean = false,
-    val route: String = Routes.Login.route
+    val route: String = Routes.AuthenticationGraph.route
 )

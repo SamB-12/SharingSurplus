@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.states.dashboard.profile.ProfileScreenUiState
-import com.example.sharingsurplus.presentation.navigation.Routes
+import com.example.sharingsurplus.presentation.navigation.utils.Graphs
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ProfilePageUnitComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.ProfileScreenViewModel
@@ -52,8 +52,8 @@ fun ProfileMenuScreen(
 
     if (uiState.isLoggedOut){
         LaunchedEffect(Unit) {
-            navController?.navigate(Routes.Login.route){
-                popUpTo(Routes.Profile.route){
+            navController?.navigate(Graphs.AuthenticationGraph.graph){
+                popUpTo(Graphs.ProfileGraph.graph){
                     inclusive = true
                 }
             }
@@ -72,7 +72,8 @@ fun ProfileMenuScreen(
         Text(text = uiState.name, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(32.dp))
         //Text(text = "View your profile", style = MaterialTheme.typography.bodyMedium, color = PrimaryTextColor)
-        ProfilePageUnitComponent(text = "View your profile", icon = Icons.Rounded.AccountCircle, onClick = {navController?.navigate(Routes.ProfileInfo.route)})
+        ProfilePageUnitComponent(text = "View your profile", icon = Icons.Rounded.AccountCircle, onClick = {navController?.navigate(
+            Routes.ProfileInfo.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
@@ -80,7 +81,8 @@ fun ProfileMenuScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "Edit your profile", icon = Icons.Filled.Edit, onClick = {navController?.navigate(Routes.EditProfile.route)})
+        ProfilePageUnitComponent(text = "Edit your profile", icon = Icons.Filled.Edit, onClick = {navController?.navigate(
+            Routes.EditProfile.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
@@ -106,7 +108,8 @@ fun ProfileMenuScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "About us", icon = Icons.Filled.Info, onClick = {navController?.navigate(Routes.AboutUs.route)})
+        ProfilePageUnitComponent(text = "About us", icon = Icons.Filled.Info, onClick = {navController?.navigate(
+            Routes.AboutUs.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,22 +35,11 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val mainState by mainViewModel.mainState.collectAsState()
+            //val navController = rememberNavController()
 
             SharingSurplusTheme {
-
                 SampleNavGraph(startDestination = mainState.route)
 
-//                Scaffold(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.primary)) { innerPadding ->
-////                    Greeting(
-////                        name = "Android",
-////                        modifier = Modifier.padding(innerPadding)
-////                    )
-//
-//                }
-
-//                LoginScreen(modifier = Modifier, painter = painterResource(id = R.drawable.ic_sharing_surplus_logo), onButtonClicked = { context ->
-//                    Toast.makeText(context, "Login", Toast.LENGTH_SHORT).show()
-//                })
             }
         }
     }
