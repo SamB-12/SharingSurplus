@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.MainNavGraph
 import com.example.sharingsurplus.presentation.ui.components.BottomNavBarComponent
+import com.example.sharingsurplus.presentation.ui.components.TitleTopAppBar
 import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.viewmodels.MainMenuViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 
@@ -22,7 +23,8 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 fun MainMenuScreen(
     modifier: Modifier = Modifier,
     mainMenuViewModel: MainMenuViewModel = hiltViewModel(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    rootNavController: NavHostController?
     ) {
     var pad:PaddingValues?=null
 
@@ -31,6 +33,7 @@ fun MainMenuScreen(
     Scaffold(
         modifier = modifier
             .background(color = PrimaryColor),
+        topBar = { TitleTopAppBar()},
         bottomBar = {
             BottomNavBarComponent(
                 listOfBottomNavItems = uiState.bottomNavItems,
@@ -39,7 +42,7 @@ fun MainMenuScreen(
                 selectedItem = uiState.selectedItem
             )}
     ) {
-        MainNavGraph(navController = navController)
+        MainNavGraph(navController = navController, rootNavController = rootNavController!!,it)
         pad = it
     }
 }
@@ -48,5 +51,5 @@ fun MainMenuScreen(
 @Composable
 private fun MainMenuScreenPreview() {
     val nav = rememberNavController()
-    MainMenuScreen(navController = nav)
+    MainMenuScreen(navController = nav, rootNavController = nav)
 }

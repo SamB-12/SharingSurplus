@@ -9,9 +9,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.RegisterViewModel
-import com.example.sharingsurplus.presentation.ui.components.RegistrationComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
-import com.example.sharingsurplus.presentation.ui.components.TopAppBarRegistrationComponent
+import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 
 @Composable
 fun RegistrationScreen(
@@ -23,8 +22,8 @@ fun RegistrationScreen(
 ) {
     ScaffoldComponent(
         modifier = modifier,
-        topBar = {TopAppBarRegistrationComponent(title = "Registration", onBackClick = onBackClicked)},
-        content = { RegistrationComponent(painter = painter,registerViewModel = registerViewModel!!,navController = navController)}
+        topBar = {TopAppBarWithBackComponent(title = "Registration", onBackClick = onBackClicked)},
+        content = { RegistrationComponent(painter = painter,registerViewModel = registerViewModel!!,navController = navController) }
     )
 }
 

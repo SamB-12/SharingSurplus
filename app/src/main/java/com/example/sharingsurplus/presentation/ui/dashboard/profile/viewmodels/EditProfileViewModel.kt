@@ -74,6 +74,14 @@ class EditProfileViewModel @Inject constructor(
         _editProfileUiState.value = _editProfileUiState.value.copy(address = address)
     }
 
+    fun pressBack(){
+        _editProfileUiState.value = _editProfileUiState.value.copy(isBackPressed = true)
+    }
+
+    fun cancelBack(){
+        _editProfileUiState.value = _editProfileUiState.value.copy(isBackPressed = false)
+    }
+
     fun showDialog(){
         _editProfileUiState.value = _editProfileUiState.value.copy(isAlertDialogVisible = true)
     }

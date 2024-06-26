@@ -24,9 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.sharingsurplus.data.states.dashboard.profile.ProfileInfoScreenUiState
 import com.example.sharingsurplus.presentation.ui.components.ProfileInfoDetailsComponent
 import com.example.sharingsurplus.presentation.ui.components.ProfilePageUnitComponent
+import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
+import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.ProfileInfoScreenViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
@@ -34,6 +37,7 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 @Composable
 fun ProfileInfoScreen(
     modifier: Modifier = Modifier,
+    navController: NavHostController?,
     profileInfoScreenViewModel : ProfileInfoScreenViewModel = hiltViewModel()
 ) {
 
@@ -41,58 +45,16 @@ fun ProfileInfoScreen(
 
     val uiState by profileInfoScreenViewModel.profileInfoUiState.collectAsState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = PrimaryColor),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(40.dp))
-        Icon(imageVector = Icons.Rounded.Person, contentDescription = "Person Icon", modifier = modifier.size(180.dp))
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = uiState.name, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
-        Spacer(modifier = Modifier.height(32.dp))
-        //Text(text = "View your profile", style = MaterialTheme.typography.bodyMedium, color = PrimaryTextColor)
-        ProfileInfoDetailsComponent(text1 = "Name", text2 = uiState.name)
-        Spacer(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .height(1.dp)
-            .background(color = Color.Gray)
-            .fillMaxWidth()
-        )
-        ProfileInfoDetailsComponent(text1 = "Email", text2 = uiState.email)
-        Spacer(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .height(1.dp)
-            .background(color = Color.Gray)
-            .fillMaxWidth()
-        )
-        ProfileInfoDetailsComponent(text1 = "Phone", text2 = uiState.phone)
-        Spacer(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .height(1.dp)
-            .background(color = Color.Gray)
-            .fillMaxWidth()
-        )
-        ProfileInfoDetailsComponent(text1 = "Address", text2 = uiState.address)
-        Spacer(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .height(1.dp)
-            .background(color = Color.Gray)
-            .fillMaxWidth()
-        )
-        ProfileInfoDetailsComponent(text1 = "Joined", text2 = uiState.dateJoined.toString())
-        Spacer(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .height(1.dp)
-            .background(color = Color.Gray)
-            .fillMaxWidth()
-        )
-    }
+    ScaffoldComponent(
+        modifier = modifier,
+        topBar = { TopAppBarWithBackComponent(title = "Profile Info", onBackClick = {navController?.navigateUp()})},
+        content = { ProfileInfoScreenMinor(name = uiState.name, email = uiState.email, phone = uiState.phone, address = uiState.address, dateJoined = uiState.dateJoined)}
+    )
+
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun ProfileInfoScreenPreview() {
-    ProfileInfoScreen()
+    ProfileInfoScreen(navController = null)
 }

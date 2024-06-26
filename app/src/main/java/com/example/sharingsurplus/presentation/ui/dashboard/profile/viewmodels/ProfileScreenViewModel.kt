@@ -1,12 +1,16 @@
 package com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.profile.ProfileScreenUiState
+import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,8 +22,29 @@ class ProfileScreenViewModel @Inject constructor(
     private val _profileUiState = MutableStateFlow(ProfileScreenUiState())
     val profileUiState = _profileUiState.asStateFlow()
 
+    var userUpdateListenerRegistration: ListenerRegistration? = null
+
     init {
-        _profileUiState.value = _profileUiState.value.copy(name = authRepository.currentUser?.displayName!!)//TODO: Get the name from firestore db instead
+        viewModelScope.launch {
+            val result = firestoreRepository.getUser(authRepository.currentUser?.uid!!)
+
+            if (result is AuthResult.Success){
+                val user = result.data
+                _profileUiState.value = _profileUiState.value.copy(name = user.name)
+                setupUpdateListener(authRepository.currentUser?.uid!!)
+            }
+        }
+    }
+
+    suspend fun setupUpdateListener(uid: String){
+        userUpdateListenerRegistration = firestoreRepository.getRealTimeUser(uid){user ->
+            _profileUiState.value = _profileUiState.value.copy(name = user.name)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        userUpdateListenerRegistration?.remove()
     }
 
     fun logout() {

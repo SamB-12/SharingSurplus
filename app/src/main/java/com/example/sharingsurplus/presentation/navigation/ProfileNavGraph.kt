@@ -18,19 +18,19 @@ fun NavGraphBuilder.profileGraph(navController: NavHostController) {
     navigation(startDestination = Routes.Profile.route, route = Graphs.ProfileGraph.graph){
         composable(Routes.Profile.route){
             //ProfileScreen(navController = navController)
-            ProfileMenuScreen(navController = navController)
+            ProfileMenuScreen(navController = navController, paddingValues = null)
         }
         composable(Routes.ProfileInfo.route){
-            ProfileInfoScreen()
+            ProfileInfoScreen(navController = navController)
         }
         composable(Routes.EditProfile.route){
             EditProfileScreen(navController = navController)
         }
         composable(Routes.KarmaPoints.route){
-            ProfileKarmaPointsScreen()
+            ProfileKarmaPointsScreen(navController = navController)
         }
         composable(Routes.AboutUs.route){
-            ProfileAboutUsScreen(painter = painterResource(id = R.drawable.ic_sharing_surplus_logo))
+            ProfileAboutUsScreen(navController = navController)
         }
     }
 }

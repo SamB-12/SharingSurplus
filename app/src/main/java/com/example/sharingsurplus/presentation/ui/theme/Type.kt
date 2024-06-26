@@ -31,6 +31,13 @@ val displayFontFamily = FontFamily(
     )
 )
 
+val titleFontFamily = FontFamily(
+    Font(
+        R.font.legrand,
+        FontWeight.Bold
+    )
+)
+
 // Default Material 3 typography values
 val baseline = Typography()
 

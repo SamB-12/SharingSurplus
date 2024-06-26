@@ -2,12 +2,15 @@ package com.example.sharingsurplus.presentation.ui.dashboard.profile.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
@@ -30,11 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.sharingsurplus.MainViewModel
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ProfilePageUnitComponent
+import com.example.sharingsurplus.presentation.ui.components.TitleTopAppBar
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.ProfileScreenViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
@@ -43,7 +48,9 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 fun ProfileMenuScreen(
     modifier: Modifier = Modifier,
     profileScreenViewModel: ProfileScreenViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
     navController: NavController?,
+    paddingValues: PaddingValues?,
     ) {
 
     //val uiState = ProfileScreenUiState("Phil")
@@ -57,16 +64,20 @@ fun ProfileMenuScreen(
                     inclusive = true
                 }
             }
+            mainViewModel.navigateToAuth()
         }
     }
 
     Column (
         modifier = modifier
             .fillMaxSize()
-            .background(color = PrimaryColor),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(color = PrimaryColor)
+            .padding(paddingValues!!)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ){
-        Spacer(modifier = Modifier.height(40.dp))
+        //Spacer(modifier = modifier.padding(paddingValues!!))
+        Spacer(modifier = Modifier.height(16.dp))
         Icon(imageVector = Icons.Rounded.Person, contentDescription = "Person Icon", modifier = modifier.size(180.dp))
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = uiState.name, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
@@ -126,5 +137,5 @@ fun ProfileMenuScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ProfileScreenPreview() {
-    ProfileMenuScreen(navController = null)
+    ProfileMenuScreen(navController = null, paddingValues = null)
 }

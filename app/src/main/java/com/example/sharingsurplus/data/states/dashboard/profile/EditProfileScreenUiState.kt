@@ -11,5 +11,6 @@ data class EditProfileScreenUiState(
     val imageAddress: String = "",
     val isSuccess: AuthResult<User>? = null,
     val isAlertDialogVisible: Boolean = false,
+    val isBackPressed: Boolean = false,
     val isLoading: Boolean = false
 )

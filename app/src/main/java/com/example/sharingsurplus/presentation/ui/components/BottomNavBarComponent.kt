@@ -15,11 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.sharingsurplus.data.states.dashboard.main_menu.MainMenuUiState
 import com.example.sharingsurplus.presentation.navigation.BottomNavBarItems
 import com.example.sharingsurplus.presentation.ui.theme.AccentColor
@@ -50,6 +51,7 @@ fun BottomNavBarComponent(
         modifier = modifier
             .fillMaxWidth()
             .background(color = SecondaryColor),
+        tonalElevation = 8.dp,
         containerColor = SecondaryColor
     ) {
         listOfBottomNavItems.forEachIndexed { index, bottomNavBarItems ->
@@ -59,7 +61,7 @@ fun BottomNavBarComponent(
                 onClick = {
                     onItemClick(index)
                     navController?.navigate(bottomNavBarItems.route)
-                          },
+                },
                 icon = {
                     BadgedBox(
                         badge = {

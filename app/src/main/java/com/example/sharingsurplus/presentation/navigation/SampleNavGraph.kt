@@ -21,9 +21,13 @@ fun SampleNavGraph(
     NavHost(navController = navController, startDestination = startDestination) {
 
         authNavGraph(navController = navController)
+        homeNavGraph()
+        requestsNavGraph()
+        communityForumNavGraph(navController)
+        profileGraph(navController)
 
         composable(Routes.MainMenu.route){
-            MainMenuScreen()
+            MainMenuScreen(rootNavController = navController)//store the popped up login value in another stack
         }
     }
 }

@@ -22,7 +22,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         composable(Routes.Register.route){
             RegistrationScreen(
                 painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
-                onBackClicked = {navController.navigateUp() },
+                onBackClicked = {navController.navigateUp()},
                 navController = navController
             )
         }

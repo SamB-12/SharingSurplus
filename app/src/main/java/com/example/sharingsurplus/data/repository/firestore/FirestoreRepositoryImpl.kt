@@ -1,8 +1,10 @@
 package com.example.sharingsurplus.data.repository.firestore
 
+import android.util.Log
 import com.example.sharingsurplus.data.model.User
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -17,7 +19,7 @@ class FirestoreRepositoryImpl @Inject constructor(
                 .get()
                 .await()
 
-            if (document.exists()){
+            if (document.exists()) {
                 val user = document.toObject(User::class.java)
                 AuthResult.Success(user!!)
             } else {
@@ -36,7 +38,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             "address" to updatedUser.address
         )
 
-       return try {
+        return try {
             firestore.collection("users")
                 .document(uid)
                 .set(userToUpdate, SetOptions.merge())
@@ -66,5 +68,29 @@ class FirestoreRepositoryImpl @Inject constructor(
                     println("Failed to add user to firestore")
                 }
             }
+    }
+
+    override suspend fun getRealTimeUser(
+        uid: String,
+        onUserUpdated: (User) -> Unit
+    ): ListenerRegistration {
+        return  firestore.collection("users")
+                .document(uid)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.e("FirestoreRepository", "Error getting user: ", error)
+                        return@addSnapshotListener
+                    } else {
+                        if (value != null && value.exists()) {
+                            val user = value.toObject(User::class.java)
+                            if (user != null) {
+                                onUserUpdated(user)
+                            }
+                        } else {
+                            Log.e("FirestoreRepository", "User not found")
+                        }
+                    }
+                }
+
     }
 }

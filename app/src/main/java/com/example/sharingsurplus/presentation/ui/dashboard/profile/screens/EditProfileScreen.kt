@@ -27,10 +27,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
+import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
+import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.EditProfileViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
@@ -41,66 +44,36 @@ fun EditProfileScreen(
     editProfileViewModel: EditProfileViewModel = hiltViewModel(),
     navController: NavController?
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = PrimaryColor),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
 
-        //val uiState = EditProfileScreenUiState("Phil K", "philk@gmail.com", "123456", "address")
-        val uiState by editProfileViewModel.editProfileUiState.collectAsState()
-        val context = LocalContext.current
-        val painter: Painter = painterResource(id = R.drawable.ic_sharing_surplus_logo)
+    val uiState by editProfileViewModel.editProfileUiState.collectAsState()
 
-        Image(painter = painter, contentDescription = "Logo", modifier = modifier.padding(top = 12.dp))//change it to have a edit icon and make it clickable
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Edit your profile details", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
-        Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Name", value = uiState.name, onValueChanged = { editProfileViewModel.onNameChanged(it) })
-        Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Email", value = uiState.email, onValueChanged = { editProfileViewModel.onEmailChanged(it) })
-        Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Phone", value = uiState.phone, onValueChanged = { editProfileViewModel.onPhoneChanged(it) })
-        Spacer(modifier = Modifier.height(16.dp))
-        TextFieldComponent(label = "Address", value = uiState.address, onValueChanged = { editProfileViewModel.onAddressChanged(it) })
-        Spacer(modifier = Modifier.height(40.dp))
-        ButtonComponent(onClick = { editProfileViewModel.showDialog() }, text = "Confirm details") //add a alert dialog when pressed
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (uiState.isAlertDialogVisible){
-            ConfirmationDialogComponent(
-                title = "Confirm Changes?",
-                message = "Are you sure you want to save the changes?",
-                onConfirm = {editProfileViewModel.updateProfile()},
-                onCancel = {editProfileViewModel.hideDialog()}
+    ScaffoldComponent(
+        modifier = modifier,
+        topBar = { TopAppBarWithBackComponent(title = "Edit Profile", onBackClick = {editProfileViewModel.pressBack()})},
+        content = {
+            EditProfileScreenMinor(
+                name = uiState.name,
+                email = uiState.email,
+                phone = uiState.phone,
+                address = uiState.address,
+                isDialogVisible = uiState.isAlertDialogVisible,
+                isBackDialogVisible = uiState.isBackPressed,
+                onNameChanged = {editProfileViewModel.onNameChanged(it)},
+                onEmailChanged = {editProfileViewModel.onEmailChanged(it)},
+                onPhoneChanged = {editProfileViewModel.onPhoneChanged(it)},
+                onAddressChanged = {editProfileViewModel.onAddressChanged(it)},
+                onShowDialog = {editProfileViewModel.showDialog()},
+                onHideDialog = {editProfileViewModel.hideDialog()},
+                onConfirmUpdate = {editProfileViewModel.updateProfile()},
+                onCancelUpdate = {editProfileViewModel.hideDialog()},
+                onConfirmBack = {navController?.navigateUp()},
+                onCancelBack = {editProfileViewModel.cancelBack()},
+                navigateTo = {navController?.navigateUp()},
+                isSuccess = uiState.isSuccess
             )
         }
+    )
 
-        LaunchedEffect(uiState.isSuccess) {
-            when (uiState.isSuccess) {
-
-                is AuthResult.Success -> {
-                    Toast.makeText(context, "Profile updated", Toast.LENGTH_SHORT).show()
-                    navController?.navigate(Routes.Profile.route){
-                        popUpTo(Routes.Profile.route){
-                            inclusive = true
-                        }
-                    }
-                }
-                is AuthResult.Error -> {
-                    Toast.makeText(context, (uiState.isSuccess as AuthResult.Error).message, Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    //Nothing
-                }
-            }
-        }
-
-        if (uiState.isLoading){
-            CircularProgressIndicator()
-        }
-    }
 }
 
 @Preview

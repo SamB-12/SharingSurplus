@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.ui.components
+package com.example.sharingsurplus.presentation.ui.auth.screens
 
 import PasswordFieldComponent
 import android.widget.Toast
@@ -27,6 +27,10 @@ import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.RegisterViewModel
+import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
+import com.example.sharingsurplus.presentation.ui.components.SignTextComponent
+import com.example.sharingsurplus.presentation.ui.components.TermsAndConditionsComponent
+import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 
