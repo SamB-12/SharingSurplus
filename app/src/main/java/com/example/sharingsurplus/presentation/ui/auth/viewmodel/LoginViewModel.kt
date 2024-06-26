@@ -3,12 +3,11 @@ package com.example.sharingsurplus.presentation.ui.auth.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sharingsurplus.data.repository.AuthRepository
+import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.states.auth.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +20,6 @@ class LoginViewModel @Inject constructor(
     val loginUiState = _loginUiState.asStateFlow()
 
     fun login() {
-        Log.i("It reached?","it did reach")
         val currentState = _loginUiState.value
         if (validateForm(currentState.email,currentState.password)){
             viewModelScope.launch {

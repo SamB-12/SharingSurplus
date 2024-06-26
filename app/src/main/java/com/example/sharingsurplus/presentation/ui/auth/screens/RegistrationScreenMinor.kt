@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.ui.components
+package com.example.sharingsurplus.presentation.ui.auth.screens
 
 import PasswordFieldComponent
 import android.widget.Toast
@@ -22,11 +22,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.presentation.navigation.Routes
+import com.example.sharingsurplus.presentation.navigation.utils.Graphs
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.RegisterViewModel
+import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
+import com.example.sharingsurplus.presentation.ui.components.SignTextComponent
+import com.example.sharingsurplus.presentation.ui.components.TermsAndConditionsComponent
+import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 
@@ -44,9 +48,9 @@ fun RegistrationComponent(
     LaunchedEffect(uiState.authResult) {
         when (uiState.authResult) {
             is AuthResult.Success -> {
-                Toast.makeText(context, "Successfully registered! please log in!", Toast.LENGTH_SHORT).show()
-                navController?.navigate(Routes.Home.route){
-                    popUpTo(Routes.Register.route){
+                //Toast.makeText(context, "Successfully registered! please log in!", Toast.LENGTH_SHORT).show()
+                navController?.navigate(Routes.MainMenu.route){
+                    popUpTo(Graphs.AuthenticationGraph.graph){
                         inclusive = true
                     }
                 }

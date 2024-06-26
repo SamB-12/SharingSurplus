@@ -2,40 +2,32 @@ package com.example.sharingsurplus.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.sharingsurplus.R
-import com.example.sharingsurplus.presentation.ui.auth.screens.LoginScreen
-import com.example.sharingsurplus.presentation.ui.auth.screens.RegistrationScreen
-import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
-import com.example.sharingsurplus.presentation.ui.home.screens.HomeScreen
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
+import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.screens.MainMenuScreen
 
 @Composable
-fun SampleNavGraph(modifier: Modifier = Modifier) {
+fun SampleNavGraph(
+    modifier: Modifier = Modifier,
+    startDestination: String = Routes.AuthenticationGraph.route,
+    //navController: NavHostController = rememberNavController(),
+    ) {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.Login.route) {
-        composable(Routes.Login.route){
-            LoginScreen(
-                painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
-                navController = navController
-            )
-        }
-        composable(Routes.Register.route){
+    NavHost(navController = navController, startDestination = startDestination) {
 
-            RegistrationScreen(
-                painter = painterResource(id = R.drawable.ic_sharing_surplus_logo),
-                onBackClicked = {navController.navigateUp() },
-                navController = navController
-            )
-        }
-        composable(Routes.Home.route){
-            HomeScreen()
+        authNavGraph(navController = navController)
+        homeNavGraph()
+        requestsNavGraph()
+        communityForumNavGraph(navController)
+        profileGraph(navController)
+
+        composable(Routes.MainMenu.route){
+            MainMenuScreen(rootNavController = navController)//store the popped up login value in another stack
         }
     }
 }

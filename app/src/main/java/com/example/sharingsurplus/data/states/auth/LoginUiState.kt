@@ -1,5 +1,6 @@
 package com.example.sharingsurplus.data.states.auth
 
+import com.example.sharingsurplus.data.model.User
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.auth.FirebaseUser
 

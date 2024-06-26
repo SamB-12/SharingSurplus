@@ -1,8 +1,8 @@
-package com.example.sharingsurplus.presentation.ui.home.viewmodels
+package com.example.sharingsurplus.presentation.ui.dashboard.home.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.sharingsurplus.data.repository.AuthRepository
-import com.example.sharingsurplus.data.states.home.HomeScreenUiState
+import com.example.sharingsurplus.data.repository.auth.AuthRepository
+import com.example.sharingsurplus.data.states.dashboard.home.HomeScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.SharingSurplus" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.SharingSurplus.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background to black -->
+        <item name="windowSplashScreenBackground">@color/primaryColor</item>
+        <item name="postSplashScreenTheme">@style/Theme.SharingSurplus</item>
+    </style>
 </resources>

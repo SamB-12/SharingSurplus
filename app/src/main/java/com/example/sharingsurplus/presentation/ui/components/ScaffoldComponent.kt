@@ -2,10 +2,8 @@ package com.example.sharingsurplus.presentation.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -14,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.auth.screens.RegistrationScreen
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
@@ -47,7 +44,7 @@ fun ScaffoldComponent(
 @Composable
 private fun ScaffoldComponentPreview() {
     SharingSurplusTheme {
-        ScaffoldComponent(modifier = Modifier, topBar = {TopAppBarRegistrationComponent(title = "Register")}, content = { RegistrationScreen(
+        ScaffoldComponent(modifier = Modifier, topBar = {TopAppBarWithBackComponent(title = "Register")}, content = { RegistrationScreen(
             painter = painterResource(id = R.drawable.ic_sharing_surplus_logo)
         )})
     }
