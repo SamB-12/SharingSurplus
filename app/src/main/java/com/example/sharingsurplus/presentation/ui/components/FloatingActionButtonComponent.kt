@@ -21,7 +21,7 @@ fun FloatingActionButtonComponent(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.BottomEnd
     ) {
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = { },
             modifier = Modifier.align(Alignment.BottomCenter).offset(y = 32.dp),
             containerColor = AccentColor
         ) {

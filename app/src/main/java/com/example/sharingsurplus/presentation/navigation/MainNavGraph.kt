@@ -26,7 +26,7 @@ fun MainNavGraph(
 //        profileGraph(rootNavController)
 //        authNavGraph(rootNavController)
         composable(route = Graphs.HomeGraph.graph){
-            HomeScreen()
+            HomeScreen(paddingValues = paddingValues)
         }
         composable(route = Graphs.CommunityGraph.graph){
             CommunityForumScreen()

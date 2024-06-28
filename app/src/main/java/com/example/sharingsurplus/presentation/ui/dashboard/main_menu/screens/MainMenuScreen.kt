@@ -46,7 +46,7 @@ fun MainMenuScreen(
                 onItemClick = {mainMenuViewModel.onSelectedItemChanged(it)},
                 navController = navController,
                 selectedItem = uiState.selectedItem,
-                onFabClick = {Toast.makeText(localContext,"Fab Clicked",Toast.LENGTH_SHORT).show()}
+                onFabClick = {Toast.makeText(localContext,"Fab Clicked",Toast.LENGTH_SHORT).show()}//change it of course.
             )},
         //floatingActionButton = { FloatingActionButtonComponent()}
     ) {
