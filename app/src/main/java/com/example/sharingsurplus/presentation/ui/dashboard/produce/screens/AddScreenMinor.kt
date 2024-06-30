@@ -16,16 +16,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.sharingsurplus.R
+import com.example.sharingsurplus.presentation.ui.components.AddProduceImageComponent
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
+import com.example.sharingsurplus.presentation.ui.components.DropDownMenuComponent
 import com.example.sharingsurplus.presentation.ui.components.QuantitySelectorComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 
 @Composable
-fun AddScreenMinor(modifier: Modifier = Modifier) {//add a view model as well
+fun AddScreenMinor(
+    modifier: Modifier = Modifier,
+    buttonOnClick: () -> Unit = {}
+) {//add a view model as well
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -35,8 +42,8 @@ fun AddScreenMinor(modifier: Modifier = Modifier) {//add a view model as well
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Add a product", style = MaterialTheme.typography.headlineLarge)
-        Spacer(modifier = modifier.height(16.dp))
+        //Text(text = "Add a product", style = MaterialTheme.typography.headlineLarge)// replace with the top bar
+        //Spacer(modifier = modifier.height(16.dp))
         Text(text = "Enter Produce Name", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
@@ -50,12 +57,8 @@ fun AddScreenMinor(modifier: Modifier = Modifier) {//add a view model as well
         Text(text = "Select the type of produce", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        TextFieldComponent(label = "Product Price")
-        Spacer(modifier = modifier.height(16.dp))
-        Text(text = "Select the type of produce", style = MaterialTheme.typography.labelLarge, modifier = modifier
-            .align(Alignment.Start)
-            .padding(horizontal = 16.dp))
-        TextFieldComponent(label = "Product Type")//This should be a dropdown/spinner
+        //TextFieldComponent(label = "Product Type")//This should be a dropdown/spinner
+        DropDownMenuComponent(label = "Product Type", produceTypes = listOf("Vegetables", "Fruits", "Dairy"))
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Enter the quanity of produce", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
@@ -65,14 +68,14 @@ fun AddScreenMinor(modifier: Modifier = Modifier) {//add a view model as well
         Text(text = "Select the Location", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        TextFieldComponent(label = "Location")
+        TextFieldComponent(label = "Location")//should ask the user for a normal location or an anonymous location
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Enter the pickup Instructions", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
         TextFieldComponent(label = "Pickup Instructions")
         Spacer(modifier = modifier.height(16.dp))
-        Text(text = "Enter the pickup date", style = MaterialTheme.typography.labelLarge, modifier = modifier
+        Text(text = "Enter the last pickup date", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
         TextFieldComponent(label = "PickUp Date")
@@ -80,9 +83,10 @@ fun AddScreenMinor(modifier: Modifier = Modifier) {//add a view model as well
         Text(text = "Insert the Image", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        TextFieldComponent(label = "Image") // add the image logo and do it!
+        //TextFieldComponent(label = "Image") // add the image logo and do it!
+        AddProduceImageComponent(painter = painterResource(id = R.drawable.add_screen_image_placeholder))
         Spacer(modifier = modifier.height(16.dp))
-        ButtonComponent(text = "Add Product", onClick = {})
+        ButtonComponent(text = "Add Product", onClick = {buttonOnClick()})
     }
 }
 
