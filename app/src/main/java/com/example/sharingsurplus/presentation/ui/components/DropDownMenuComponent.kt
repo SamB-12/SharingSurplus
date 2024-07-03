@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
 
@@ -37,9 +38,9 @@ fun DropDownMenuComponent(
     modifier: Modifier = Modifier,
     label:String = "Select Produce Type",
     error: Boolean = false,
-    selectedType:String = "",//should come from the vm
-    produceTypes: List<String> = listOf("Vegetable", "Fruit", "Grain"),
-    onTypeSelected: (String) -> Unit = {},
+    selectedType:ProduceType = ProduceType.None,//should come from the vm
+    produceTypes: List<ProduceType> = ProduceType.entries,
+    onTypeSelected: (ProduceType) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }// should come from the vm
 
@@ -51,7 +52,7 @@ fun DropDownMenuComponent(
             .padding(horizontal = 16.dp)
     ) {
         OutlinedTextField(
-            value = selectedType,
+            value = selectedType.displayName,
             onValueChange = {},
             readOnly = true,
             label = { Text(label) },
@@ -80,7 +81,7 @@ fun DropDownMenuComponent(
         ) {
             produceTypes.forEach { type ->
                 DropdownMenuItem(
-                    text = { Text(type) },
+                    text = { Text(type.displayName) },
                     onClick = {
                         onTypeSelected(type)
                         expanded = false

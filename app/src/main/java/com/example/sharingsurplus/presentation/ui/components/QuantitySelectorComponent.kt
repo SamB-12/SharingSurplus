@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
 fun QuantitySelectorComponent(
     modifier: Modifier = Modifier,
     label1: String = "Quantity",
-    label2: String = "Unit"
+    label2: String = "Unit",
+    quantity: String = "",
+    unit: String = "",
+    onQuantityChange: (String) -> Unit = {},
+    onUnitChange: (String) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -25,10 +29,10 @@ fun QuantitySelectorComponent(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(modifier = Modifier.weight(1f)){
-            TextFieldComponent(label = label1)
+            TextFieldComponent(label = label1, value = quantity, onValueChanged = onQuantityChange)
         }
         Box(modifier = Modifier.weight(1f)){
-            TextFieldComponent(label = label2)
+            TextFieldComponent(label = label2, value = unit, onValueChanged = onUnitChange)
         }
     }
 }

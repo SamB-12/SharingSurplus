@@ -3,7 +3,6 @@ package com.example.sharingsurplus.presentation.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,7 +27,11 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 fun AddProduceImageComponent(
     modifier: Modifier = Modifier,
     painter: Painter,//comes from the vm
-    onAddImageClicked: () -> Unit = {} // also from the vm
+    onAddImageClicked: () -> Unit = {}, // also from the vm
+    isImagePickerDialogVisible: Boolean = false,
+    onImagePickerDialogChange: (Boolean) -> Unit = {},
+    onGalleryClicked: () -> Unit = {},
+    onCameraClicked: () -> Unit = {},
 ) {
     Row (
         modifier = modifier
@@ -52,8 +55,18 @@ fun AddProduceImageComponent(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .weight(1f)
-                .clickable { onAddImageClicked() }
+                .clickable {
+                    if (isImagePickerDialogVisible) {
+                        onImagePickerDialogChange(false)
+                    } else {
+                        onImagePickerDialogChange(true)
+                    }
+                }
         )
+    }
+    
+    if (isImagePickerDialogVisible) {
+        MultipleOptionPickerDialogComponent(onDismissRequest = { onImagePickerDialogChange(false) }, option1 = "Select photo from Gallery", option2 = "Take photo", onOption1Click = onGalleryClicked, onOption2Click = onCameraClicked)
     }
 }
 

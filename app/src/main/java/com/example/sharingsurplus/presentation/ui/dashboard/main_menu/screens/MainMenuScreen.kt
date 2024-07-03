@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.MainNavGraph
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.BottomNavBarComponent
 import com.example.sharingsurplus.presentation.ui.components.FloatingActionButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.TitleTopAppBar
@@ -46,7 +47,7 @@ fun MainMenuScreen(
                 onItemClick = {mainMenuViewModel.onSelectedItemChanged(it)},
                 navController = navController,
                 selectedItem = uiState.selectedItem,
-                onFabClick = {Toast.makeText(localContext,"Fab Clicked",Toast.LENGTH_SHORT).show()}//change it of course.
+                onFabClick = {rootNavController?.navigate(Routes.AddProduce.route)}//change it of course.
             )},
         //floatingActionButton = { FloatingActionButtonComponent()}
     ) {

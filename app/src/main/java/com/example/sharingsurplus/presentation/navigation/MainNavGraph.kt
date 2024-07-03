@@ -10,6 +10,7 @@ import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.dashboard.community_forum.screens.CommunityForumScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.home.screens.HomeScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.AddProduceScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileMenuScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.requests.screens.RequestScreen
 
