@@ -1,6 +1,8 @@
 package com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels
 
+import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.sharingsurplus.data.states.dashboard.produce.AddProduceUiState
 import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
@@ -16,6 +18,21 @@ class AddProduceViewModel @Inject constructor(
 
     private val _addProduceUiState = MutableStateFlow(AddProduceUiState())
     val addProduceUiState = _addProduceUiState.asStateFlow()
+
+    val visiblePermissionDialogQueue = mutableStateListOf<String>()
+
+    fun dismissDialog(){
+        visiblePermissionDialogQueue.removeFirst()
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ){
+        if (!isGranted && !visiblePermissionDialogQueue.contains(permission)){
+            visiblePermissionDialogQueue.add(permission)
+        }
+    }
 
     fun onProduceNameChanged(produceName: String){
         _addProduceUiState.value = _addProduceUiState.value.copy(
@@ -95,6 +112,12 @@ class AddProduceViewModel @Inject constructor(
     fun onImageSelected(image: String){
         _addProduceUiState.value = _addProduceUiState.value.copy(
             produceImageUrl = image
+        )
+    }
+
+    fun onImageSelectedUri(imageUri: Uri){
+        _addProduceUiState.value = _addProduceUiState.value.copy(
+            produceImageUri = imageUri
         )
     }
 }

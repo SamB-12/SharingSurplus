@@ -1,5 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.produce
 
+import android.net.Uri
+
 data class AddProduceUiState(
     val produceName: String = "",
     val produceDescription: String = "",
@@ -14,4 +16,5 @@ data class AddProduceUiState(
     val isLocationDialogVisible: Boolean = false,
     val isAddImageDialogVisible: Boolean = false,
     val produceImageUrl: String = "",
+    val produceImageUri: Uri? = null,
 )

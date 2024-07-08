@@ -39,7 +39,6 @@ fun LocationSelectorTextFieldComponent(
             .padding(16.dp)
             .background(color = PrimaryColor)
             .clickable {
-                Log.i("This was clicked?", "YES INDEED")
                 if (isLocationDialogVisible) {
                     onLocationDialogVisibleChanged(false)
                 } else {
@@ -66,8 +65,8 @@ fun LocationSelectorTextFieldComponent(
 
     if (isLocationDialogVisible) {
         MultipleOptionPickerDialogComponent(
-            option1 = "Choose anonymous location",
-            option2 = "Choose your location",
+            option1 = "Anonymous location",
+            option2 = "Current location",
             onOption1Click = {},
             onOption2Click = {},
             onDismissRequest = {onLocationDialogVisibleChanged(false)}
