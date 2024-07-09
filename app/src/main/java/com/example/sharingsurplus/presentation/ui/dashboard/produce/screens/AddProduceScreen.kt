@@ -22,11 +22,16 @@ import androidx.navigation.NavHostController
 import androidx.activity.ComponentActivity
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
@@ -36,11 +41,14 @@ import com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels.A
 import com.example.sharingsurplus.presentation.utils.CameraPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.GalleryPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.LocationPermissionTextProvider
+import com.example.sharingsurplus.presentation.utils.createImageFile
 import com.example.sharingsurplus.presentation.utils.createImageUri
+import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
 import com.example.sharingsurplus.presentation.utils.handleGalleryClick
 import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.openAppSettings
+import java.net.URI
 
 @Composable
 fun AddProduceScreen(
@@ -54,9 +62,9 @@ fun AddProduceScreen(
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
-//    val uriOfCamera:Uri by remember {
-//        mutableStateOf(null)
-//    }
+    var capturedImageUri by remember {
+        mutableStateOf<Uri?>(Uri.EMPTY)
+    }
 
     val uiState by addProduceViewModel.addProduceUiState.collectAsState()
 
@@ -80,6 +88,13 @@ fun AddProduceScreen(
         addProduceViewModel.onPermissionResult(permission = Manifest.permission.CAMERA, isGranted = isGranted)
     }
 
+    val locationPermissionsResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) {isGranted ->
+        addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_FINE_LOCATION, isGranted = isGranted)
+        addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_COARSE_LOCATION, isGranted = isGranted)
+    }
+
     val galleryPermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {isGranted ->
@@ -89,19 +104,13 @@ fun AddProduceScreen(
 
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
-            val uri = addProduceViewModel.addProduceUiState.value.produceImageUri
+            val uri = addProduceViewModel.addProduceUiState.value.tempImageUri
             uri?.let {
                 Toast.makeText(localContext, "Camera capture successful", Toast.LENGTH_SHORT).show()
                 addProduceViewModel.onImageSelected(uri.toString())
                 addProduceViewModel.onImageSelectedUri(it)
+                capturedImageUri = it
                 addProduceViewModel.isImagePickerDialogVisible(false)
-
-                if (isFileExistsAtUri(localContext, it)){
-                    Log.d("FILEEXISTS", "FILE EXISTS")
-                } else {
-                    Log.d("FILEEXISTS", "FILE DOES NOT EXIST")
-                }
-
             }
         } else {
             Toast.makeText(localContext, "Camera capture failed", Toast.LENGTH_SHORT).show()
@@ -112,6 +121,7 @@ fun AddProduceScreen(
         uri?.let {
             addProduceViewModel.onImageSelected(uri.toString())
             addProduceViewModel.onImageSelectedUri(uri)
+            capturedImageUri = uri
             Toast.makeText(localContext, "Image selected", Toast.LENGTH_SHORT).show()
             addProduceViewModel.isImagePickerDialogVisible(false)
         } ?: run {
@@ -171,14 +181,16 @@ fun AddProduceScreen(
                 bestBeforeDate = uiState.produceBestBeforeDate,
                 pickupInstructions = uiState.producePickupInstructions,
                 isDatePickerDialogVisible = uiState.isDatePickerDialogVisible,
-                produceImage = if (uiState.produceImageUri == null) {
+                produceImage = if (uiState.produceImageUri?.path?.isNotEmpty() == false) {
                     painterResource(id = R.drawable.add_screen_image_placeholder)
                 } else {
-                    key(uiState.produceImageUri) {
-                        Log.d("URIHEREEE", uiState.produceImageUri.toString())
-                        rememberAsyncImagePainter(model = uiState.produceImageUri)
-                    }
+                    rememberAsyncImagePainter(model = uiState.produceImageUri)
                },
+//                produceImage = if (capturedImageUri?.path?.isNotEmpty() == false) {
+//                    painterResource(id = R.drawable.add_screen_image_placeholder)
+//                } else {
+//                       rememberAsyncImagePainter(model = capturedImageUri)
+//                },
                 onProduceNameChange = addProduceViewModel::onProduceNameChanged,
                 onProduceDescriptionChange = addProduceViewModel::onProduceDescriptionChanged,
                 onProduceTypeChange = addProduceViewModel::onProduceTypeChanged,
@@ -193,23 +205,8 @@ fun AddProduceScreen(
                 onImagePickerDialogVisibleChange = addProduceViewModel::isImagePickerDialogVisible,
                 onLocationPickerDialogVisibleChange = addProduceViewModel::isLocationPickerDialogVisible,
                 onGalleryClick = {
-//                                 handleGalleryClick(
-//                                     localContext,
-//                                     onPermissionRequired = {
-////                                         multiplePermissionsResultLauncher.launch(
-////                                             arrayOf(
-////                                                 Manifest.permission.READ_EXTERNAL_STORAGE
-////                                             )
-////                                         )
-//                                         galleryPermissionsResultLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
-//                                     },
-//                                     onPermissionsGranted = {
-//                                         //Toast.makeText(localContext, "Gallery Clicked", Toast.LENGTH_SHORT).show()
-//                                         galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//                                     }
-//                                 )
-                                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    },// this is where i should display the permission
+                    galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    },// This method doesn't require permissions
                 onCameraClick = {
                                 handleCameraClick(
                                     localContext,
@@ -217,15 +214,12 @@ fun AddProduceScreen(
                                         cameraPermissionsResultLauncher.launch(Manifest.permission.CAMERA)
                                 },
                                     onPermissionsGranted = {
-                                        val uri = createImageUri(localContext)
-                                        if (uri != null) {
-                                            addProduceViewModel.onImageSelectedUri(uri)
-                                            addProduceViewModel.onImageSelected(uri.toString())
-                                            Log.d("URI", uri.toString())
-                                            cameraLauncher.launch(uri)
-                                        } else {
-                                            Toast.makeText(localContext, "Error creating URI", Toast.LENGTH_SHORT).show()
-                                        }
+                                        val file = createImageFile(localContext)
+                                        val uri = getUriForFile(localContext, file)
+                                        //addProduceViewModel.onImageSelectedUri(uri)
+                                        addProduceViewModel.onTempImageUriChanged(uri)
+                                        //addProduceViewModel.onImageSelected(uri.toString())
+                                        cameraLauncher.launch(uri)
                                     }
                                 )
                 }

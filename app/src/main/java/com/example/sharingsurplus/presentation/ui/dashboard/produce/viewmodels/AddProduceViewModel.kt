@@ -120,4 +120,10 @@ class AddProduceViewModel @Inject constructor(
             produceImageUri = imageUri
         )
     }
+
+    fun onTempImageUriChanged(tempImageUri: Uri){
+        _addProduceUiState.value = _addProduceUiState.value.copy(
+            tempImageUri = tempImageUri
+        )
+    }
 }

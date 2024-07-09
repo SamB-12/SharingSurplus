@@ -16,5 +16,6 @@ data class AddProduceUiState(
     val isLocationDialogVisible: Boolean = false,
     val isAddImageDialogVisible: Boolean = false,
     val produceImageUrl: String = "",
-    val produceImageUri: Uri? = null,
+    val produceImageUri: Uri? = Uri.EMPTY,
+    val tempImageUri: Uri? = Uri.EMPTY
 )
