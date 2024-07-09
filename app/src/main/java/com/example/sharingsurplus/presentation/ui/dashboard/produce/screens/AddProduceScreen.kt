@@ -46,8 +46,13 @@ import com.example.sharingsurplus.presentation.utils.createImageUri
 import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
 import com.example.sharingsurplus.presentation.utils.handleGalleryClick
+import com.example.sharingsurplus.presentation.utils.handleLocationClick
 import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.openAppSettings
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.net.URI
 
 @Composable
@@ -70,6 +75,8 @@ fun AddProduceScreen(
 
     val localContext = LocalContext.current
     val activity = (localContext as? Activity)
+
+    val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)//This is what we get from places api
 
     val multiplePermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -94,6 +101,18 @@ fun AddProduceScreen(
         addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_FINE_LOCATION, isGranted = isGranted)
         addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_COARSE_LOCATION, isGranted = isGranted)
     }
+
+    val placesLocationResultLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            if (intent != null) {
+                val place = Autocomplete.getPlaceFromIntent(intent)
+                Log.d("PlaceRetrived", "Place: ${place.name}, ${place.latLng}")
+            }
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            Log.d("PlaceRetrived", "Place selection canceled")
+        }
+    }//This retrives the requested location
 
     val galleryPermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -222,6 +241,33 @@ fun AddProduceScreen(
                                         cameraLauncher.launch(uri)
                                     }
                                 )
+                },
+                onLocationPlacesClicked = {
+                    handleLocationClick(
+                        localContext,
+                        onPermissionRequired = {
+                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        },
+                        onPermissionsGranted = {
+                            //Launch Places API
+                            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                                .build(localContext)//This launches the places api intent; overlay for half and full for full!
+                            placesLocationResultLauncher.launch(intent)
+                        }
+                        )
+                },
+                onCurrentLocationClicked = {
+                    handleLocationClick(
+                        localContext,
+                        onPermissionRequired = {
+                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        },
+                        onPermissionsGranted = {
+                            Toast.makeText(localContext, "Current location clicked", Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 }
             )
         }

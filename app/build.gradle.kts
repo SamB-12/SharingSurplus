@@ -79,6 +79,9 @@ dependencies {
 
     implementation(libs.firebase.analytics)
 
+    implementation("com.google.android.libraries.places:places:3.5.0")
+
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

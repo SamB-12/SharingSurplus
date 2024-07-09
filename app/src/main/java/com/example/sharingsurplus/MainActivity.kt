@@ -19,6 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.screens.MainMenuScreen
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
+import com.example.sharingsurplus.presentation.utils.Constants
+import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,6 +40,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
+            Places.initialize(applicationContext, Constants.API_KEY)
+
             val mainState by mainViewModel.mainState.collectAsState()
             //val navController = rememberNavController()
             val isMainMenu by mainViewModel.isMainMenu.observeAsState(false)
@@ -45,32 +49,6 @@ class MainActivity : ComponentActivity() {
             Log.d("MainActivity", "MainState: $mainState")
 
             SharingSurplusTheme {
-
-//                LaunchedEffect(mainState.isNavHostMain){
-//                    when (mainState.isNavHostMain){
-//                        true -> {
-//                            MainMenuScreen()
-//                        }
-//                        false -> {
-//                            SampleNavGraph()
-//                    }
-//                }
-
-//                if (mainState.isNavHostMain){
-//                    MainMenuScreen()
-//                } else{
-//                    SampleNavGraph()
-//                }
-
-//                when (mainState.isNavHostMain){
-//                    true -> {
-//                        MainMenuScreen()
-//                        Log.i("Check3","It never worked!")
-//                    }
-//                    false -> SampleNavGraph()
-//                }
-
-
 
                 SampleNavGraph(startDestination = mainState.route)
 

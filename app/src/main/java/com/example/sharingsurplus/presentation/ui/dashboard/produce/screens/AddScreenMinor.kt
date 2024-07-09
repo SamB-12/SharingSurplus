@@ -63,6 +63,8 @@ fun AddScreenMinor(
     onImagePickerDialogVisibleChange: (Boolean) -> Unit = {},
     onGalleryClick: () -> Unit = {},
     onCameraClick: () -> Unit = {},
+    onLocationPlacesClicked: () -> Unit = {},
+    onCurrentLocationClicked: () -> Unit = {},
 ) {//add a view model as well
     Column(
         modifier = modifier
@@ -116,7 +118,15 @@ fun AddScreenMinor(
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
         //TextFieldComponent(label = "Location", value = location, onValueChanged = onLocationChange)//should ask the user for a normal location or an anonymous location
-        LocationSelectorTextFieldComponent(label = "Location", location = location, onLocationChanged = onLocationChange, isLocationDialogVisible = isLocationPickerDialogVisible, onLocationDialogVisibleChanged = onLocationPickerDialogVisibleChange)
+        LocationSelectorTextFieldComponent(
+            label = "Location",
+            location = location,
+            onLocationChanged = onLocationChange,
+            isLocationDialogVisible = isLocationPickerDialogVisible,
+            onLocationDialogVisibleChanged = onLocationPickerDialogVisibleChange,
+            onLocationPlacesClicked = onLocationPlacesClicked,
+            onCurrentLocationClicked = onCurrentLocationClicked
+        )
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Insert the Image", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)

@@ -27,6 +27,20 @@ fun handleGalleryClick(
     }
 }
 
+fun handleLocationClick(
+    context: Context,
+    onPermissionRequired: () -> Unit,
+    onPermissionsGranted: () -> Unit
+) {
+    val permissionsGranted = hasPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) || hasPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+    if (permissionsGranted) {
+        onPermissionsGranted()
+    } else {
+        onPermissionRequired()
+    }
+}
+
 fun handleCameraClick(
     context: Context,
     onPermissionRequired: () -> Unit,
