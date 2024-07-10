@@ -1,5 +1,8 @@
 package com.example.sharingsurplus.data.states.dashboard.home
 
+import com.example.sharingsurplus.data.model.Produce
+
 data class HomeScreenUiState(
-    val name: String = ""
+    val produceList: List<Produce> = emptyList(),
+    val isLoading: Boolean = false
 )

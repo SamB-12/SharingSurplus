@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,8 @@ import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
+import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
@@ -92,6 +95,25 @@ fun AddProduceScreen(
         Geocoder(localContext, Locale.getDefault())
     }
 
+
+    LaunchedEffect(uiState.uploadResult) {
+        when (uiState.uploadResult) {
+            is AuthResult.Success -> {
+                Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
+                navController?.navigateUp()
+            }
+            is AuthResult.Error -> {
+                Toast.makeText(localContext, (uiState.uploadResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+
+
+
     val multiplePermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) {permissions ->
@@ -124,7 +146,7 @@ fun AddProduceScreen(
                 Log.d("PlaceRetrived", "Place: ${place.name}, ${place.latLng}")
                 place.address?.let { addProduceViewModel.onLocationChanged(it) }
                 place.latLng?.let { addProduceViewModel.onLatLongChanged(it) }
-                place.name?.let { addProduceViewModel.onProduceNameChanged(it) }
+                place.name?.let { addProduceViewModel.onLocationNameChanged(it) }
                 addProduceViewModel.isLocationPickerDialogVisible(false)
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
@@ -156,6 +178,18 @@ fun AddProduceScreen(
             Toast.makeText(localContext, "Image selection failed", Toast.LENGTH_SHORT).show()
         }
     }//this doesn't require permissions
+
+    if (uiState.isUploadConfirmDialogVisible){
+        ConfirmationDialogComponent(
+            title = "Upload Produce?",
+            message = "Are you sure you want to upload this produce?",
+            onCancel = {addProduceViewModel.isUploadConfirmDialogVisible(false)},
+            onConfirm = {
+                addProduceViewModel.uploadProduce()
+                addProduceViewModel.isUploadConfirmDialogVisible(false)
+            }
+        )
+    }
 
 
     val dialogQueue = addProduceViewModel.visiblePermissionDialogQueue
@@ -275,6 +309,9 @@ fun AddProduceScreen(
                                 }
                         }
                     )
+                },
+                onUploadButtonClicked = {
+                    addProduceViewModel.isUploadConfirmDialogVisible(true)
                 }
             )
         }

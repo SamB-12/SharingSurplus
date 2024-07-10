@@ -1,6 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.produce
 
 import android.net.Uri
+import com.example.sharingsurplus.data.repository.AuthResult
 
 data class AddProduceUiState(
     val produceName: String = "",
@@ -20,5 +21,9 @@ data class AddProduceUiState(
     val isAddImageDialogVisible: Boolean = false,
     val produceImageUrl: String = "",
     val produceImageUri: Uri? = Uri.EMPTY,
-    val tempImageUri: Uri? = Uri.EMPTY
+    val tempImageUri: Uri? = Uri.EMPTY,
+    val isUploadConfirmDialogVisible: Boolean = false,
+    val uploadResult: AuthResult<Unit> ?= null,
+
+    val producerName:String = "",
 )

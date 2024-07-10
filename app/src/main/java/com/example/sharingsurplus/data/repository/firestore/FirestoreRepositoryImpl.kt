@@ -1,12 +1,16 @@
 package com.example.sharingsurplus.data.repository.firestore
 
 import android.util.Log
+import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.data.model.User
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.time.Year
 import javax.inject.Inject
 
 class FirestoreRepositoryImpl @Inject constructor(
@@ -92,5 +96,25 @@ class FirestoreRepositoryImpl @Inject constructor(
                     }
                 }
 
+    }
+
+    override suspend fun addProduce(produce: Produce, uid: String): AuthResult<Unit> {
+        return try {
+            val produceId = firestore.collection("produce").document().id
+            val newProduce = produce.copy(produceId = produceId, ownerId = uid)
+            Log.d("FirestoreRepository", "addProduce: $newProduce")
+            firestore.collection("produce").document(produceId).set(newProduce).await()
+            AuthResult.Success(Unit)
+        } catch (e: Exception) {
+            AuthResult.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun getProduceList(): Flow<List<Produce>> = flow{
+        val produceList = firestore.collection("produce")
+            .get()
+            .await()
+            .toObjects(Produce::class.java)
+        emit(produceList)
     }
 }

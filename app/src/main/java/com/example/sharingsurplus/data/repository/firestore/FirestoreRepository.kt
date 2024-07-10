@@ -1,8 +1,10 @@
 package com.example.sharingsurplus.data.repository.firestore
 
+import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.data.model.User
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.flow.Flow
 
 interface FirestoreRepository {
 
@@ -13,6 +15,14 @@ interface FirestoreRepository {
     suspend fun createUser(user: User)
 
     suspend fun getRealTimeUser(uid: String, onUserUpdated: (User) -> Unit): ListenerRegistration
+
+    /////////////////////
+
+    suspend fun addProduce(produce: Produce, uid: String): AuthResult<Unit>
+
+    suspend fun getProduceList(): Flow<List<Produce>>
+
+    //fun getProduceList(): Flow<List<Produce>>
 
     /////////////////////
 }

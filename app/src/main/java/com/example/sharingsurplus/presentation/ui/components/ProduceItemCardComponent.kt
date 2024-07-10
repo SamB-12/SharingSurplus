@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
+import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
@@ -37,7 +38,7 @@ fun ProduceItemCardComponent(
     modifier: Modifier = Modifier,
     painter: Painter,
     produceName: String,
-    produceType: String,
+    produceType: ProduceType,
     produceQuantity: String,
     producerName: String,
     produceDate: String
@@ -71,7 +72,7 @@ fun ProduceItemCardComponent(
             ) {
                 Text(text = produceName, style = MaterialTheme.typography.headlineLarge.copy(color = PrimaryTextColor, fontWeight = FontWeight.Bold), textAlign = TextAlign.Center)
                 Spacer(modifier = modifier.height(8.dp))
-                Text(text = produceType, style = MaterialTheme.typography.titleMedium.copy(color = PrimaryTextColor), textAlign = TextAlign.Center)
+                Text(text = produceType.displayName, style = MaterialTheme.typography.titleMedium.copy(color = PrimaryTextColor), textAlign = TextAlign.Center)
                 Spacer(modifier = modifier.height(8.dp))
                 Text(text = "Quantity: $produceQuantity", style = MaterialTheme.typography.titleMedium.copy(color = PrimaryTextColor), textAlign = TextAlign.Center)
                 Spacer(modifier = modifier.height(8.dp))
@@ -86,5 +87,5 @@ fun ProduceItemCardComponent(
 @Preview
 @Composable
 private fun ProduceItemCardComponentPreview() {
-    ProduceItemCardComponent(painter = painterResource(id = R.drawable.ic_andy), produceName = "Son of a bitch", produceType = "Vegetable", produceQuantity = "2", producerName = "Andreas Weisberg", produceDate = "2023-06-01")
+    ProduceItemCardComponent(painter = painterResource(id = R.drawable.ic_andy), produceName = "Son of a bitch", produceType = ProduceType.Vegetable, produceQuantity = "2", producerName = "Andreas Weisberg", produceDate = "2023-06-01")
 }

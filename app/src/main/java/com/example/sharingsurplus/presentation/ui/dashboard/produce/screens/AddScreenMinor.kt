@@ -36,7 +36,6 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 @Composable
 fun AddScreenMinor(
     modifier: Modifier = Modifier,
-    buttonOnClick: () -> Unit = {},
     produceName: String = "",
     produceDescription: String = "",
     produceType: ProduceType = ProduceType.None,
@@ -65,6 +64,7 @@ fun AddScreenMinor(
     onCameraClick: () -> Unit = {},
     onLocationPlacesClicked: () -> Unit = {},
     onCurrentLocationClicked: () -> Unit = {},
+    onUploadButtonClicked: () -> Unit = {}
 ) {//add a view model as well
     Column(
         modifier = modifier
@@ -139,7 +139,7 @@ fun AddScreenMinor(
             onCameraClicked = onCameraClick,
         )
         Spacer(modifier = modifier.height(16.dp))
-        ButtonComponent(text = "Add Product", onClick = {buttonOnClick()})
+        ButtonComponent(text = "Add Product", onClick = onUploadButtonClicked)
     }
 }
 
