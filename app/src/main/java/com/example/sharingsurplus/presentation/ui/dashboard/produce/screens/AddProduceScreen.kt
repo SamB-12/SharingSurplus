@@ -73,12 +73,9 @@ fun AddProduceScreen(
 
     val permissionsToRequest = arrayOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
     )
-
-    var capturedImageUri by remember {
-        mutableStateOf<Uri?>(Uri.EMPTY)
-    }
 
     val uiState by addProduceViewModel.addProduceUiState.collectAsState()
 
@@ -135,13 +132,6 @@ fun AddProduceScreen(
         }
     }//This retrives the requested location
 
-    val galleryPermissionsResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) {isGranted ->
-        addProduceViewModel.onPermissionResult(permission = Manifest.permission.READ_MEDIA_IMAGES, isGranted = isGranted)
-    }
-
-
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             val uri = addProduceViewModel.addProduceUiState.value.tempImageUri
@@ -149,7 +139,6 @@ fun AddProduceScreen(
                 Toast.makeText(localContext, "Camera capture successful", Toast.LENGTH_SHORT).show()
                 addProduceViewModel.onImageSelected(uri.toString())
                 addProduceViewModel.onImageSelectedUri(it)
-                capturedImageUri = it
                 addProduceViewModel.isImagePickerDialogVisible(false)
             }
         } else {
@@ -161,7 +150,6 @@ fun AddProduceScreen(
         uri?.let {
             addProduceViewModel.onImageSelected(uri.toString())
             addProduceViewModel.onImageSelectedUri(uri)
-            capturedImageUri = uri
             Toast.makeText(localContext, "Image selected", Toast.LENGTH_SHORT).show()
             addProduceViewModel.isImagePickerDialogVisible(false)
         } ?: run {
@@ -180,9 +168,6 @@ fun AddProduceScreen(
                    Manifest.permission.CAMERA -> {
                        CameraPermissionTextProvider()
                    }
-                    Manifest.permission.READ_MEDIA_IMAGES -> {
-                        GalleryPermissionTextProvider()
-                    }
                     Manifest.permission.ACCESS_FINE_LOCATION -> {
                         LocationPermissionTextProvider()
                     }
@@ -226,11 +211,6 @@ fun AddProduceScreen(
                 } else {
                     rememberAsyncImagePainter(model = uiState.produceImageUri)
                },
-//                produceImage = if (capturedImageUri?.path?.isNotEmpty() == false) {
-//                    painterResource(id = R.drawable.add_screen_image_placeholder)
-//                } else {
-//                       rememberAsyncImagePainter(model = capturedImageUri)
-//                },
                 onProduceNameChange = addProduceViewModel::onProduceNameChanged,
                 onProduceDescriptionChange = addProduceViewModel::onProduceDescriptionChanged,
                 onProduceTypeChange = addProduceViewModel::onProduceTypeChanged,
@@ -256,9 +236,7 @@ fun AddProduceScreen(
                                     onPermissionsGranted = {
                                         val file = createImageFile(localContext)
                                         val uri = getUriForFile(localContext, file)
-                                        //addProduceViewModel.onImageSelectedUri(uri)
                                         addProduceViewModel.onTempImageUriChanged(uri)
-                                        //addProduceViewModel.onImageSelected(uri.toString())
                                         cameraLauncher.launch(uri)
                                     }
                                 )
@@ -286,11 +264,10 @@ fun AddProduceScreen(
                             locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                         },
                         onPermissionsGranted = {
-                            Toast.makeText(localContext, "Current location clicked", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(localContext, "Current location updating", Toast.LENGTH_SHORT).show()
                             addProduceViewModel.isLocationPickerDialogVisible(false)
                             fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                                 .addOnSuccessListener { location ->
-                                    Log.d("LocationRetrived", "Location: ${location.latitude}, ${location.longitude}")
                                     addProduceViewModel.getAddressFromLocation(location,geoCoder)
                                 }
                                 .addOnFailureListener { exception ->
