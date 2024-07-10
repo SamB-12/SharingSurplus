@@ -1,9 +1,11 @@
 package com.example.sharingsurplus.presentation.ui.dashboard.produce.screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -22,8 +24,10 @@ import androidx.navigation.NavHostController
 import androidx.activity.ComponentActivity
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,12 +53,17 @@ import com.example.sharingsurplus.presentation.utils.handleGalleryClick
 import com.example.sharingsurplus.presentation.utils.handleLocationClick
 import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.openAppSettings
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.net.URI
+import java.util.Locale
 
+@SuppressLint("MissingPermission")//suppressing it cause we are checking the permission
 @Composable
 fun AddProduceScreen(
     modifier: Modifier = Modifier,
@@ -77,6 +86,14 @@ fun AddProduceScreen(
     val activity = (localContext as? Activity)
 
     val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)//This is what we get from places api
+
+    val fusedLocationClient = remember {
+        LocationServices.getFusedLocationProviderClient(localContext)
+    }
+
+    val geoCoder = remember {
+        Geocoder(localContext, Locale.getDefault())
+    }
 
     val multiplePermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -108,6 +125,10 @@ fun AddProduceScreen(
             if (intent != null) {
                 val place = Autocomplete.getPlaceFromIntent(intent)
                 Log.d("PlaceRetrived", "Place: ${place.name}, ${place.latLng}")
+                place.address?.let { addProduceViewModel.onLocationChanged(it) }
+                place.latLng?.let { addProduceViewModel.onLatLongChanged(it) }
+                place.name?.let { addProduceViewModel.onProduceNameChanged(it) }
+                addProduceViewModel.isLocationPickerDialogVisible(false)
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
             Log.d("PlaceRetrived", "Place selection canceled")
@@ -266,6 +287,15 @@ fun AddProduceScreen(
                         },
                         onPermissionsGranted = {
                             Toast.makeText(localContext, "Current location clicked", Toast.LENGTH_SHORT).show()
+                            addProduceViewModel.isLocationPickerDialogVisible(false)
+                            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                                .addOnSuccessListener { location ->
+                                    Log.d("LocationRetrived", "Location: ${location.latitude}, ${location.longitude}")
+                                    addProduceViewModel.getAddressFromLocation(location,geoCoder)
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e("LocationRetrived", "Error getting location", exception)
+                                }
                         }
                     )
                 }

@@ -9,6 +9,9 @@ data class AddProduceUiState(
     val produceQuantity: Int = 0,
     val produceUnit: String = "",
     val produceLocation: String = "",//for now
+    val produceLatitude: Double = 0.0,
+    val produceLongitude: Double = 0.0,
+    val produceLocationName: String = "",
     //add permission booleans
     val producePickupInstructions: String = "",
     val produceBestBeforeDate: String = "",

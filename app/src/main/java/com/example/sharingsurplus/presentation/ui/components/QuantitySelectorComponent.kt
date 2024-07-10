@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -29,7 +31,7 @@ fun QuantitySelectorComponent(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(modifier = Modifier.weight(1f)){
-            TextFieldComponent(label = label1, value = quantity, onValueChanged = onQuantityChange)
+            TextFieldComponent(label = label1, value = quantity, onValueChanged = onQuantityChange, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         }
         Box(modifier = Modifier.weight(1f)){
             TextFieldComponent(label = label2, value = unit, onValueChanged = onUnitChange)
