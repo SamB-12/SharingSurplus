@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.titleFontFamily
 
@@ -19,6 +21,7 @@ fun TitleTopAppBar(
     title: String = "Sharing Surplus"
 ) {
     CenterAlignedTopAppBar(
+        modifier = Modifier.shadow(4.dp),
         title = { Text(text = title, style = MaterialTheme.typography.displayLarge.copy(fontFamily = titleFontFamily))},
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = PrimaryColor
