@@ -82,7 +82,7 @@ class AddProduceViewModel @Inject constructor(
         } else {
             _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = AuthResult.Error("Please fill out all fields"))
         }
-    }//TODO: The produce name is getting set to the location and get current location has a problem with it
+    }
 
     suspend fun getProducerName():String{
         val result = firestoreRepository.getUser(authRepository.currentUser!!.uid)

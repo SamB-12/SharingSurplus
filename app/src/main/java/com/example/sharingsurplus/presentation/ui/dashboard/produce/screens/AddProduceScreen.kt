@@ -59,6 +59,7 @@ import com.example.sharingsurplus.presentation.utils.openAppSettings
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -302,6 +303,7 @@ fun AddProduceScreen(
                             addProduceViewModel.isLocationPickerDialogVisible(false)
                             fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                                 .addOnSuccessListener { location ->
+                                    addProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
                                     addProduceViewModel.getAddressFromLocation(location,geoCoder)
                                 }
                                 .addOnFailureListener { exception ->
