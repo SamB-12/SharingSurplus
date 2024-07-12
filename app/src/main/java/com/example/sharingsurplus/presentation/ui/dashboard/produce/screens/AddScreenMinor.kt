@@ -1,9 +1,6 @@
 package com.example.sharingsurplus.presentation.ui.dashboard.produce.screens
 
-import android.widget.Space
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
@@ -26,9 +22,9 @@ import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
 import com.example.sharingsurplus.presentation.ui.components.AddProduceImageComponent
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.CalendarSelectorTextFieldComponent
+import com.example.sharingsurplus.presentation.ui.components.CalendarWithEndDateComponent
 import com.example.sharingsurplus.presentation.ui.components.DropDownMenuComponent
 import com.example.sharingsurplus.presentation.ui.components.LocationSelectorTextFieldComponent
-import com.example.sharingsurplus.presentation.ui.components.MultipleOptionPickerDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.QuantitySelectorComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor

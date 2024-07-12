@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.screens.MainMenuScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.AddProduceScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.ViewAndRequestProduceScreen
 
 @Composable
 fun SampleNavGraph(
@@ -33,6 +34,10 @@ fun SampleNavGraph(
 
         composable(Routes.AddProduce.route){
             AddProduceScreen(navController = navController)
+        }
+
+        composable(Routes.ViewAndRequestProduce.route){
+            ViewAndRequestProduceScreen(navController = navController)
         }
     }
 }

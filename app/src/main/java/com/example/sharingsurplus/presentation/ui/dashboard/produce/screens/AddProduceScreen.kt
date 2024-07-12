@@ -52,7 +52,6 @@ import com.example.sharingsurplus.presentation.utils.createImageFile
 import com.example.sharingsurplus.presentation.utils.createImageUri
 import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
-import com.example.sharingsurplus.presentation.utils.handleGalleryClick
 import com.example.sharingsurplus.presentation.utils.handleLocationClick
 import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.openAppSettings

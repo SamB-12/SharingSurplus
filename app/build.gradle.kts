@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    //implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
@@ -77,13 +77,15 @@ dependencies {
 
     implementation(libs.firebase.firestore)
 
-    implementation("com.google.firebase:firebase-storage")
+    implementation(libs.firebase.storage)
 
     implementation(libs.firebase.analytics)
 
-    implementation("com.google.android.libraries.places:places:3.5.0")
+    implementation(libs.places)
 
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.play.services.location)
+
+    implementation(libs.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -117,4 +117,22 @@ class FirestoreRepositoryImpl @Inject constructor(
             .toObjects(Produce::class.java)
         emit(produceList)
     }
+
+    override suspend fun getProduce(produceId: String): AuthResult<Produce> {
+        return try {
+            val document = firestore.collection("produce")
+                .document(produceId)
+                .get()
+                .await()
+
+            if (document.exists()) {
+                val produce = document.toObject(Produce::class.java)
+                AuthResult.Success(produce!!)
+            } else {
+                AuthResult.Error("User not found")
+            }
+        } catch (e: Exception) {
+            AuthResult.Error(e.message.toString())
+        }
+    }
 }

@@ -22,6 +22,8 @@ interface FirestoreRepository {
 
     suspend fun getProduceList(): Flow<List<Produce>>
 
+    suspend fun getProduce(produceId: String): AuthResult<Produce>
+
     //fun getProduceList(): Flow<List<Produce>>
 
     /////////////////////

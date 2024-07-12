@@ -34,14 +34,18 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarSelectorTextFieldComponent(
+fun CalendarWithEndDateComponent(
     modifier: Modifier = Modifier,
     bestBeforeDate: String = "",
     onBestBeforeDateChanged: (String) -> Unit = {},
     isDatePickerDialogVisible: Boolean = false,
     datePickerDialogChanged: (Boolean) -> Unit = {},
     label: String = "Best Before Date",
+    maxDate: String = "",
 ) {
+
+    val maxDateInMillis = parseDateString(maxDate)
+
 
     OutlinedTextField(
         value = bestBeforeDate,
@@ -80,12 +84,22 @@ fun CalendarSelectorTextFieldComponent(
     )
 
     if (isDatePickerDialogVisible) {
-        val datePickerState = rememberDatePickerState()
+        val datePickerState = rememberDatePickerState(
+            selectableDates = object : SelectableDates {
+                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                    return utcTimeMillis <= (maxDateInMillis ?: System.currentTimeMillis())
+                }
+
+                override fun isSelectableYear(year: Int): Boolean {
+                    return year <= LocalDate.now().year
+                }
+            }
+        )
 
         DatePickerDialog(
             colors = DatePickerDefaults.colors(
                 containerColor = PrimaryColor,
-                titleContentColor = PrimaryColor,
+                titleContentColor = SecondaryColor,
                 selectedDayContainerColor = PrimaryColor,
                 selectedDayContentColor = Color.White,
                 selectedYearContainerColor = PrimaryColor,
@@ -104,7 +118,9 @@ fun CalendarSelectorTextFieldComponent(
                     onClick = {
                         datePickerDialogChanged(false)
                         datePickerState.selectedDateMillis?.let { selectedMillis ->
-                            val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(selectedMillis))
+                            val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
+                                Date(selectedMillis)
+                            )
                             onBestBeforeDateChanged(selectedDate)
                         } ?: run {
                             //Toast.makeText(context, "Please select a date", Toast.LENGTH_SHORT).show()
