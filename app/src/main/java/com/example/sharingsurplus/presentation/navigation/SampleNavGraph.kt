@@ -23,7 +23,7 @@ fun SampleNavGraph(
     NavHost(navController = navController, startDestination = startDestination) {
 
         authNavGraph(navController = navController)
-        homeNavGraph()
+        homeNavGraph(navController)
         requestsNavGraph()
         communityForumNavGraph(navController)
         profileGraph(navController)
@@ -34,10 +34,6 @@ fun SampleNavGraph(
 
         composable(Routes.AddProduce.route){
             AddProduceScreen(navController = navController)
-        }
-
-        composable(Routes.ViewAndRequestProduce.route){
-            ViewAndRequestProduceScreen(navController = navController)
         }
     }
 }

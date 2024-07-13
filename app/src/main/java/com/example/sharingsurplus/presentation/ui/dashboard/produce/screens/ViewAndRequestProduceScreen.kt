@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels.ViewAndRequestViewModel
@@ -49,7 +50,8 @@ fun ViewAndRequestProduceScreen(
                 onRequirementsChanged = {viewAndRequestViewModel.onPickUpRequirementsChange(it)},
                 onDatePickerVisible = {viewAndRequestViewModel.onDatePickerDialogChange(it)},
                 onTimePickerVisible = {viewAndRequestViewModel.onTimePickerDialogChange(it)},
-                onProduceRequested = {Toast.makeText(localContext, "Item Requested", Toast.LENGTH_SHORT).show()}
+                onProduceRequested = {Toast.makeText(localContext, "Item Requested", Toast.LENGTH_SHORT).show()},
+                onProduceLocationClicked = { navController?.navigate(Routes.ViewMap.route) }
             )
         }
     )

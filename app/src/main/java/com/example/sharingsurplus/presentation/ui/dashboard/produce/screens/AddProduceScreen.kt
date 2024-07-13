@@ -41,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
+import com.example.sharingsurplus.presentation.ui.components.LocationSettingsDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
@@ -54,6 +55,7 @@ import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
 import com.example.sharingsurplus.presentation.utils.handleLocationClick
 import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
+import com.example.sharingsurplus.presentation.utils.isLocationEnabled
 import com.example.sharingsurplus.presentation.utils.openAppSettings
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -191,6 +193,19 @@ fun AddProduceScreen(
         )
     }
 
+    if (uiState.isLocationDialogVisible){
+        LocationSettingsDialogComponent(
+            onDismissRequest = { addProduceViewModel.onLocationVisibleDialogChanged(false) },
+            onConfirm = {
+                addProduceViewModel.onLocationVisibleDialogChanged(false)
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                localContext.startActivity(intent)
+                        },
+            title = "Enable Location Services",
+            message = "Location services are important to select your current location. Please enable location services to continue"
+        )
+    }
+
 
     val dialogQueue = addProduceViewModel.visiblePermissionDialogQueue
 
@@ -291,25 +306,30 @@ fun AddProduceScreen(
                         )
                 },
                 onCurrentLocationClicked = {
-                    handleLocationClick(
-                        localContext,
-                        onPermissionRequired = {
-                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                            locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                        },
-                        onPermissionsGranted = {
-                            Toast.makeText(localContext, "Current location updating", Toast.LENGTH_SHORT).show()
-                            addProduceViewModel.isLocationPickerDialogVisible(false)
-                            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-                                .addOnSuccessListener { location ->
-                                    addProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
-                                    addProduceViewModel.getAddressFromLocation(location,geoCoder)
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.e("LocationRetrived", "Error getting location", exception)
-                                }
-                        }
-                    )
+
+                    if (isLocationEnabled(localContext)){
+                        handleLocationClick(
+                            localContext,
+                            onPermissionRequired = {
+                                locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                                locationPermissionsResultLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                            },
+                            onPermissionsGranted = {
+                                Toast.makeText(localContext, "Current location updating", Toast.LENGTH_SHORT).show()
+                                addProduceViewModel.isLocationPickerDialogVisible(false)
+                                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                                    .addOnSuccessListener { location ->
+                                        addProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
+                                        addProduceViewModel.getAddressFromLocation(location,geoCoder)
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        Log.e("LocationRetrived", "Error getting location", exception)
+                                    }
+                            }
+                        )
+                    } else{
+                        addProduceViewModel.onLocationVisibleDialogChanged(true)
+                    }
                 },
                 onUploadButtonClicked = {
                     addProduceViewModel.isUploadConfirmDialogVisible(true)

@@ -34,5 +34,7 @@ sealed class Routes(val route: String) {
 
     object ViewAndRequestProduce: Routes("viewAndRequestProduce")
 
+    object ViewMap: Routes("viewMap")
+
 
 }

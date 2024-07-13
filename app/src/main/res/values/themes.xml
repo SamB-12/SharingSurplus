@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<resources>-->
+<resources>
 
-<!--    <style name="Theme.SharingSurplus" parent="android:Theme.Material.Light.NoActionBar" />-->
+    <style name="Theme.SharingSurplus" parent="android:Theme.Material.Light.NoActionBar" />
 
-<!--    <style name="Theme.SharingSurplus.Starting" parent="Theme.SplashScreen">-->
-<!--        &lt;!&ndash; Set the splash screen background to black &ndash;&gt;-->
-<!--        <item name="windowSplashScreenBackground">@color/primaryColor</item>-->
-<!--        <item name="postSplashScreenTheme">@style/Theme.SharingSurplus</item>-->
-<!--    </style>-->
+    <style name="Theme.SharingSurplus.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background to black -->
+        <item name="windowSplashScreenBackground">@color/primaryColor</item>
+        <item name="postSplashScreenTheme">@style/Theme.SharingSurplus</item>
+    </style>
 
 <!--    &lt;!&ndash; Custom DatePickerDialog theme &ndash;&gt;-->
 <!--    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Dialog">-->
@@ -49,59 +49,4 @@
 <!--    <style name="CustomCancelButton" parent="android:Widget.Material.Button.Borderless">-->
 <!--        <item name="android:textColor">@color/accentColor</item>-->
 <!--    </style>-->
-<!--</resources>-->
-
-<resources>
-
-    <style name="Theme.SharingSurplus" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/primaryTextColor</item>
-    </style>
-
-    <style name="Theme.SharingSurplus.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/primaryColor</item>
-        <item name="postSplashScreenTheme">@style/Theme.SharingSurplus</item>
-    </style>
-
-    <!-- Custom DatePickerDialog theme -->
-    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Dialog">
-        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
-        <item name="android:buttonBarButtonStyle">@style/CustomDialogButton</item>
-    </style>
-
-    <style name="CustomDatePicker" parent="android:Widget.Material.DatePicker">
-        <item name="android:headerBackground">@color/primaryColor</item>
-        <item name="android:calendarTextColor">@color/primaryTextColor</item>
-        <item name="android:textColorPrimary">@color/primaryTextColor</item>
-        <item name="android:textColorSecondary">@color/primaryTextColor</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
-    </style>
-
-    <!-- Custom TimePickerDialog theme -->
-    <style name="CustomTimePickerDialogTheme" parent="Theme.AppCompat.Dialog">
-        <item name="android:timePickerStyle">@style/CustomTimePicker</item>
-        <item name="android:buttonBarButtonStyle">@style/CustomDialogButton</item>
-    </style>
-
-    <style name="CustomTimePicker" parent="android:Widget.Material.TimePicker">
-        <item name="android:headerBackground">@color/primaryColor</item>
-        <item name="android:numbersTextColor">@color/primaryTextColor</item>
-        <item name="android:textColorPrimary">@color/primaryTextColor</item>
-        <item name="android:textColorSecondary">@color/primaryTextColor</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
-    </style>
-
-    <!-- Custom Dialog Button style -->
-    <style name="CustomDialogButton" parent="android:Widget.Material.Button.Borderless">
-        <item name="android:textColor">@color/accentColor</item>
-    </style>
-
-    <!-- Custom OK Button style -->
-    <style name="CustomOkButton" parent="android:Widget.Material.Button.Borderless">
-        <item name="android:textColor">@color/secondaryColor</item>
-    </style>
-
-    <!-- Custom Cancel Button style -->
-    <style name="CustomCancelButton" parent="android:Widget.Material.Button.Borderless">
-        <item name="android:textColor">@color/accentColor</item>
-    </style>
 </resources>

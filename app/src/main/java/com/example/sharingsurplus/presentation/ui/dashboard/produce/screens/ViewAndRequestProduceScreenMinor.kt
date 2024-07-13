@@ -32,6 +32,7 @@ import com.example.sharingsurplus.presentation.ui.components.CalendarWithEndDate
 import com.example.sharingsurplus.presentation.ui.components.ProfileInfoDetailsComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.components.TimePicker2
+import com.example.sharingsurplus.presentation.ui.components.UrlOpenerComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 
@@ -59,6 +60,7 @@ fun ViewAndRequestProduceScreenMinor(
     onPickUpTimeSelected: (String) -> Unit = {},
     onRequirementsChanged: (String) -> Unit = {},
     onProduceRequested: () -> Unit = {},
+    onProduceLocationClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -131,7 +133,8 @@ fun ViewAndRequestProduceScreenMinor(
             .background(color = Color.Gray)
             .fillMaxWidth()
         )
-        ProfileInfoDetailsComponent(text1 = "Address", text2 = produceLocation)//TODO:make this clickable and implement map
+        //ProfileInfoDetailsComponent(text1 = "Address", text2 = produceLocation)//TODO:make this clickable and implement map
+        UrlOpenerComponent(text1 = "Address", text2 = produceLocation, onUrlClicked = onProduceLocationClicked)
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)

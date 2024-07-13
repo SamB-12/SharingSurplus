@@ -76,6 +76,9 @@ fun HomeScreen(
                     produceDate = produce.produceBestBeforeDate,
                     onItemClick = {
                         GlobalVariables.produceIdToView = produce.produceId
+                        GlobalVariables.produceLatitude = produce.produceLatitude
+                        GlobalVariables.produceLongitude = produce.produceLongitude
+                        GlobalVariables.produceLocation = produce.produceLocation
                         navController.navigate(Routes.ViewAndRequestProduce.route)
                     }
                 )

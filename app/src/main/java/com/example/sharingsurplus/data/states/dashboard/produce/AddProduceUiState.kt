@@ -24,6 +24,7 @@ data class AddProduceUiState(
     val tempImageUri: Uri? = Uri.EMPTY,
     val isUploadConfirmDialogVisible: Boolean = false,
     val uploadResult: AuthResult<Unit> ?= null,
+    val isLocationEnabledDialogVisible: Boolean = false,
 
     val producerName:String = "",
 )
