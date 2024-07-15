@@ -1,42 +1,27 @@
-package com.example.sharingsurplus.presentation.ui.dashboard.produce.screens
+package com.example.sharingsurplus.presentation.ui.dashboard.profile.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.activity.ComponentActivity
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.repository.AuthResult
@@ -45,34 +30,29 @@ import com.example.sharingsurplus.presentation.ui.components.LocationSettingsDia
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
-import com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels.AddProduceViewModel
+import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.hasPermissions
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels.EditAndDeleteProduceViewModel
 import com.example.sharingsurplus.presentation.utils.CameraPermissionTextProvider
-import com.example.sharingsurplus.presentation.utils.GalleryPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.LocationPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.createImageFile
-import com.example.sharingsurplus.presentation.utils.createImageUri
 import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
 import com.example.sharingsurplus.presentation.utils.handleLocationClick
-import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.isLocationEnabled
 import com.example.sharingsurplus.presentation.utils.openAppSettings
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import java.net.URI
 import java.util.Locale
 
-@SuppressLint("MissingPermission")//suppressing it cause we are checking the permission
+@SuppressLint("MissingPermission")
 @Composable
-fun AddProduceScreen(
+fun EditAndDeleteMyProduceScreen(
     modifier: Modifier = Modifier,
-    addProduceViewModel: AddProduceViewModel = hiltViewModel(),
+    editAndDeleteProduceViewModel: EditAndDeleteProduceViewModel = hiltViewModel(),
     navController: NavHostController?
 ) {
 
@@ -82,7 +62,7 @@ fun AddProduceScreen(
         Manifest.permission.ACCESS_FINE_LOCATION,
     )
 
-    val uiState by addProduceViewModel.addProduceUiState.collectAsState()
+    val uiState by editAndDeleteProduceViewModel.editAndDeleteProduceUiState.collectAsState()
 
     val localContext = LocalContext.current
     val activity = (localContext as? Activity)
@@ -98,14 +78,29 @@ fun AddProduceScreen(
     }
 
 
-    LaunchedEffect(uiState.uploadResult) {
-        when (uiState.uploadResult) {
+    LaunchedEffect(uiState.editResult) {
+        when (uiState.editResult) {
             is AuthResult.Success -> {
                 Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
                 navController?.navigateUp()
             }
             is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.uploadResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(localContext, (uiState.editResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.deleteResult) {
+        when (uiState.deleteResult) {
+            is AuthResult.Success -> {
+                Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
+                navController?.navigateUp()
+            }
+            is AuthResult.Error -> {
+                Toast.makeText(localContext, (uiState.deleteResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 // Do nothing
@@ -120,7 +115,7 @@ fun AddProduceScreen(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) {permissions ->
         permissionsToRequest.forEach { permission ->
-            addProduceViewModel.onPermissionResult(
+            editAndDeleteProduceViewModel.onPermissionResult(
                 permission = permission,
                 isGranted = permissions[permission] == true
             )
@@ -130,14 +125,14 @@ fun AddProduceScreen(
     val cameraPermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {isGranted ->
-        addProduceViewModel.onPermissionResult(permission = Manifest.permission.CAMERA, isGranted = isGranted)
+        editAndDeleteProduceViewModel.onPermissionResult(permission = Manifest.permission.CAMERA, isGranted = isGranted)
     }
 
     val locationPermissionsResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {isGranted ->
-        addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_FINE_LOCATION, isGranted = isGranted)
-        addProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_COARSE_LOCATION, isGranted = isGranted)
+        editAndDeleteProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_FINE_LOCATION, isGranted = isGranted)
+        editAndDeleteProduceViewModel.onPermissionResult(permission = Manifest.permission.ACCESS_COARSE_LOCATION, isGranted = isGranted)
     }
 
     val placesLocationResultLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {result ->
@@ -146,10 +141,10 @@ fun AddProduceScreen(
             if (intent != null) {
                 val place = Autocomplete.getPlaceFromIntent(intent)
                 Log.d("PlaceRetrived", "Place: ${place.name}, ${place.latLng}")
-                place.address?.let { addProduceViewModel.onLocationChanged(it) }
-                place.latLng?.let { addProduceViewModel.onLatLongChanged(it) }
-                place.name?.let { addProduceViewModel.onLocationNameChanged(it) }
-                addProduceViewModel.isLocationPickerDialogVisible(false)
+                place.address?.let { editAndDeleteProduceViewModel.onLocationChanged(it) }
+                place.latLng?.let { editAndDeleteProduceViewModel.onLatLongChanged(it) }
+                place.name?.let { editAndDeleteProduceViewModel.onLocationNameChanged(it) }
+                editAndDeleteProduceViewModel.isLocationPickerDialogVisible(false)
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
             Log.d("PlaceRetrived", "Place selection canceled")
@@ -158,12 +153,12 @@ fun AddProduceScreen(
 
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
-            val uri = addProduceViewModel.addProduceUiState.value.tempImageUri
+            val uri = editAndDeleteProduceViewModel.editAndDeleteProduceUiState.value.tempImageUri
             uri?.let {
                 Toast.makeText(localContext, "Camera capture successful", Toast.LENGTH_SHORT).show()
-                addProduceViewModel.onImageSelected(uri.toString())
-                addProduceViewModel.onImageSelectedUri(it)
-                addProduceViewModel.isImagePickerDialogVisible(false)
+                editAndDeleteProduceViewModel.onImageSelected(uri.toString())
+                editAndDeleteProduceViewModel.onImageSelectedUri(it)
+                editAndDeleteProduceViewModel.isImagePickerDialogVisible(false)
             }
         } else {
             Toast.makeText(localContext, "Camera capture failed", Toast.LENGTH_SHORT).show()
@@ -172,51 +167,63 @@ fun AddProduceScreen(
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let {
-            addProduceViewModel.onImageSelected(uri.toString())
-            addProduceViewModel.onImageSelectedUri(uri)
+            editAndDeleteProduceViewModel.onImageSelected(uri.toString())
+            editAndDeleteProduceViewModel.onImageSelectedUri(uri)
             Toast.makeText(localContext, "Image selected", Toast.LENGTH_SHORT).show()
-            addProduceViewModel.isImagePickerDialogVisible(false)
+            editAndDeleteProduceViewModel.isImagePickerDialogVisible(false)
         } ?: run {
             Toast.makeText(localContext, "Image selection failed", Toast.LENGTH_SHORT).show()
         }
     }//this doesn't require permissions
 
-    if (uiState.isUploadConfirmDialogVisible){
+    if (uiState.isEditConfirmDialogVisible){
         ConfirmationDialogComponent(
-            title = "Upload Produce?",
-            message = "Are you sure you want to upload this produce?",
-            onCancel = {addProduceViewModel.isUploadConfirmDialogVisible(false)},
+            title = "Edit Produce?",
+            message = "Are you sure you want to Edit this produce?",
+            onCancel = {editAndDeleteProduceViewModel.isEditConfirmDialogVisible(false)},
             onConfirm = {
-                addProduceViewModel.uploadProduce()
-                addProduceViewModel.isUploadConfirmDialogVisible(false)
+                editAndDeleteProduceViewModel.updateProduce()
+                editAndDeleteProduceViewModel.isEditConfirmDialogVisible(false)
             }
         )
     }
 
-    if (uiState.isLocationEnabledDialogVisible){
+    if (uiState.isDeleteConfirmDialogVisible){
+        ConfirmationDialogComponent(
+            title = "Delete Produce?",
+            message = "Are you sure you want to delete this produce?",
+            onCancel = {editAndDeleteProduceViewModel.isDeleteConfirmDialogVisible(false)},
+            onConfirm ={
+                editAndDeleteProduceViewModel.deleteProduce()
+                editAndDeleteProduceViewModel.isDeleteConfirmDialogVisible(false)
+            }
+        )
+    }
+
+    if (uiState.isLocationDialogVisible){
         LocationSettingsDialogComponent(
-            onDismissRequest = { addProduceViewModel.onLocationEnabledVisibleDialogChanged(false) },
+            onDismissRequest = { editAndDeleteProduceViewModel.onLocationVisibleDialogChanged(false) },
             onConfirm = {
-                addProduceViewModel.onLocationEnabledVisibleDialogChanged(false)
+                editAndDeleteProduceViewModel.onLocationVisibleDialogChanged(false)
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 localContext.startActivity(intent)
-                        },
+            },
             title = "Enable Location Services",
             message = "Location services are important to select your current location. Please enable location services to continue"
         )
     }
 
 
-    val dialogQueue = addProduceViewModel.visiblePermissionDialogQueue
+    val dialogQueue = editAndDeleteProduceViewModel.visiblePermissionDialogQueue
 
     dialogQueue
         .reversed()
         .forEach { permission ->
             PermissionDialogComponent(
                 permissionTextProvider = when (permission) {
-                   Manifest.permission.CAMERA -> {
-                       CameraPermissionTextProvider()
-                   }
+                    Manifest.permission.CAMERA -> {
+                        CameraPermissionTextProvider()
+                    }
                     Manifest.permission.ACCESS_FINE_LOCATION -> {
                         LocationPermissionTextProvider()
                     }
@@ -230,22 +237,22 @@ fun AddProduceScreen(
                 isPermanentlyDeclined = activity?.let {
                     !it.shouldShowRequestPermissionRationale(permission) && !it.hasPermissions(permission)
                 } ?: false,
-                onDismiss = addProduceViewModel::dismissDialog,
+                onDismiss = editAndDeleteProduceViewModel::dismissDialog,
                 onOkClick = {
-                    addProduceViewModel.dismissDialog()
+                    editAndDeleteProduceViewModel.dismissDialog()
                     multiplePermissionsResultLauncher.launch(
                         arrayOf(permission)
                     )
                 },
-                onGoToAppSettingsClick = {openAppSettings(localContext)}
+                onGoToAppSettingsClick = { openAppSettings(localContext) }
             )
         }
 
-    ScaffoldComponent(//integrate the vm
+    ScaffoldComponent(
         modifier = Modifier,
-        topBar = { TopAppBarWithBackComponent(title = "Add a produce", onBackClick = {navController?.navigateUp()})},
+        topBar = { TopAppBarWithBackComponent(title = uiState.produceName, onBackClick = {navController?.navigateUp()})},
         content = {
-            AddScreenMinor(
+            EditAndDeleteMyProduceScreenMinor(
                 produceName = uiState.produceName,
                 produceDescription = uiState.produceDescription,
                 produceType = uiState.produceType!!,
@@ -256,39 +263,39 @@ fun AddProduceScreen(
                 pickupInstructions = uiState.producePickupInstructions,
                 isDatePickerDialogVisible = uiState.isDatePickerDialogVisible,
                 produceImage = if (uiState.produceImageUri?.path?.isNotEmpty() == false) {
-                    painterResource(id = R.drawable.add_screen_image_placeholder)
+                    rememberAsyncImagePainter(model = uiState.produceImageUrl)
                 } else {
                     rememberAsyncImagePainter(model = uiState.produceImageUri)
-               },
-                onProduceNameChange = addProduceViewModel::onProduceNameChanged,
-                onProduceDescriptionChange = addProduceViewModel::onProduceDescriptionChanged,
-                onProduceTypeChange = addProduceViewModel::onProduceTypeChanged,
-                onQuantityChange = addProduceViewModel::onProduceQuantityChanged,
-                onUnitChange = addProduceViewModel::onProduceUnitChanged,
-                onLocationChange = addProduceViewModel::onLocationChanged,
-                onPickupInstructionsChange = addProduceViewModel::onProducePickupInstructionChanged,
-                onBestBeforeDateChange = addProduceViewModel::onProduceBestBeforeDateChanged,
-                onIsDatePickerDialogVisibleChange = addProduceViewModel::isDatePickerDialogVisible,
+                },
+                onProduceNameChange = editAndDeleteProduceViewModel::onProduceNameChanged,
+                onProduceDescriptionChange = editAndDeleteProduceViewModel::onProduceDescriptionChanged,
+                onProduceTypeChange = editAndDeleteProduceViewModel::onProduceTypeChanged,
+                onQuantityChange = editAndDeleteProduceViewModel::onProduceQuantityChanged,
+                onUnitChange = editAndDeleteProduceViewModel::onProduceUnitChanged,
+                onLocationChange = editAndDeleteProduceViewModel::onLocationChanged,
+                onPickupInstructionsChange = editAndDeleteProduceViewModel::onProducePickupInstructionChanged,
+                onBestBeforeDateChange = editAndDeleteProduceViewModel::onProduceBestBeforeDateChanged,
+                onIsDatePickerDialogVisibleChange = editAndDeleteProduceViewModel::isDatePickerDialogVisible,
                 isImagePickerDialogVisible = uiState.isAddImageDialogVisible,
                 isLocationPickerDialogVisible = uiState.isLocationDialogVisible,
-                onImagePickerDialogVisibleChange = addProduceViewModel::isImagePickerDialogVisible,
-                onLocationPickerDialogVisibleChange = addProduceViewModel::isLocationPickerDialogVisible,
+                onImagePickerDialogVisibleChange = editAndDeleteProduceViewModel::isImagePickerDialogVisible,
+                onLocationPickerDialogVisibleChange = editAndDeleteProduceViewModel::isLocationPickerDialogVisible,
                 onGalleryClick = {
                     galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    },// This method doesn't require permissions
+                },// This method doesn't require permissions
                 onCameraClick = {
-                                handleCameraClick(
-                                    localContext,
-                                    onPermissionRequired = {
-                                        cameraPermissionsResultLauncher.launch(Manifest.permission.CAMERA)
-                                },
-                                    onPermissionsGranted = {
-                                        val file = createImageFile(localContext)
-                                        val uri = getUriForFile(localContext, file)
-                                        addProduceViewModel.onTempImageUriChanged(uri)
-                                        cameraLauncher.launch(uri)
-                                    }
-                                )
+                    handleCameraClick(
+                        localContext,
+                        onPermissionRequired = {
+                            cameraPermissionsResultLauncher.launch(Manifest.permission.CAMERA)
+                        },
+                        onPermissionsGranted = {
+                            val file = createImageFile(localContext)
+                            val uri = getUriForFile(localContext, file)
+                            editAndDeleteProduceViewModel.onTempImageUriChanged(uri)
+                            cameraLauncher.launch(uri)
+                        }
+                    )
                 },
                 onLocationPlacesClicked = {
                     handleLocationClick(
@@ -303,7 +310,7 @@ fun AddProduceScreen(
                                 .build(localContext)//This launches the places api intent; overlay for half and full for full!
                             placesLocationResultLauncher.launch(intent)
                         }
-                        )
+                    )
                 },
                 onCurrentLocationClicked = {
 
@@ -316,11 +323,11 @@ fun AddProduceScreen(
                             },
                             onPermissionsGranted = {
                                 Toast.makeText(localContext, "Current location updating", Toast.LENGTH_SHORT).show()
-                                addProduceViewModel.isLocationPickerDialogVisible(false)
+                                editAndDeleteProduceViewModel.isLocationPickerDialogVisible(false)
                                 fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                                     .addOnSuccessListener { location ->
-                                        addProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
-                                        addProduceViewModel.getAddressFromLocation(location,geoCoder)
+                                        editAndDeleteProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
+                                        editAndDeleteProduceViewModel.getAddressFromLocation(location,geoCoder)
                                     }
                                     .addOnFailureListener { exception ->
                                         Log.e("LocationRetrived", "Error getting location", exception)
@@ -328,11 +335,14 @@ fun AddProduceScreen(
                             }
                         )
                     } else{
-                        addProduceViewModel.onLocationEnabledVisibleDialogChanged(true)
+                        editAndDeleteProduceViewModel.onLocationVisibleDialogChanged(true)
                     }
                 },
-                onUploadButtonClicked = {
-                    addProduceViewModel.isUploadConfirmDialogVisible(true)
+                onEditButtonClicked = {
+                    editAndDeleteProduceViewModel.isEditConfirmDialogVisible(true)
+                },
+                onDeleteButtonClicked = {
+                    editAndDeleteProduceViewModel.isDeleteConfirmDialogVisible(true)
                 }
             )
         }
@@ -341,10 +351,6 @@ fun AddProduceScreen(
 
 @Preview
 @Composable
-private fun AddProduceScreenPreview() {
-    AddProduceScreen(navController = null)
-}
-
-fun Activity.hasPermissions(permission: String): Boolean {
-    return ContextCompat.checkSelfPermission(this,permission) == PackageManager.PERMISSION_GRANTED
+private fun EditAndDeleteMyProduceScreenPreview() {
+    EditAndDeleteMyProduceScreen(navController = null)
 }

@@ -4,29 +4,20 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-fun handleGalleryClick(
-    context: Context,
-    onPermissionRequired: () -> Unit,
-    onPermissionsGranted: () -> Unit
-) {
-    val permissionsGranted = hasPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
-
-    if (permissionsGranted) {
-        onPermissionsGranted()
-    } else {
-        onPermissionRequired()
-    }
-}
 
 fun handleLocationClick(
     context: Context,
@@ -40,6 +31,13 @@ fun handleLocationClick(
     } else {
         onPermissionRequired()
     }
+}
+
+fun isLocationEnabled(context: Context): Boolean {
+    Log.d("Location", "isLocationEnabled: ")
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 }
 
 fun handleCameraClick(
@@ -89,4 +87,17 @@ fun createImageFile(context: Context): File {
 
 fun getUriForFile(context: Context, file: File): Uri {
     return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+}
+
+
+
+fun parseDateString(dateString: String, format: String = "dd/MM/yyyy"): Long? {
+    return try {
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        val date = sdf.parse(dateString)
+        date?.time
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }

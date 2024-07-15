@@ -77,13 +77,17 @@ dependencies {
 
     implementation(libs.firebase.firestore)
 
-    implementation("com.google.firebase:firebase-storage")
+    implementation(libs.firebase.storage)
 
     implementation(libs.firebase.analytics)
 
-    implementation("com.google.android.libraries.places:places:3.5.0")
+    implementation(libs.places)
 
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.play.services.location)
+
+    implementation(libs.maps.compose)
+
+    //implementation(libs.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

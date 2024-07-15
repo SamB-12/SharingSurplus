@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.ui.dashboard.produce.screens
+package com.example.sharingsurplus.presentation.ui.dashboard.profile.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -22,15 +22,15 @@ import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
 import com.example.sharingsurplus.presentation.ui.components.AddProduceImageComponent
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.CalendarSelectorTextFieldComponent
-import com.example.sharingsurplus.presentation.ui.components.CalendarWithEndDateComponent
 import com.example.sharingsurplus.presentation.ui.components.DropDownMenuComponent
+import com.example.sharingsurplus.presentation.ui.components.EditAndDeleteButtonComponents
 import com.example.sharingsurplus.presentation.ui.components.LocationSelectorTextFieldComponent
 import com.example.sharingsurplus.presentation.ui.components.QuantitySelectorComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 
 @Composable
-fun AddScreenMinor(
+fun EditAndDeleteMyProduceScreenMinor(
     modifier: Modifier = Modifier,
     produceName: String = "",
     produceDescription: String = "",
@@ -51,7 +51,6 @@ fun AddScreenMinor(
     onBestBeforeDateChange: (String) -> Unit = {},
     isDatePickerDialogVisible: Boolean = false,
     onIsDatePickerDialogVisibleChange: (Boolean) -> Unit = {},
-    onImageChange: (String) -> Unit = {},
     isImagePickerDialogVisible: Boolean = false,
     isLocationPickerDialogVisible: Boolean = false,
     onLocationPickerDialogVisibleChange: (Boolean) -> Unit = {},
@@ -60,8 +59,9 @@ fun AddScreenMinor(
     onCameraClick: () -> Unit = {},
     onLocationPlacesClicked: () -> Unit = {},
     onCurrentLocationClicked: () -> Unit = {},
-    onUploadButtonClicked: () -> Unit = {}
-) {//add a view model as well
+    onEditButtonClicked: () -> Unit = {},
+    onDeleteButtonClicked: () -> Unit = {},
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -71,8 +71,6 @@ fun AddScreenMinor(
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //Text(text = "Add a product", style = MaterialTheme.typography.headlineLarge)// replace with the top bar
-        //Spacer(modifier = modifier.height(16.dp))
         Text(text = "Enter Produce Name", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
@@ -86,7 +84,6 @@ fun AddScreenMinor(
         Text(text = "Select the type of produce", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //TextFieldComponent(label = "Product Type")//This should be a dropdown/spinner
         DropDownMenuComponent(label = "Product Type", selectedType = produceType, produceTypes = ProduceType.entries, onTypeSelected = onProduceTypeChange)
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Enter the quanity of produce", style = MaterialTheme.typography.labelLarge, modifier = modifier
@@ -102,7 +99,6 @@ fun AddScreenMinor(
         Text(text = "Enter the Best Before pickup date", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //TextFieldComponent(label = "BestBefore Date")//this should be a date picker!
         CalendarSelectorTextFieldComponent(
             onBestBeforeDateChanged = onBestBeforeDateChange,
             bestBeforeDate = bestBeforeDate,
@@ -113,7 +109,6 @@ fun AddScreenMinor(
         Text(text = "Select the Location", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //TextFieldComponent(label = "Location", value = location, onValueChanged = onLocationChange)//should ask the user for a normal location or an anonymous location
         LocationSelectorTextFieldComponent(
             label = "Location",
             location = location,
@@ -135,12 +130,13 @@ fun AddScreenMinor(
             onCameraClicked = onCameraClick,
         )
         Spacer(modifier = modifier.height(16.dp))
-        ButtonComponent(text = "Add Product", onClick = onUploadButtonClicked)
+        //ButtonComponent(text = "Add Product", onClick = onUploadButtonClicked)
+        EditAndDeleteButtonComponents(onEditClick = onEditButtonClicked, onDeleteClick = onDeleteButtonClicked)
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun AddScreenMinorPreview() {
-    AddScreenMinor()
+private fun EditAndDeleteMyProduceScreenMinorEditAndDeleteMyProduceScreenMinorPreview() {
+    EditAndDeleteMyProduceScreenMinor()
 }

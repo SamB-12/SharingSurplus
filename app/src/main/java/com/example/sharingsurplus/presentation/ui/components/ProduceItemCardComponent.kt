@@ -41,10 +41,11 @@ fun ProduceItemCardComponent(
     produceType: ProduceType,
     produceQuantity: String,
     producerName: String,
-    produceDate: String
+    produceDate: String,
+    onItemClick: () -> Unit
 ) {
     ElevatedCard(
-        onClick = { /*TODO*/ },
+        onClick = onItemClick,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
         ),
@@ -87,5 +88,5 @@ fun ProduceItemCardComponent(
 @Preview
 @Composable
 private fun ProduceItemCardComponentPreview() {
-    ProduceItemCardComponent(painter = painterResource(id = R.drawable.ic_andy), produceName = "Son of a bitch", produceType = ProduceType.Vegetable, produceQuantity = "2", producerName = "Andreas Weisberg", produceDate = "2023-06-01")
+    ProduceItemCardComponent(painter = painterResource(id = R.drawable.ic_andy), produceName = "Son of a bitch", produceType = ProduceType.Vegetable, produceQuantity = "2", producerName = "Andreas Weisberg", produceDate = "2023-06-01", onItemClick = {})
 }

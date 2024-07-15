@@ -1,9 +1,7 @@
-package com.example.sharingsurplus.presentation.ui.dashboard.home.screens
+package com.example.sharingsurplus.presentation.ui.dashboard.profile.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -15,43 +13,33 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.states.dashboard.home.HomeScreenUiState
+import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ProduceItemCardComponent
-import com.example.sharingsurplus.presentation.ui.dashboard.home.viewmodels.HomeScreenViewModel
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 import com.example.sharingsurplus.presentation.utils.GlobalVariables
 
 @Composable
-fun HomeScreen(
+fun MyProduceScreenMinor(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
-    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
-    navController: NavHostController = rememberNavController()
+    produceList: List<Produce> = emptyList(),
+    onItemClick: () -> Unit = {}
 ) {
 
-    val uiState by homeScreenViewModel.homeScreenUiState.collectAsState()
-    //val uiState = HomeScreenUiState(name = "Phil K")
-
-    val filteredList = uiState.produceList.filter {produce ->
-        produce.ownerId != uiState.userId
+    val filteredList = produceList.filter {produce ->
+        produce.ownerId == GlobalVariables.ownerId
     }
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(color = PrimaryColor)
-            .padding(paddingValues),
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -63,7 +51,6 @@ fun HomeScreen(
         }
 
         filteredList.forEach { produce ->
-
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 ProduceItemCardComponent(
@@ -77,10 +64,7 @@ fun HomeScreen(
                     produceDate = produce.produceBestBeforeDate,
                     onItemClick = {
                         GlobalVariables.produceIdToView = produce.produceId
-                        GlobalVariables.produceLatitude = produce.produceLatitude
-                        GlobalVariables.produceLongitude = produce.produceLongitude
-                        GlobalVariables.produceLocation = produce.produceLocation
-                        navController.navigate(Routes.ViewAndRequestProduce.route)
+                        onItemClick()
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -91,6 +75,6 @@ fun HomeScreen(
 
 @Preview
 @Composable
-private fun HomeScreenPreview() {
-    HomeScreen()
+private fun MyProduceScreenMinorPreview() {
+    MyProduceScreenMinor()
 }

@@ -1,12 +1,13 @@
-package com.example.sharingsurplus.data.states.dashboard.produce
+package com.example.sharingsurplus.data.states.dashboard.profile
 
 import android.net.Uri
 import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
 
-data class AddProduceUiState(
+data class EditAndDeleteProduceUiState(
     val produceName: String = "",
     val produceDescription: String = "",
-    val produceType: ProduceType ?= ProduceType.None, // or can i have an enum?
+    val produceType: ProduceType?= ProduceType.None, // or can i have an enum?
     val produceQuantity: Int = 0,
     val produceUnit: String = "",
     val produceLocation: String = "",//for now
@@ -22,8 +23,10 @@ data class AddProduceUiState(
     val produceImageUrl: String = "",
     val produceImageUri: Uri? = Uri.EMPTY,
     val tempImageUri: Uri? = Uri.EMPTY,
-    val isUploadConfirmDialogVisible: Boolean = false,
-    val uploadResult: AuthResult<Unit> ?= null,
+    val isEditConfirmDialogVisible: Boolean = false,
+    val editResult: AuthResult<Unit>?= null,
+    val isDeleteConfirmDialogVisible: Boolean = false,
+    val deleteResult: AuthResult<Unit>?= null,
     val isLocationEnabledDialogVisible: Boolean = false,
 
     val producerName:String = "",

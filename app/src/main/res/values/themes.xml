@@ -8,4 +8,45 @@
         <item name="windowSplashScreenBackground">@color/primaryColor</item>
         <item name="postSplashScreenTheme">@style/Theme.SharingSurplus</item>
     </style>
+
+<!--    &lt;!&ndash; Custom DatePickerDialog theme &ndash;&gt;-->
+<!--    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Dialog">-->
+<!--        <item name="android:datePickerStyle">@style/CustomDatePicker</item>-->
+<!--        <item name="android:buttonBarButtonStyle">@style/CustomDialogButton</item>-->
+<!--    </style>-->
+
+<!--    <style name="CustomDatePicker" parent="android:Widget.Material.DatePicker">-->
+<!--        &lt;!&ndash; Customize date picker colors here &ndash;&gt;-->
+<!--        <item name="android:headerBackground">@color/primaryColor</item>-->
+<!--        <item name="android:calendarTextColor">@color/primaryTextColor</item>-->
+<!--        <item name="android:textColorPrimary">@color/primaryColor</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Custom TimePickerDialog theme &ndash;&gt;-->
+<!--    <style name="CustomTimePickerDialogTheme" parent="Theme.AppCompat.Dialog">-->
+<!--        <item name="android:timePickerStyle">@style/CustomTimePicker</item>-->
+<!--        <item name="android:buttonBarButtonStyle">@style/CustomDialogButton</item>-->
+<!--    </style>-->
+
+<!--    <style name="CustomTimePicker" parent="android:Widget.Material.TimePicker">-->
+<!--        &lt;!&ndash; Customize time picker colors here &ndash;&gt;-->
+<!--        <item name="android:headerBackground">?attr/colorPrimary</item>-->
+<!--        <item name="android:numbersTextColor">?android:textColorPrimary</item>-->
+<!--        <item name="android:textColorPrimary">@color/primaryColor</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Custom Dialog Button style &ndash;&gt;-->
+<!--    <style name="CustomDialogButton" parent="android:Widget.Material.Button.Borderless">-->
+<!--        <item name="android:textColor">@color/accentColor</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Custom OK Button style &ndash;&gt;-->
+<!--    <style name="CustomOkButton" parent="android:Widget.Material.Button.Borderless">-->
+<!--        <item name="android:textColor">@color/secondaryColor</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Custom Cancel Button style &ndash;&gt;-->
+<!--    <style name="CustomCancelButton" parent="android:Widget.Material.Button.Borderless">-->
+<!--        <item name="android:textColor">@color/accentColor</item>-->
+<!--    </style>-->
 </resources>

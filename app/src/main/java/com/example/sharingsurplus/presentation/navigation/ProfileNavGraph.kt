@@ -8,7 +8,9 @@ import androidx.navigation.navigation
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.EditAndDeleteMyProduceScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.EditProfileScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.MyProduceScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileAboutUsScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileInfoScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileKarmaPointsScreen
@@ -31,6 +33,12 @@ fun NavGraphBuilder.profileGraph(navController: NavHostController) {
         }
         composable(Routes.AboutUs.route){
             ProfileAboutUsScreen(navController = navController)
+        }
+        composable(Routes.ViewMyProduce.route){
+            MyProduceScreen(navController = navController)
+        }
+        composable(Routes.EditAndDeleteProduce.route){
+            EditAndDeleteMyProduceScreen(navController = navController)
         }
     }
 }

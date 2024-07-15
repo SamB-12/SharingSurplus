@@ -6,6 +6,7 @@ import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.profile.ProfileScreenUiState
+import com.example.sharingsurplus.presentation.utils.GlobalVariables
 import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,7 @@ class ProfileScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val result = firestoreRepository.getUser(authRepository.currentUser?.uid!!)
+            GlobalVariables.ownerId = authRepository.currentUser?.uid!!
 
             if (result is AuthResult.Success){
                 val user = result.data
