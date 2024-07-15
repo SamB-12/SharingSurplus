@@ -6,6 +6,7 @@ import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Produce
@@ -34,6 +35,8 @@ class EditAndDeleteProduceViewModel @Inject constructor(
     val editAndDeleteProduceUiState = _editAndDeleteProduceUiState.asStateFlow()
 
     val visiblePermissionDialogQueue = mutableStateListOf<String>()
+
+    val existingImageUrl = mutableStateOf("")
 
     fun dismissDialog(){
         visiblePermissionDialogQueue.removeFirst()
@@ -70,6 +73,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
                 _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(produceLocation = produce.produceLocation)
                 _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(produceLatitude = produce.produceLatitude)
                 _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(produceLongitude = produce.produceLongitude)
+                existingImageUrl.value = produce.produceImageUrl
             }
 
         }
@@ -79,47 +83,79 @@ class EditAndDeleteProduceViewModel @Inject constructor(
     fun updateProduce() {
         if (validateInput()) {//since we are validating the inputs, we can be certain that the inputs are valid
             viewModelScope.launch {
-                val imageResult = firebaseStorageRepository.uploadImageToStorage(
-                    authRepository.currentUser!!.uid,
-                    editAndDeleteProduceUiState.value.produceImageUri!!
-                )
-                when (imageResult) {
-                    is AuthResult.Success -> {
-                        val produce = Produce(
-                            produceId = GlobalVariables.produceIdToView,
-                            ownerId = authRepository.currentUser!!.uid,
-                            produceName = editAndDeleteProduceUiState.value.produceName,
-                            producerName = editAndDeleteProduceUiState.value.producerName,
-                            produceDescription = editAndDeleteProduceUiState.value.produceDescription,
-                            produceType = editAndDeleteProduceUiState.value.produceType,
-                            produceQuantity = editAndDeleteProduceUiState.value.produceQuantity,
-                            produceUnit = editAndDeleteProduceUiState.value.produceUnit,
-                            produceBestBeforeDate = editAndDeleteProduceUiState.value.produceBestBeforeDate,
-                            producePickupInstructions = editAndDeleteProduceUiState.value.producePickupInstructions,
-                            produceLocation = editAndDeleteProduceUiState.value.produceLocation,
-                            produceLatitude = editAndDeleteProduceUiState.value.produceLatitude,
-                            produceLongitude = editAndDeleteProduceUiState.value.produceLongitude,
-                            produceImageUrl = imageResult.data
+                if (editAndDeleteProduceUiState.value.produceImageUrl != existingImageUrl.value){
+                    val imageResult = firebaseStorageRepository.uploadImageToStorage(
+                        authRepository.currentUser!!.uid,
+                        editAndDeleteProduceUiState.value.produceImageUri!!
+                    )
+                    when (imageResult) {
+                        is AuthResult.Success -> {
+                            val produce = Produce(
+                                produceId = GlobalVariables.produceIdToView,
+                                ownerId = authRepository.currentUser!!.uid,
+                                produceName = editAndDeleteProduceUiState.value.produceName,
+                                producerName = editAndDeleteProduceUiState.value.producerName,
+                                produceDescription = editAndDeleteProduceUiState.value.produceDescription,
+                                produceType = editAndDeleteProduceUiState.value.produceType,
+                                produceQuantity = editAndDeleteProduceUiState.value.produceQuantity,
+                                produceUnit = editAndDeleteProduceUiState.value.produceUnit,
+                                produceBestBeforeDate = editAndDeleteProduceUiState.value.produceBestBeforeDate,
+                                producePickupInstructions = editAndDeleteProduceUiState.value.producePickupInstructions,
+                                produceLocation = editAndDeleteProduceUiState.value.produceLocation,
+                                produceLatitude = editAndDeleteProduceUiState.value.produceLatitude,
+                                produceLongitude = editAndDeleteProduceUiState.value.produceLongitude,
+                                produceImageUrl = imageResult.data
+                            )
+                            val result = firestoreRepository.updateProduce(produceId = GlobalVariables.produceIdToView, updatedProduce = produce)
+                            _editAndDeleteProduceUiState.value =
+                                _editAndDeleteProduceUiState.value.copy(
+                                    editResult = result
+                                )
+                            Log.i("SUCCESS", "It was a success")
+                        }
+
+                        is AuthResult.Error -> {
+                            _editAndDeleteProduceUiState.value =
+                                _editAndDeleteProduceUiState.value.copy(
+                                    editResult = AuthResult.Error(imageResult.message)
+                                )
+                            Log.i("SUCCESS", "It was a Failure")
+                        }
+
+                        else -> {
+                            //Nothing
+                        }
+                    }
+
+                } else{
+                    val produce = Produce(
+                        produceId = GlobalVariables.produceIdToView,
+                        ownerId = authRepository.currentUser!!.uid,
+                        produceName = editAndDeleteProduceUiState.value.produceName,
+                        producerName = editAndDeleteProduceUiState.value.producerName,
+                        produceDescription = editAndDeleteProduceUiState.value.produceDescription,
+                        produceType = editAndDeleteProduceUiState.value.produceType,
+                        produceQuantity = editAndDeleteProduceUiState.value.produceQuantity,
+                        produceUnit = editAndDeleteProduceUiState.value.produceUnit,
+                        produceBestBeforeDate = editAndDeleteProduceUiState.value.produceBestBeforeDate,
+                        producePickupInstructions = editAndDeleteProduceUiState.value.producePickupInstructions,
+                        produceLocation = editAndDeleteProduceUiState.value.produceLocation,
+                        produceLatitude = editAndDeleteProduceUiState.value.produceLatitude,
+                        produceLongitude = editAndDeleteProduceUiState.value.produceLongitude,
+                        produceImageUrl = editAndDeleteProduceUiState.value.produceImageUrl
+                    )
+                    val result = firestoreRepository.updateProduce(produceId = GlobalVariables.produceIdToView, updatedProduce = produce)
+                    _editAndDeleteProduceUiState.value =
+                        _editAndDeleteProduceUiState.value.copy(
+                            editResult = result
                         )
-                        val result = firestoreRepository.updateProduce(produceId = GlobalVariables.produceIdToView, updatedProduce = produce)
-                        _editAndDeleteProduceUiState.value =
-                            _editAndDeleteProduceUiState.value.copy(
-                                editResult = result
-                            )
-                    }
-
-                    is AuthResult.Error -> {
-                        _editAndDeleteProduceUiState.value =
-                            _editAndDeleteProduceUiState.value.copy(
-                                editResult = AuthResult.Error(imageResult.message)
-                            )
-                    }
-
-                    else -> {
-                        //Nothing
-                    }
+                    Log.i("SUCCESS", "It was a success")
                 }
             }
+        } else{
+            _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(
+                editResult = AuthResult.Error("Please fill in all fields")
+            )
         }
     }
 
@@ -288,7 +324,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
             || _editAndDeleteProduceUiState.value.produceLongitude == 0.0
             || _editAndDeleteProduceUiState.value.produceBestBeforeDate.isEmpty()
             || _editAndDeleteProduceUiState.value.producePickupInstructions.isEmpty()
-            || _editAndDeleteProduceUiState.value.produceImageUri == Uri.EMPTY){
+            || _editAndDeleteProduceUiState.value.produceImageUrl.isEmpty()){
             return false
         } else {
             return true

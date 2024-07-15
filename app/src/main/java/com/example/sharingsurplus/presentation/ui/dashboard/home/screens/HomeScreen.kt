@@ -43,8 +43,8 @@ fun HomeScreen(
     val uiState by homeScreenViewModel.homeScreenUiState.collectAsState()
     //val uiState = HomeScreenUiState(name = "Phil K")
 
-    val randomList = List(10){
-
+    val filteredList = uiState.produceList.filter {produce ->
+        produce.ownerId != uiState.userId
     }
 
     LazyColumn(
@@ -56,40 +56,34 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        if (uiState.produceList.isEmpty()){
+        if (filteredList.isEmpty()){
             item {
                 Text(text = "No produce found", color = PrimaryTextColor, textAlign = TextAlign.Center)
             }
         }
 
-        uiState.produceList.forEach { produce ->
+        filteredList.forEach { produce ->
 
-            if (produce.ownerId != uiState.userId){
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProduceItemCardComponent(
-                        painter = rememberAsyncImagePainter(
-                            model = produce.produceImageUrl
-                        ),
-                        produceName = produce.produceName,
-                        produceType = produce.produceType!!,
-                        produceQuantity = produce.produceQuantity.toString(),
-                        producerName = produce.producerName?:"Unknown Producer",
-                        produceDate = produce.produceBestBeforeDate,
-                        onItemClick = {
-                            GlobalVariables.produceIdToView = produce.produceId
-                            GlobalVariables.produceLatitude = produce.produceLatitude
-                            GlobalVariables.produceLongitude = produce.produceLongitude
-                            GlobalVariables.produceLocation = produce.produceLocation
-                            navController.navigate(Routes.ViewAndRequestProduce.route)
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            } else{
-                item {
-                    Text(text = "No produce found", color = PrimaryTextColor, textAlign = TextAlign.Center)
-                }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProduceItemCardComponent(
+                    painter = rememberAsyncImagePainter(
+                        model = produce.produceImageUrl
+                    ),
+                    produceName = produce.produceName,
+                    produceType = produce.produceType!!,
+                    produceQuantity = produce.produceQuantity.toString(),
+                    producerName = produce.producerName?:"Unknown Producer",
+                    produceDate = produce.produceBestBeforeDate,
+                    onItemClick = {
+                        GlobalVariables.produceIdToView = produce.produceId
+                        GlobalVariables.produceLatitude = produce.produceLatitude
+                        GlobalVariables.produceLongitude = produce.produceLongitude
+                        GlobalVariables.produceLocation = produce.produceLocation
+                        navController.navigate(Routes.ViewAndRequestProduce.route)
+                    }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }

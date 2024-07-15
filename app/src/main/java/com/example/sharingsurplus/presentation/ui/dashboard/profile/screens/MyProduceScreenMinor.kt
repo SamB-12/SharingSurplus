@@ -31,6 +31,10 @@ fun MyProduceScreenMinor(
     onItemClick: () -> Unit = {}
 ) {
 
+    val filteredList = produceList.filter {produce ->
+        produce.ownerId == GlobalVariables.ownerId
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -40,36 +44,30 @@ fun MyProduceScreenMinor(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        if (produceList.isEmpty()){
+        if (filteredList.isEmpty()){
             item {
                 Text(text = "No produce found", color = PrimaryTextColor, textAlign = TextAlign.Center)
             }
         }
 
-        produceList.forEach { produce ->
-            if (produce.ownerId == GlobalVariables.ownerId){
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProduceItemCardComponent(
-                        painter = rememberAsyncImagePainter(
-                            model = produce.produceImageUrl
-                        ),
-                        produceName = produce.produceName,
-                        produceType = produce.produceType!!,
-                        produceQuantity = produce.produceQuantity.toString(),
-                        producerName = produce.producerName?:"Unknown Producer",
-                        produceDate = produce.produceBestBeforeDate,
-                        onItemClick = {
-                            GlobalVariables.produceIdToView = produce.produceId
-                            onItemClick()
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            } else{
-                item {
-                    Text(text = "You haven't posted anything yet", color = PrimaryTextColor, textAlign = TextAlign.Center)
-                }
+        filteredList.forEach { produce ->
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProduceItemCardComponent(
+                    painter = rememberAsyncImagePainter(
+                        model = produce.produceImageUrl
+                    ),
+                    produceName = produce.produceName,
+                    produceType = produce.produceType!!,
+                    produceQuantity = produce.produceQuantity.toString(),
+                    producerName = produce.producerName?:"Unknown Producer",
+                    produceDate = produce.produceBestBeforeDate,
+                    onItemClick = {
+                        GlobalVariables.produceIdToView = produce.produceId
+                        onItemClick()
+                    }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }

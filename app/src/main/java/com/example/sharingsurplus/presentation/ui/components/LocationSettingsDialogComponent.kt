@@ -8,6 +8,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.presentation.ui.theme.AccentColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
@@ -33,5 +34,16 @@ fun LocationSettingsDialogComponent(
             }
         },
         onDismissRequest = onDismissRequest
+    )
+}
+
+@Preview
+@Composable
+private fun LocationSettingsDialogComponentPreview() {
+    LocationSettingsDialogComponent(
+        onDismissRequest = { /*TODO*/ },
+        onConfirm = { /*TODO*/ },
+        title = "Location",
+        message = "Location permission is required to use this app"
     )
 }

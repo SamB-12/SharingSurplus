@@ -193,11 +193,11 @@ fun AddProduceScreen(
         )
     }
 
-    if (uiState.isLocationDialogVisible){
+    if (uiState.isLocationEnabledDialogVisible){
         LocationSettingsDialogComponent(
-            onDismissRequest = { addProduceViewModel.onLocationVisibleDialogChanged(false) },
+            onDismissRequest = { addProduceViewModel.onLocationEnabledVisibleDialogChanged(false) },
             onConfirm = {
-                addProduceViewModel.onLocationVisibleDialogChanged(false)
+                addProduceViewModel.onLocationEnabledVisibleDialogChanged(false)
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 localContext.startActivity(intent)
                         },
@@ -328,7 +328,7 @@ fun AddProduceScreen(
                             }
                         )
                     } else{
-                        addProduceViewModel.onLocationVisibleDialogChanged(true)
+                        addProduceViewModel.onLocationEnabledVisibleDialogChanged(true)
                     }
                 },
                 onUploadButtonClicked = {
