@@ -135,4 +135,46 @@ class FirestoreRepositoryImpl @Inject constructor(
             AuthResult.Error(e.message.toString())
         }
     }
+
+    override suspend fun updateProduce(
+        produceId: String,
+        updatedProduce: Produce
+    ): AuthResult<Unit> {
+
+        return try {
+            val document = firestore.collection("produce")
+                .document(produceId)
+                .get().await()
+
+            if (document.exists()){
+                firestore.collection("produce")
+                    .document(produceId)
+                    .set(updatedProduce, SetOptions.merge())
+                    .await()
+                AuthResult.Success(Unit)
+            } else{
+                AuthResult.Error("Produce not found")
+            }
+        } catch (e: Exception){
+            AuthResult.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun deleteProduce(produceId: String): AuthResult<Unit> {
+        return try {
+            val document = firestore.collection("produce")
+                .document(produceId)
+                .get().await()
+
+            if (document.exists()){
+                firestore.collection("produce")
+                    .document(produceId).delete().await()
+                AuthResult.Success(Unit)
+            } else{
+                AuthResult.Error("Produce not found")
+            }
+        } catch (e: Exception){
+            AuthResult.Error(e.message.toString())
+        }
+    }
 }

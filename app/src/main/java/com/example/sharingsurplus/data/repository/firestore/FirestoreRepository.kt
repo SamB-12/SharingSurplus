@@ -24,6 +24,10 @@ interface FirestoreRepository {
 
     suspend fun getProduce(produceId: String): AuthResult<Produce>
 
+    suspend fun updateProduce(produceId: String, updatedProduce: Produce): AuthResult<Unit>
+
+    suspend fun deleteProduce(produceId: String): AuthResult<Unit>
+
     //fun getProduceList(): Flow<List<Produce>>
 
     /////////////////////

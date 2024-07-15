@@ -29,8 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.ui.theme.AccentColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
@@ -86,7 +89,7 @@ fun TimePicker2(
         readOnly = true,
         singleLine = true,
         trailingIcon = {
-            Icon(imageVector = Icons.Default.DateRange, contentDescription = "Calendar")
+            Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock_24), contentDescription = "Clock")
         },
         enabled = false
     )

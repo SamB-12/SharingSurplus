@@ -14,6 +14,8 @@ sealed class Routes(val route: String) {
 
     object EditProfile : Routes("editProfile")
     object AboutUs : Routes("aboutUs")
+    object ViewMyProduce : Routes("viewMyProduce")
+    object EditAndDeleteProduce : Routes("editAndDeleteProduce")
     object ProfileGraph : Routes("profileGraph")
 
     //////////////////////////////////////////////////////

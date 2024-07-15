@@ -111,7 +111,7 @@ fun ProfileMenuScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "Change your password", icon = ImageVector.vectorResource(id = R.drawable.ic_password_reset_24))
+        ProfilePageUnitComponent(text = "View Your Produce", icon = ImageVector.vectorResource(id = R.drawable.ic_produce_24), onClick = {navController?.navigate(Routes.ViewMyProduce.route)})
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)

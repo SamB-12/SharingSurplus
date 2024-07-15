@@ -133,7 +133,7 @@ fun ViewAndRequestProduceScreenMinor(
             .background(color = Color.Gray)
             .fillMaxWidth()
         )
-        //ProfileInfoDetailsComponent(text1 = "Address", text2 = produceLocation)//TODO:make this clickable and implement map
+        //ProfileInfoDetailsComponent(text1 = "Address", text2 = produceLocation)
         UrlOpenerComponent(text1 = "Address", text2 = produceLocation, onUrlClicked = onProduceLocationClicked)
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)

@@ -86,7 +86,6 @@ fun HomeScreen(
             }
         }
     }
-
 }
 
 @Preview
