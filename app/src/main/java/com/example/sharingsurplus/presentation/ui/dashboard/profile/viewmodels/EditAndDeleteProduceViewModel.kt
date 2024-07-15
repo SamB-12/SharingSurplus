@@ -76,7 +76,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
     }
 
 
-    fun updateProduce() { //TODO: Doesn't Work!
+    fun updateProduce() {
         if (validateInput()) {//since we are validating the inputs, we can be certain that the inputs are valid
             viewModelScope.launch {
                 val imageResult = firebaseStorageRepository.uploadImageToStorage(
@@ -86,6 +86,8 @@ class EditAndDeleteProduceViewModel @Inject constructor(
                 when (imageResult) {
                     is AuthResult.Success -> {
                         val produce = Produce(
+                            produceId = GlobalVariables.produceIdToView,
+                            ownerId = authRepository.currentUser!!.uid,
                             produceName = editAndDeleteProduceUiState.value.produceName,
                             producerName = editAndDeleteProduceUiState.value.producerName,
                             produceDescription = editAndDeleteProduceUiState.value.produceDescription,
@@ -99,10 +101,10 @@ class EditAndDeleteProduceViewModel @Inject constructor(
                             produceLongitude = editAndDeleteProduceUiState.value.produceLongitude,
                             produceImageUrl = imageResult.data
                         )
-                        firestoreRepository.updateProduce(GlobalVariables.produceIdToView, produce)
+                        val result = firestoreRepository.updateProduce(produceId = GlobalVariables.produceIdToView, updatedProduce = produce)
                         _editAndDeleteProduceUiState.value =
                             _editAndDeleteProduceUiState.value.copy(
-                                editResult = AuthResult.Success(Unit)
+                                editResult = result
                             )
                     }
 

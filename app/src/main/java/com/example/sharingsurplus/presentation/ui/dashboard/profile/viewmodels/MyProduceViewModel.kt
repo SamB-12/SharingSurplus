@@ -7,6 +7,7 @@ import com.example.sharingsurplus.data.states.dashboard.profile.MyProduceScreenU
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class MyProduceViewModel @Inject constructor(
 
     private fun getProduceList(){
         viewModelScope.launch {
-            firestoreRepository.getProduceList().collect{produceList ->
+            firestoreRepository.getProduceList().collectLatest{produceList ->
                 _myProduceUiState.value = _myProduceUiState.value.copy(produceList = produceList)
             }
         }

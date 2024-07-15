@@ -63,26 +63,33 @@ fun HomeScreen(
         }
 
         uiState.produceList.forEach { produce ->
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                ProduceItemCardComponent(
-                    painter = rememberAsyncImagePainter(
-                        model = produce.produceImageUrl
-                    ),
-                    produceName = produce.produceName,
-                    produceType = produce.produceType!!,
-                    produceQuantity = produce.produceQuantity.toString(),
-                    producerName = produce.producerName?:"Unknown Producer",
-                    produceDate = produce.produceBestBeforeDate,
-                    onItemClick = {
-                        GlobalVariables.produceIdToView = produce.produceId
-                        GlobalVariables.produceLatitude = produce.produceLatitude
-                        GlobalVariables.produceLongitude = produce.produceLongitude
-                        GlobalVariables.produceLocation = produce.produceLocation
-                        navController.navigate(Routes.ViewAndRequestProduce.route)
-                    }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+
+            if (produce.ownerId != uiState.userId){
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProduceItemCardComponent(
+                        painter = rememberAsyncImagePainter(
+                            model = produce.produceImageUrl
+                        ),
+                        produceName = produce.produceName,
+                        produceType = produce.produceType!!,
+                        produceQuantity = produce.produceQuantity.toString(),
+                        producerName = produce.producerName?:"Unknown Producer",
+                        produceDate = produce.produceBestBeforeDate,
+                        onItemClick = {
+                            GlobalVariables.produceIdToView = produce.produceId
+                            GlobalVariables.produceLatitude = produce.produceLatitude
+                            GlobalVariables.produceLongitude = produce.produceLongitude
+                            GlobalVariables.produceLocation = produce.produceLocation
+                            navController.navigate(Routes.ViewAndRequestProduce.route)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            } else{
+                item {
+                    Text(text = "No produce found", color = PrimaryTextColor, textAlign = TextAlign.Center)
+                }
             }
         }
     }

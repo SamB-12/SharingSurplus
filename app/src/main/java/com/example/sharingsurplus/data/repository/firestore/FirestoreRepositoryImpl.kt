@@ -7,7 +7,9 @@ import com.example.sharingsurplus.data.repository.AuthResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.time.Year
@@ -110,12 +112,31 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getProduceList(): Flow<List<Produce>> = flow{
-        val produceList = firestore.collection("produce")
-            .get()
-            .await()
-            .toObjects(Produce::class.java)
-        emit(produceList)
+//    override suspend fun getProduceList(): Flow<List<Produce>> = flow{
+//        val produceList = firestore.collection("produce")
+//            .get()
+//            .await()
+//            .toObjects(Produce::class.java)
+//        emit(produceList)
+//    }
+
+    override suspend fun getProduceList(): Flow<List<Produce>> = callbackFlow {
+        val listenerRegistration = firestore.collection("produce")
+            .addSnapshotListener() { value, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                } else {
+                    val produceList = value?.toObjects(Produce::class.java)
+                    if (produceList != null) {
+                        trySend(produceList).isSuccess
+                    }
+                }
+            }
+
+        awaitClose {
+            listenerRegistration.remove()
+        }
     }
 
     override suspend fun getProduce(produceId: String): AuthResult<Produce> {
@@ -142,19 +163,13 @@ class FirestoreRepositoryImpl @Inject constructor(
     ): AuthResult<Unit> {
 
         return try {
-            val document = firestore.collection("produce")
-                .document(produceId)
-                .get().await()
 
-            if (document.exists()){
-                firestore.collection("produce")
-                    .document(produceId)
-                    .set(updatedProduce, SetOptions.merge())
-                    .await()
-                AuthResult.Success(Unit)
-            } else{
-                AuthResult.Error("Produce not found")
-            }
+            firestore.collection("produce")
+                .document(produceId)
+                .set(updatedProduce, SetOptions.merge())
+                .await()
+
+            AuthResult.Success(Unit)
         } catch (e: Exception){
             AuthResult.Error(e.message.toString())
         }
