@@ -26,10 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.CalendarWithEndDateComponent
 import com.example.sharingsurplus.presentation.ui.components.ProfileInfoDetailsComponent
+import com.example.sharingsurplus.presentation.ui.components.QuantitySelectorComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
 import com.example.sharingsurplus.presentation.ui.components.TimePicker2
 import com.example.sharingsurplus.presentation.ui.components.UrlOpenerComponent
@@ -51,6 +52,7 @@ fun ViewAndRequestProduceScreenMinor(
     produceLocation: String = "",
     pickupDate: String = "",
     pickupTime: String = "",
+    requestedQuantity: String = "",
     requirements: String = "",
     isDatePickerVisible: Boolean = false,
     isTimePickerVisible: Boolean = false,
@@ -58,9 +60,10 @@ fun ViewAndRequestProduceScreenMinor(
     onTimePickerVisible: (Boolean) -> Unit = {},
     onPickUpDateSelected: (String) -> Unit = {},
     onPickUpTimeSelected: (String) -> Unit = {},
+    onRequestedQuantityChanged: (String) -> Unit = {},
     onRequirementsChanged: (String) -> Unit = {},
+    onProduceLocationClicked: () -> Unit = {},
     onProduceRequested: () -> Unit = {},
-    onProduceLocationClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -164,6 +167,11 @@ fun ViewAndRequestProduceScreenMinor(
             isTimePickerDialogVisible = isTimePickerVisible,
             timePickerDialogChanged = onTimePickerVisible
         )//Refactor it
+        Spacer(modifier = modifier.height(16.dp))
+        Text(text = "Select the Quantity", style = MaterialTheme.typography.labelLarge, modifier = modifier
+            .align(Alignment.Start)
+            .padding(horizontal = 16.dp))
+        QuantitySelectorComponent(readOnly = true, unit = produceUnit, quantity = requestedQuantity, onQuantityChange = onRequestedQuantityChanged)
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Add Requirements", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)

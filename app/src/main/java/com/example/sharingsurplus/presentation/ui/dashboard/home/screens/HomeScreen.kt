@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.states.dashboard.home.HomeScreenUiState
+import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ProduceItemCardComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.home.viewmodels.HomeScreenViewModel
@@ -44,7 +45,7 @@ fun HomeScreen(
     //val uiState = HomeScreenUiState(name = "Phil K")
 
     val filteredList = uiState.produceList.filter {produce ->
-        produce.ownerId != uiState.userId
+        produce.ownerId != uiState.userId && produce.produceStatus == ProduceStatus.Available
     }
 
     LazyColumn(

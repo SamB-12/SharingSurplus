@@ -1,7 +1,7 @@
 package com.example.sharingsurplus.data.model
 
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceStatus
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceStatus
+import com.example.sharingsurplus.data.states.status.ProduceType
 
 data class Produce(
     val produceId: String = "",

@@ -38,6 +38,7 @@ fun RequestReceivedItemCardComponent(
     requestedQuantity: String = "1",
     requestedDate: String = "12/08/2001",
     requestedTime: String = "02:23",
+    requestInstructions: String = "This is a request for produce",
     onAccept: () -> Unit = {},
     onReject: () -> Unit = {}
 ) {
@@ -53,7 +54,8 @@ fun RequestReceivedItemCardComponent(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(modifier = modifier
                 .fillMaxWidth()
@@ -82,6 +84,8 @@ fun RequestReceivedItemCardComponent(
                     Text(text = "Requested Time:  $requestedTime", style = MaterialTheme.typography.titleMedium.copy(color = SecondaryTextColor), textAlign = TextAlign.Center)
                 }
             }
+            Text(text = "Requirements:  $requestInstructions", style = MaterialTheme.typography.titleMedium.copy(color = SecondaryTextColor), textAlign = TextAlign.Center)
+            Spacer(modifier = modifier.height(8.dp))
             DoubleButtonComponents(label1 = "Accept", label2 = "Reject", onYesClick = onAccept, onNoClick = onReject)
             Spacer(modifier = modifier.height(16.dp))
         }

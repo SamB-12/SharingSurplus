@@ -14,7 +14,7 @@ import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.repository.storage.FirebaseStorageRepository
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 import com.example.sharingsurplus.data.states.dashboard.profile.EditAndDeleteProduceUiState
 import com.example.sharingsurplus.presentation.utils.GlobalVariables
 import com.google.android.gms.maps.model.LatLng

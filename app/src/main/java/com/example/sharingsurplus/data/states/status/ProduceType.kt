@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.data.states.dashboard.produce
+package com.example.sharingsurplus.data.states.status
 
 enum class ProduceType(val displayName: String) {
     Fruit("Fruit"),

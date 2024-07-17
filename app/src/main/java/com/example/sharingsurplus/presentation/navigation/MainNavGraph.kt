@@ -33,7 +33,7 @@ fun MainNavGraph(
             CommunityForumScreen()
         }
         composable(route = Graphs.RequestGraph.graph){
-            RequestScreen()
+            RequestScreen(navController = rootNavController, paddingValues = paddingValues)
         }
         composable(route = Graphs.ProfileGraph.graph){
             ProfileMenuScreen(navController = rootNavController, paddingValues = paddingValues)

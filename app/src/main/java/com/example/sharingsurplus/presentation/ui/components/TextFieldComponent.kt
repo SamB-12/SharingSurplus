@@ -47,7 +47,8 @@ fun TextFieldComponent(
     errorMessage: String = "Invalid value",
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    readOnly: Boolean = false
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -90,7 +91,8 @@ fun TextFieldComponent(
                         contentDescription = "Error Icon",
                     )
                 }
-            }
+            },
+            readOnly = readOnly
         )
     }
     if (error) {

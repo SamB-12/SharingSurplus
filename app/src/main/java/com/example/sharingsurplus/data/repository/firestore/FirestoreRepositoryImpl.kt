@@ -2,8 +2,10 @@ package com.example.sharingsurplus.data.repository.firestore
 
 import android.util.Log
 import com.example.sharingsurplus.data.model.Produce
+import com.example.sharingsurplus.data.model.Request
 import com.example.sharingsurplus.data.model.User
 import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
@@ -175,6 +177,24 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun changeProduceStatus(
+        produceId: String,
+        status: ProduceStatus
+    ): AuthResult<Unit> {
+        val changedStatus = hashMapOf(
+            "produceStatus" to status
+        )
+        return try {
+            firestore.collection("produce")
+                .document(produceId)
+                .set(changedStatus, SetOptions.merge())
+                .await()
+            AuthResult.Success(Unit)
+        } catch (e: Exception){
+            AuthResult.Error(e.message.toString())
+        }
+    }
+
     override suspend fun deleteProduce(produceId: String): AuthResult<Unit> {
         return try {
             val document = firestore.collection("produce")
@@ -191,5 +211,60 @@ class FirestoreRepositoryImpl @Inject constructor(
         } catch (e: Exception){
             AuthResult.Error(e.message.toString())
         }
+    }
+
+    override suspend fun createRequest(produceRequest: Request): AuthResult<Unit> {
+        return try {
+            val requestId = firestore.collection("requests").document().id
+            val newRequest = produceRequest.copy(requestId = requestId)
+            firestore.collection("requests").document(requestId).set(newRequest).await()
+            AuthResult.Success(Unit)
+        } catch (e: Exception) {
+            AuthResult.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun getRequest(requestId: String): Flow<List<Request>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getRequestsForOwner(ownerId: String): Flow<List<Request>> = callbackFlow{
+        val listenerRegistration = firestore.collection("requests")
+            .whereEqualTo("ownerId", ownerId)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val requests = value?.toObjects(Request::class.java)
+                Log.d("FirestoreRepository", "getRequestsForOwner: $requests")
+                if (requests != null) {
+                    trySend(requests).isSuccess
+                }
+            }
+
+        awaitClose {
+            listenerRegistration.remove()
+        }
+    }
+
+    override suspend fun getRequestsForRequester(requesterId: String): Flow<List<Request>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateRequest(
+        requestId: String,
+        updatedRequest: Request
+    ): AuthResult<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteRequest(requestId: String): AuthResult<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun respondToRequest(requestId: String, response: String): AuthResult<Unit> {
+        TODO("Not yet implemented")
     }
 }

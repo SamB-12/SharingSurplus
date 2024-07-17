@@ -3,6 +3,7 @@ package com.example.sharingsurplus.presentation.ui.dashboard.requests.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ProfilePageUnitComponent
@@ -34,13 +36,14 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 @Composable
 fun RequestScreen(
     modifier: Modifier = Modifier,
-
+    navController: NavHostController?,
+    paddingValues: PaddingValues = PaddingValues()
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = PrimaryColor)
-            .padding(16.dp),
+            .padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -52,7 +55,9 @@ fun RequestScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Requests", style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(32.dp))
-        ProfilePageUnitComponent(text = "Produce Requests Received", icon = ImageVector.vectorResource(id = R.drawable.ic_request_recieved_24), onClick = {})
+        ProfilePageUnitComponent(text = "Produce Requests Received", icon = ImageVector.vectorResource(id = R.drawable.ic_request_recieved_24), onClick = {
+            navController?.navigate(Routes.RequestReceived.route)
+        })
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
@@ -81,5 +86,5 @@ fun RequestScreen(
 @Preview
 @Composable
 private fun RequestScreenPreview() {
-    RequestScreen()
+    RequestScreen(navController = null)
 }

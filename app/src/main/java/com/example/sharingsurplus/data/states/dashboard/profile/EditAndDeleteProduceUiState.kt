@@ -2,7 +2,7 @@ package com.example.sharingsurplus.data.states.dashboard.profile
 
 import android.net.Uri
 import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 
 data class EditAndDeleteProduceUiState(
     val produceName: String = "",
