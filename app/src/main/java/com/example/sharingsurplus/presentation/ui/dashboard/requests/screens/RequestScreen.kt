@@ -65,7 +65,9 @@ fun RequestScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "Produce Requests Sent", icon = ImageVector.vectorResource(id = R.drawable.ic_request_sent_24), onClick = {})
+        ProfilePageUnitComponent(text = "Produce Requests Sent", icon = ImageVector.vectorResource(id = R.drawable.ic_request_sent_24), onClick = {
+            navController?.navigate(Routes.RequestSent.route)
+        })
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)

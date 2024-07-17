@@ -8,6 +8,7 @@ import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.dashboard.requests.screens.RequestReceivedScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.requests.screens.RequestScreen
+import com.example.sharingsurplus.presentation.ui.dashboard.requests.screens.RequestSentScreen
 
 fun NavGraphBuilder.requestsNavGraph(navController: NavHostController){
     navigation(startDestination = Routes.Requests.route, route = Graphs.RequestGraph.graph){
@@ -16,6 +17,9 @@ fun NavGraphBuilder.requestsNavGraph(navController: NavHostController){
         }
         composable(route = Routes.RequestReceived.route){
             RequestReceivedScreen(navController = navController)
+        }
+        composable(route = Routes.RequestSent.route){
+            RequestSentScreen(navController = navController)
         }
     }
 }

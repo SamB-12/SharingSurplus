@@ -24,14 +24,9 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 fun RequestReceivedScreenMinor(
     modifier: Modifier = Modifier,
     requestList: List<Request> = emptyList(),
-    onRequestSelected: (Request) -> Unit = {},
     onAcceptSelected: (Request) -> Unit = {},
     onDeclineSelected: (Request) -> Unit = {}
 ) {
-
-    val randomList = List(10){
-
-    }
 
     val filteredList = requestList.filter {request ->
         request.status == RequestStatus.Pending
@@ -44,7 +39,7 @@ fun RequestReceivedScreenMinor(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        requestList.forEach {request ->
+        filteredList.forEach {request ->
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 RequestReceivedItemCardComponent(
@@ -53,7 +48,9 @@ fun RequestReceivedScreenMinor(
                     requesterName = request.requesterName,
                     requestedQuantity = request.requestedQuantity.toString() + request.requestedUnit,
                     requestedDate = request.requestedDate,
-                    requestedTime = request.requestedTime
+                    requestedTime = request.requestedTime,
+                    onAccept = {onAcceptSelected(request)},
+                    onReject = {onDeclineSelected(request)}
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
