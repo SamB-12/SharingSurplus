@@ -22,7 +22,8 @@ fun QuantitySelectorComponent(
     quantity: String = "",
     unit: String = "",
     onQuantityChange: (String) -> Unit = {},
-    onUnitChange: (String) -> Unit = {}
+    onUnitChange: (String) -> Unit = {},
+    readOnly: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -34,7 +35,7 @@ fun QuantitySelectorComponent(
             TextFieldComponent(label = label1, value = quantity, onValueChanged = onQuantityChange, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         }
         Box(modifier = Modifier.weight(1f)){
-            TextFieldComponent(label = label2, value = unit, onValueChanged = onUnitChange)
+            TextFieldComponent(label = label2, value = unit, onValueChanged = onUnitChange, readOnly = readOnly)
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.example.sharingsurplus.presentation.ui.components
 
-import android.text.Layout
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor

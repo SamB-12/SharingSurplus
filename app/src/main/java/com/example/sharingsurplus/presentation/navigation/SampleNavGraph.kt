@@ -24,7 +24,7 @@ fun SampleNavGraph(
 
         authNavGraph(navController = navController)
         homeNavGraph(navController)
-        requestsNavGraph()
+        requestsNavGraph(navController)
         communityForumNavGraph(navController)
         profileGraph(navController)
 

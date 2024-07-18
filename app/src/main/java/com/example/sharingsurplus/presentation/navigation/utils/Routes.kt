@@ -29,6 +29,10 @@ sealed class Routes(val route: String) {
     //////////////////////////////////////////////////////
 
     object Requests : Routes("requests")
+    object RequestReceived : Routes("requestReceived")
+    object RequestSent : Routes("requestSent")
+    object RequestStatus : Routes("requestStatus")
+    object RequestEdit : Routes("requestEdit")
 
     //////////////////////////////////////////////////////
 

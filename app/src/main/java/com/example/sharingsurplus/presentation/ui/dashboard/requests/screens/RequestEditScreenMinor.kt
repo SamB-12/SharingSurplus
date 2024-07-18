@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.ui.dashboard.produce.screens
+package com.example.sharingsurplus.presentation.ui.dashboard.requests.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,7 +38,7 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.PrimaryTextColor
 
 @Composable
-fun ViewAndRequestProduceScreenMinor(
+fun RequestEditScreenMinor(
     modifier: Modifier = Modifier,
     painter: Painter,
     produceName: String = "",
@@ -63,7 +63,7 @@ fun ViewAndRequestProduceScreenMinor(
     onRequestedQuantityChanged: (String) -> Unit = {},
     onRequirementsChanged: (String) -> Unit = {},
     onProduceLocationClicked: () -> Unit = {},
-    onProduceRequested: () -> Unit = {},
+    onRequestEdit: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -73,20 +73,17 @@ fun ViewAndRequestProduceScreenMinor(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
-        //Icon(imageVector = Icons.Rounded.Person, contentDescription = "Person Icon", modifier = modifier.size(180.dp))
         Image(
             painter = painter,
             contentDescription = "Image of the produce",
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .size(200.dp),
-                //.weight(1f),
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = produceName, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(32.dp))
-        //Text(text = "View your profile", style = MaterialTheme.typography.bodyMedium, color = PrimaryTextColor)
         ProfileInfoDetailsComponent(text1 = "Name", text2 = produceName)
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -136,7 +133,6 @@ fun ViewAndRequestProduceScreenMinor(
             .background(color = Color.Gray)
             .fillMaxWidth()
         )
-        //ProfileInfoDetailsComponent(text1 = "Address", text2 = produceLocation)
         UrlOpenerComponent(text1 = "Address", text2 = produceLocation, onUrlClicked = onProduceLocationClicked)
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -148,19 +144,17 @@ fun ViewAndRequestProduceScreenMinor(
         Text(text = "Select the Pickup Date", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //Add Date Picker here
         CalendarWithEndDateComponent(
             bestBeforeDate = pickupDate,
             maxDate = produceBestBeforeDate,
             onBestBeforeDateChanged = onPickUpDateSelected,
             isDatePickerDialogVisible = isDatePickerVisible,
             datePickerDialogChanged = onDatePickerVisible
-        ) //pass max date
+        )
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Select the Pickup Time", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //Add Time Picker here
         TimePicker2(
             timeSelected = pickupTime,
             onTimeSelectedChanged = onPickUpTimeSelected,
@@ -176,18 +170,17 @@ fun ViewAndRequestProduceScreenMinor(
         Text(text = "Add Requirements", style = MaterialTheme.typography.labelLarge, modifier = modifier
             .align(Alignment.Start)
             .padding(horizontal = 16.dp))
-        //Add requirements here
         TextFieldComponent(label = "Requirements", value = requirements, onValueChanged = onRequirementsChanged)
         Spacer(modifier = Modifier.height(40.dp))
-        ButtonComponent(onClick = onProduceRequested, text = "Request Produce")
+        ButtonComponent(onClick = onRequestEdit, text = "Edit Request")
         Spacer(modifier = Modifier.height(18.dp))
     }
 }
 
 @Preview
 @Composable
-private fun ViewAndRequestProduceScreenMinorPreview() {
-    ViewAndRequestProduceScreenMinor(
+private fun RequestEditScreenMinorPreview() {
+    RequestEditScreenMinor(
         painter = painterResource(id = R.drawable.ic_andy),
         produceName = "Produce Name",
         producerName = "Producer Name",

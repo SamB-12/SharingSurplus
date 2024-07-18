@@ -1,10 +1,11 @@
-package com.example.sharingsurplus.data.states.dashboard.produce
+package com.example.sharingsurplus.data.states.dashboard.requests
 
 import com.example.sharingsurplus.data.repository.AuthResult
 import com.example.sharingsurplus.data.states.status.ProduceType
 
-data class ViewAndRequestProduceUiState(
+data class RequestEditScreenUiState(
     val produceId: String = "",
+    val requestId: String = "",
     val imageUrl: String = "",
     val ownerId: String = "",
     val produceName: String = "",
@@ -25,5 +26,5 @@ data class ViewAndRequestProduceUiState(
     val isDatePickerVisible: Boolean = false,
     val isTimePickerVisible: Boolean = false,
     val isConfirmDialogVisible: Boolean = false,
-    val requestResult: AuthResult<Unit>? = null
+    val requestEditResult: AuthResult<Unit>? = null
 )

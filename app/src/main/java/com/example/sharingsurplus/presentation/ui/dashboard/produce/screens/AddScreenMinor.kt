@@ -18,11 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 import com.example.sharingsurplus.presentation.ui.components.AddProduceImageComponent
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.CalendarSelectorTextFieldComponent
-import com.example.sharingsurplus.presentation.ui.components.CalendarWithEndDateComponent
 import com.example.sharingsurplus.presentation.ui.components.DropDownMenuComponent
 import com.example.sharingsurplus.presentation.ui.components.LocationSelectorTextFieldComponent
 import com.example.sharingsurplus.presentation.ui.components.QuantitySelectorComponent

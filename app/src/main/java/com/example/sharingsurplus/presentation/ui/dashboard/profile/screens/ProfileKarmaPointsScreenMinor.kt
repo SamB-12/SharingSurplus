@@ -44,7 +44,7 @@ fun ProfileKarmaPointsScreenMinor(
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Good Deed Points", style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold), color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(32.dp))
-        Text(text = "You have ${karmaPoints} Good Deed points. Keep donating more to earn more points", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyMedium, color = PrimaryTextColor)
+        Text(text = "You have ${karmaPoints} Good Deed points. Keep participating more to earn more points", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyMedium, color = PrimaryTextColor)
 //        Spacer(modifier = Modifier
 //            .padding(horizontal = 16.dp)
 //            .height(1.dp)

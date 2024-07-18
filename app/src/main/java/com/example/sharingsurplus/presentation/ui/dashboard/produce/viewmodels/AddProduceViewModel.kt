@@ -14,7 +14,7 @@ import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.repository.storage.FirebaseStorageRepository
 import com.example.sharingsurplus.data.states.dashboard.produce.AddProduceUiState
-import com.example.sharingsurplus.data.states.dashboard.produce.ProduceType
+import com.example.sharingsurplus.data.states.status.ProduceType
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
