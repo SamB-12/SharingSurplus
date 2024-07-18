@@ -75,7 +75,9 @@ fun RequestScreen(
             .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ProfilePageUnitComponent(text = "Status/Notification", icon = Icons.Rounded.Notifications, onClick = {})
+        ProfilePageUnitComponent(text = "Status/Notification", icon = Icons.Rounded.Notifications, onClick = {
+            navController?.navigate(Routes.RequestStatus.route)
+        })
         Spacer(modifier = Modifier
             .padding(horizontal = 16.dp)
             .height(1.dp)
