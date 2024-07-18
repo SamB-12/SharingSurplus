@@ -10,6 +10,7 @@ import com.example.sharingsurplus.data.states.status.RequestStatus
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
+import com.google.rpc.context.AttributeContext.Auth
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -77,6 +78,32 @@ class FirestoreRepositoryImpl @Inject constructor(
                     println("Failed to add user to firestore")
                 }
             }
+    }
+
+    override suspend fun updateKarmaPoints(uid: String, points: Int): AuthResult<Unit> {
+        return try {
+            val document = firestore.collection("users")
+                .document(uid)
+                .get()
+                .await()
+
+            if (document.exists()) {
+                val currentKarma = document.getLong("karmaPoints")?.toInt() ?: 0
+                val newKarma = currentKarma + points
+                val updatedKarma = hashMapOf(
+                    "karmaPoints" to newKarma
+                )
+                firestore.collection("users")
+                    .document(uid)
+                    .set(updatedKarma, SetOptions.merge())
+                    .await()
+                AuthResult.Success(Unit)
+            } else {
+                AuthResult.Error("User not found")
+            }
+        } catch (e: Exception) {
+            AuthResult.Error(e.message.toString())
+        }
     }
 
     override suspend fun getRealTimeUser(
@@ -240,8 +267,22 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getRequest(requestId: String): Flow<List<Request>> {
-        TODO("Not yet implemented")
+    override suspend fun getRequest(requestId: String): AuthResult<Request> {
+        return try {
+            val document = firestore.collection("requests")
+                .document(requestId)
+                .get()
+                .await()
+
+            if (document.exists()) {
+                val request = document.toObject(Request::class.java)
+                AuthResult.Success(request!!)
+            } else {
+                AuthResult.Error("Request not found")
+            }
+        } catch (e: Exception) {
+            AuthResult.Error(e.message.toString())
+        }
     }
 
     override suspend fun getRequestsForOwner(ownerId: String): Flow<List<Request>> = callbackFlow{

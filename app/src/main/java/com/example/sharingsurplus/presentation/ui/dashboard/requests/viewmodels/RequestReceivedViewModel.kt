@@ -66,6 +66,8 @@ class RequestReceivedViewModel @Inject constructor(
                 val produce = firestoreRepository.getProduce(_requestReceivedUiState.value.selectedRequest.produceId)
 
                 if (produce is AuthResult.Success){
+                    firestoreRepository.updateKarmaPoints(_requestReceivedUiState.value.selectedRequest.ownerId,10)
+                    firestoreRepository.updateKarmaPoints(_requestReceivedUiState.value.selectedRequest.requesterId,5)
                     if (produce.data.produceQuantity>_requestReceivedUiState.value.selectedRequest.requestedQuantity){
                         firestoreRepository.changeProduceQuantity(
                             _requestReceivedUiState.value.selectedRequest.produceId,

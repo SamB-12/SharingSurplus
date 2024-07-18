@@ -11,10 +11,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.requests.viewmodels.RequestSentViewModel
+import com.example.sharingsurplus.presentation.utils.GlobalVariables
 
 @Composable
 fun RequestSentScreen(
@@ -54,7 +56,17 @@ fun RequestSentScreen(
     }
 
     if (uiState.isEditDialogVisible){
-        //TODO: Edit request
+        ConfirmationDialogComponent(
+            title = "Edit Request?",
+            message = "Are you sure you want to edit this request?",
+            onConfirm = {
+                GlobalVariables.requestId = uiState.selectedRequest!!.requestId
+                GlobalVariables.produceIdToView = uiState.selectedRequest!!.produceId
+                requestSentViewModel.onEditRequestDialogChange(false)
+                navController?.navigate(Routes.RequestEdit.route)
+            },
+            onCancel = { requestSentViewModel.onEditRequestDialogChange(false) }
+        )
     }
 
     ScaffoldComponent(
@@ -63,13 +75,13 @@ fun RequestSentScreen(
         content = {
             RequestSentScreenMinor(
                 requestList = uiState.requestList,
-                onDeleteClick = { requestId ->
+                onDeleteClick = { request ->
                     requestSentViewModel.onDeleteRequestDialogChange(true)
-                    requestSentViewModel.onSelectedRequest(requestId)
+                    requestSentViewModel.onSelectedRequest(request)
                 },
-                onEditClick = {
+                onEditClick = {request ->
                     requestSentViewModel.onEditRequestDialogChange(true)
-                    requestSentViewModel.onSelectedRequest(it)
+                    requestSentViewModel.onSelectedRequest(request)
                 }
             )
         }

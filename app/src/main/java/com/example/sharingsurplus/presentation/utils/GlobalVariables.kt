@@ -7,5 +7,6 @@ object GlobalVariables {
     var produceLongitude = 0.0
     var produceLocation = ""
     var ownerId = ""
+    var requestId = ""
 
 }

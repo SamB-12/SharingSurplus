@@ -16,6 +16,7 @@ interface FirestoreRepository {
     suspend fun updateUser(uid: String, updatedUser: User): AuthResult<User>
 
     suspend fun createUser(user: User)
+    suspend fun updateKarmaPoints(uid: String, points: Int): AuthResult<Unit>
 
     suspend fun getRealTimeUser(uid: String, onUserUpdated: (User) -> Unit): ListenerRegistration
 
@@ -36,7 +37,7 @@ interface FirestoreRepository {
     /////////////////////
 
     suspend fun createRequest(produceRequest: Request): AuthResult<Unit>
-    suspend fun getRequest(requestId:String): Flow<List<Request>>
+    suspend fun getRequest(requestId:String): AuthResult<Request>
     suspend fun getRequestsForOwner(ownerId: String): Flow<List<Request>>
     suspend fun getRequestsForRequester(requesterId: String): Flow<List<Request>>
     suspend fun updateRequest(requestId: String, pickUpDate: String, pickUpTime: String, requirements:String, requestedQuantity: Int): AuthResult<Unit>

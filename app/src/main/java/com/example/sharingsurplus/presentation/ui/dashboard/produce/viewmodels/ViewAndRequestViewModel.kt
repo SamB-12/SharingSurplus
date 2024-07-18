@@ -122,7 +122,7 @@ class ViewAndRequestViewModel @Inject constructor(
             )
         } catch (e: Exception){
             _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(
-                produceQuantity = 0
+                requestedQuantity = 0
             )
         }
     }
