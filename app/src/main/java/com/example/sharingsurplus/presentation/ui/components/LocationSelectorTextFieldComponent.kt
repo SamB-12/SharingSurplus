@@ -28,7 +28,9 @@ fun LocationSelectorTextFieldComponent(
     onLocationDialogVisibleChanged: (Boolean) -> Unit = {},
     isLocationDialogVisible: Boolean = false,
     onLocationPlacesClicked: () -> Unit = {},
-    onCurrentLocationClicked: () -> Unit = {}
+    onCurrentLocationClicked: () -> Unit = {},
+    isHomeLocationDialogVisible: Boolean = false,
+    onHomeLocationDialogVisibleChanged: (Boolean) -> Unit = {},
 ) {
     OutlinedTextField(
         value = location,
@@ -70,8 +72,21 @@ fun LocationSelectorTextFieldComponent(
             option1 = "Neutral location",
             option2 = "Home location",
             onOption1Click = onLocationPlacesClicked,
-            onOption2Click = onCurrentLocationClicked,
+            onOption2Click = {
+                onLocationDialogVisibleChanged(false)
+                onHomeLocationDialogVisibleChanged(true)
+                             },
             onDismissRequest = {onLocationDialogVisibleChanged(false)}
+        )
+    }
+
+    if (isHomeLocationDialogVisible) {
+        MultipleOptionPickerDialogComponent(
+            option1 = "Select Home Location",
+            option2 = "Select Current Location",
+            onOption1Click = onLocationPlacesClicked,
+            onOption2Click = onCurrentLocationClicked,
+            onDismissRequest = {onHomeLocationDialogVisibleChanged(false)}
         )
     }
 }

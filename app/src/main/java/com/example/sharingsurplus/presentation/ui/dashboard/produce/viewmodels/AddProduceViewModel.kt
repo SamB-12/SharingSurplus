@@ -245,6 +245,12 @@ class AddProduceViewModel @Inject constructor(
         )
     }
 
+    fun onHomeLocationVisibleDialogChanged(visible: Boolean){
+        _addProduceUiState.value = _addProduceUiState.value.copy(
+            isHomeLocationEnabledDialogVisible = visible
+        )
+    }
+
     private suspend fun fetchAddress(location: Location, geocoder: Geocoder): String{
         val addressesList: MutableList<Address>? = geocoder.getFromLocation(location.latitude,location.longitude,1)//have to use the deprecated method cause the new one only works for api 33
         return if (!addressesList.isNullOrEmpty()){
