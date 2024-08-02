@@ -19,14 +19,17 @@ import com.example.sharingsurplus.presentation.ui.theme.PrimaryColor
 import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
 
 @Composable
-fun RequestResponseComponent(
+fun AddNewPostDialogComponent(
     modifier: Modifier = Modifier,
     onConfirm: () -> Unit = {},
     onCancel: () -> Unit = {},
     title: String = "",
-    message: String = "",
-    reason:String = "",
-    onReasonChange: (String) -> Unit = {}
+    message1: String = "",
+    message2: String = "",
+    postTitle: String = "",
+    postContent: String = "",
+    onPostTitleChange: (String) -> Unit = {},
+    onPostContentChange: (String) -> Unit = {}
 ) {
     AlertDialog(
         onDismissRequest = onCancel,
@@ -35,18 +38,26 @@ fun RequestResponseComponent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    //.padding(16.dp),
+                //.padding(16.dp),
                 //horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = message, style = MaterialTheme.typography.bodyLarge)
+                Text(text = message1, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
                 Spacer(modifier = Modifier.height(8.dp))
                 TextFieldComponent(
-                    label = "Enter the reason.",
-                    value = reason,
-                    onValueChanged = onReasonChange
+                    label = "Enter a title.",
+                    value = postTitle,
+                    onValueChanged = onPostTitleChange
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = message2, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                Spacer(modifier = Modifier.height(8.dp))
+                TextFieldComponent(
+                    label = "Enter the content of Post",
+                    value = postContent,
+                    onValueChanged = onPostContentChange
                 )
             }
-            },
+        },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(text = "Confirm", color = SecondaryColor)
@@ -63,8 +74,8 @@ fun RequestResponseComponent(
     )
 }
 
-@Preview
+@Preview (showBackground = true)
 @Composable
-private fun OnRequestRejectComponentPreview() {
-    RequestResponseComponent(title = "Title", message = "Message")
+private fun AddNewPostDialogComponentPreview() {
+    AddNewPostDialogComponent(title = "Add New Post", message1 = "Enter a title.", message2 = "Enter the content of Post")
 }

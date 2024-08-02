@@ -30,7 +30,7 @@ fun MainNavGraph(
             HomeScreen(paddingValues = paddingValues, navController = rootNavController)
         }
         composable(route = Graphs.CommunityGraph.graph){
-            CommunityForumScreen()
+            CommunityForumScreen(paddingValues = paddingValues)
         }
         composable(route = Graphs.RequestGraph.graph){
             RequestScreen(navController = rootNavController, paddingValues = paddingValues)

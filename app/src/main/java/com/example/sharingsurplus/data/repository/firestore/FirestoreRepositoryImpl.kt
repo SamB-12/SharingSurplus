@@ -1,6 +1,7 @@
 package com.example.sharingsurplus.data.repository.firestore
 
 import android.util.Log
+import com.example.sharingsurplus.data.model.Post
 import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.data.model.Request
 import com.example.sharingsurplus.data.model.User
@@ -9,6 +10,7 @@ import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.data.states.status.RequestStatus
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.rpc.context.AttributeContext.Auth
 import kotlinx.coroutines.channels.awaitClose
@@ -370,6 +372,36 @@ class FirestoreRepositoryImpl @Inject constructor(
             AuthResult.Success(Unit)
         } catch (e: Exception) {
             AuthResult.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun addPost(post: Post): AuthResult<Unit> {
+        return try {
+            val postId = firestore.collection("posts").document().id
+            val newPost = post.copy(postId = postId)
+            firestore.collection("posts").document(postId).set(newPost).await()
+            AuthResult.Success(Unit)
+        } catch (e:Exception){
+            AuthResult.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun getPosts(): Flow<List<Post>> = callbackFlow{
+        val listenerRegistration = firestore.collection("posts")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener{ value, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                if (value != null && !value.isEmpty) {
+                    val posts = value.toObjects(Post::class.java)
+                    trySend(posts).isSuccess
+                }
+            }
+        awaitClose {
+            listenerRegistration.remove()
         }
     }
 }

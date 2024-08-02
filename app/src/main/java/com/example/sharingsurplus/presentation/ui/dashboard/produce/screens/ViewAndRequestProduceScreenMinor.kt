@@ -151,6 +151,7 @@ fun ViewAndRequestProduceScreenMinor(
         //Add Date Picker here
         CalendarWithEndDateComponent(
             bestBeforeDate = pickupDate,
+            label = "Pickup Date",
             maxDate = produceBestBeforeDate,
             onBestBeforeDateChanged = onPickUpDateSelected,
             isDatePickerDialogVisible = isDatePickerVisible,

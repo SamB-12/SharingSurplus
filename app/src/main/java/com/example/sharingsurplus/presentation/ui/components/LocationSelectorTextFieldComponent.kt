@@ -67,8 +67,8 @@ fun LocationSelectorTextFieldComponent(
 
     if (isLocationDialogVisible) {
         MultipleOptionPickerDialogComponent(
-            option1 = "Anonymous location",
-            option2 = "Current location",
+            option1 = "Neutral location",
+            option2 = "Home location",
             onOption1Click = onLocationPlacesClicked,
             onOption2Click = onCurrentLocationClicked,
             onDismissRequest = {onLocationDialogVisibleChanged(false)}

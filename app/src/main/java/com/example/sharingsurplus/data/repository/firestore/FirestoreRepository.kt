@@ -1,5 +1,6 @@
 package com.example.sharingsurplus.data.repository.firestore
 
+import com.example.sharingsurplus.data.model.Post
 import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.data.model.Request
 import com.example.sharingsurplus.data.model.User
@@ -44,5 +45,10 @@ interface FirestoreRepository {
     suspend fun deleteRequest(requestId: String): AuthResult<Unit>
     suspend fun respondToRequest(requestId: String, status: RequestStatus, response: String): AuthResult<Unit>
 
+    /////////////////////
+
+    suspend fun addPost(post: Post): AuthResult<Unit>
+
+    suspend fun getPosts(): Flow<List<Post>>
 
 }
