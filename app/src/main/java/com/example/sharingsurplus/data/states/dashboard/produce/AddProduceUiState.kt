@@ -27,5 +27,7 @@ data class AddProduceUiState(
     val uploadResult: AuthResult<Unit> ?= null,
     val isLocationEnabledDialogVisible: Boolean = false,
 
+    val isHomeLocationEnabledDialogVisible: Boolean = false,
+
     val producerName:String = "",
 )

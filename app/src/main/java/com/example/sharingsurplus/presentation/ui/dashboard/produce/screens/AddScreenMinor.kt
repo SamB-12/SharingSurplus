@@ -59,7 +59,9 @@ fun AddScreenMinor(
     onCameraClick: () -> Unit = {},
     onLocationPlacesClicked: () -> Unit = {},
     onCurrentLocationClicked: () -> Unit = {},
-    onUploadButtonClicked: () -> Unit = {}
+    onUploadButtonClicked: () -> Unit = {},
+    isHomeLocationDialogVisible: Boolean = false,
+    onIsHomeLocationDialogVisibleChange: (Boolean) -> Unit = {}
 ) {//add a view model as well
     Column(
         modifier = modifier
@@ -120,7 +122,9 @@ fun AddScreenMinor(
             isLocationDialogVisible = isLocationPickerDialogVisible,
             onLocationDialogVisibleChanged = onLocationPickerDialogVisibleChange,
             onLocationPlacesClicked = onLocationPlacesClicked,
-            onCurrentLocationClicked = onCurrentLocationClicked
+            onCurrentLocationClicked = onCurrentLocationClicked,
+            isHomeLocationDialogVisible = isHomeLocationDialogVisible,
+            onHomeLocationDialogVisibleChanged = { onIsHomeLocationDialogVisibleChange(it) }
         )
         Spacer(modifier = modifier.height(16.dp))
         Text(text = "Insert the Image", style = MaterialTheme.typography.labelLarge, modifier = modifier

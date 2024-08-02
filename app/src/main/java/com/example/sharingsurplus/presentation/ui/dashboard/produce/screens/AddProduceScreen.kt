@@ -150,6 +150,7 @@ fun AddProduceScreen(
                 place.latLng?.let { addProduceViewModel.onLatLongChanged(it) }
                 place.name?.let { addProduceViewModel.onLocationNameChanged(it) }
                 addProduceViewModel.isLocationPickerDialogVisible(false)
+                addProduceViewModel.onHomeLocationVisibleDialogChanged(false)
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
             Log.d("PlaceRetrived", "Place selection canceled")
@@ -317,6 +318,7 @@ fun AddProduceScreen(
                             onPermissionsGranted = {
                                 Toast.makeText(localContext, "Current location updating", Toast.LENGTH_SHORT).show()
                                 addProduceViewModel.isLocationPickerDialogVisible(false)
+                                addProduceViewModel.onHomeLocationVisibleDialogChanged(false)
                                 fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                                     .addOnSuccessListener { location ->
                                         addProduceViewModel.onLatLongChanged(LatLng(location.latitude, location.longitude))
@@ -333,7 +335,9 @@ fun AddProduceScreen(
                 },
                 onUploadButtonClicked = {
                     addProduceViewModel.isUploadConfirmDialogVisible(true)
-                }
+                },
+                isHomeLocationDialogVisible = uiState.isHomeLocationEnabledDialogVisible,
+                onIsHomeLocationDialogVisibleChange = {addProduceViewModel.onHomeLocationVisibleDialogChanged(it)}
             )
         }
     )
