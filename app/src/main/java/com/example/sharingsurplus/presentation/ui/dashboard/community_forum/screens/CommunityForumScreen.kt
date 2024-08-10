@@ -76,6 +76,8 @@ fun CommunityForumScreen(
             onCancel = { communityFormViewModel.isNewPostDialogVisible(false)},
             onConfirm = {
                 communityFormViewModel.isNewPostDialogVisible(false)
+                communityFormViewModel.onNewPostTitleChange("")
+                communityFormViewModel.onNewPostContentChange("")
                 communityFormViewModel.addNewPost()
             },
             onPostContentChange = { communityFormViewModel.onNewPostContentChange(it)},

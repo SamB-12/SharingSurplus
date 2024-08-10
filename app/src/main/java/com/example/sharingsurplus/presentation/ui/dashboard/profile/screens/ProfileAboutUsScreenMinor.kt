@@ -41,7 +41,7 @@ fun ProfileAboutUsScreenMinor(
         Spacer(modifier = Modifier.height(32.dp))
         Text(text = "Version 1.0", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyLarge, color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "At Sharing Surplus, we aim to reduce food waste by connecting surplus food with those in need.", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyLarge, color = PrimaryTextColor, textAlign = TextAlign.Center)
+        Text(text = "At Sharing Surplus, we aim to reduce food waste by connecting surplus food with people in the community.", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyLarge, color = PrimaryTextColor, textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Developed as part of MSc Dissertation project", modifier = modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyLarge, color = PrimaryTextColor)
         Spacer(modifier = Modifier.height(16.dp))

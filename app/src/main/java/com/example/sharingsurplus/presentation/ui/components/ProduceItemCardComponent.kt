@@ -77,7 +77,7 @@ fun ProduceItemCardComponent(
                 Spacer(modifier = modifier.height(8.dp))
                 Text(text = "Producer: $producerName", style = MaterialTheme.typography.titleMedium.copy(color = SecondaryTextColor), textAlign = TextAlign.Center)
                 Spacer(modifier = modifier.height(8.dp))
-                Text(text = "Uploaded on $produceDate", style = MaterialTheme.typography.titleMedium.copy(color = SecondaryColor), textAlign = TextAlign.Center)
+                Text(text = "Best Before $produceDate", style = MaterialTheme.typography.titleMedium.copy(color = SecondaryColor), textAlign = TextAlign.Center)
             }
         }
     }

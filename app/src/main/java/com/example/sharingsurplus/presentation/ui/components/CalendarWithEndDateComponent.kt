@@ -29,6 +29,7 @@ import com.example.sharingsurplus.presentation.ui.theme.SecondaryColor
 import com.example.sharingsurplus.presentation.utils.parseDateString
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -44,7 +45,11 @@ fun CalendarWithEndDateComponent(
     maxDate: String = "",
 ) {
 
+    val calender = Calendar.getInstance()
+    calender.add(Calendar.DAY_OF_YEAR, -1)
+
     val maxDateInMillis = parseDateString(maxDate)
+    val currentDateInMillis = calender.timeInMillis
 
 
     OutlinedTextField(
@@ -87,7 +92,7 @@ fun CalendarWithEndDateComponent(
         val datePickerState = rememberDatePickerState(
             selectableDates = object : SelectableDates {
                 override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                    return utcTimeMillis <= (maxDateInMillis ?: System.currentTimeMillis())
+                    return utcTimeMillis <= (maxDateInMillis ?: System.currentTimeMillis()) && utcTimeMillis >= currentDateInMillis
                 }
 
                 override fun isSelectableYear(year: Int): Boolean {
