@@ -1,16 +1,22 @@
-package com.example.sharingsurplus.presentation.navigation
+package com.example.sharingsurplus.presentation.navigation.graphs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sharingsurplus.presentation.navigation.graphs.authNavGraph
+import com.example.sharingsurplus.presentation.navigation.graphs.communityForumNavGraph
+import com.example.sharingsurplus.presentation.navigation.graphs.homeNavGraph
+import com.example.sharingsurplus.presentation.navigation.graphs.profileGraph
+import com.example.sharingsurplus.presentation.navigation.graphs.requestsNavGraph
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.screens.MainMenuScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.AddProduceScreen
-import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.ViewAndRequestProduceScreen
 
+/**
+ * This is the root navigation graph of the app.
+ */
 @Composable
 fun SampleNavGraph(
     modifier: Modifier = Modifier,

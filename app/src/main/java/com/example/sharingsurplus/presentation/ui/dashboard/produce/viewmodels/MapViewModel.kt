@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+/**
+ * This is the view model for the Map screen.
+ */
 @HiltViewModel
 class MapViewModel @Inject constructor(
 

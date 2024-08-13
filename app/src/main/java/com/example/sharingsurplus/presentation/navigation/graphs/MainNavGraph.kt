@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.navigation
+package com.example.sharingsurplus.presentation.navigation.graphs
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -14,6 +14,9 @@ import com.example.sharingsurplus.presentation.ui.dashboard.produce.screens.AddP
 import com.example.sharingsurplus.presentation.ui.dashboard.profile.screens.ProfileMenuScreen
 import com.example.sharingsurplus.presentation.ui.dashboard.requests.screens.RequestScreen
 
+/**
+ * This is the main navigation graph that will be used to navigate between the different screens from bottom navigation bar.
+ */
 @Composable
 fun MainNavGraph(
     navController: NavHostController,

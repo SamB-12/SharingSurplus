@@ -2,6 +2,9 @@ package com.example.sharingsurplus.data.model
 
 import com.example.sharingsurplus.data.states.status.RequestStatus
 
+/**
+ * This is data class for Request.
+ */
 data class Request(
     val requestId: String = "",
     val produceId: String = "",

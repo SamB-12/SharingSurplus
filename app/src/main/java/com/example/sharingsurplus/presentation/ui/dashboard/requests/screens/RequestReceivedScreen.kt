@@ -10,8 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.ui.components.RequestResponseComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
@@ -30,11 +29,11 @@ fun RequestReceivedScreen(
 
     LaunchedEffect(uiState.rejectResult) {
         when (uiState.rejectResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Request Rejected", Toast.LENGTH_SHORT).show()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.rejectResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.rejectResult as Result.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 //Nothing
@@ -44,14 +43,14 @@ fun RequestReceivedScreen(
 
     LaunchedEffect(uiState.acceptResult) {
         when (uiState.acceptResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Request Accepted", Toast.LENGTH_SHORT).show()
             }
 
-            is AuthResult.Error -> {
+            is Result.Error -> {
                 Toast.makeText(
                     localContext,
-                    (uiState.acceptResult as AuthResult.Error).message ?: "Unknown Error",
+                    (uiState.acceptResult as Result.Error).message ?: "Unknown Error",
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -3,6 +3,9 @@ package com.example.sharingsurplus.data.model
 import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.data.states.status.ProduceType
 
+/**
+ * This is data class for Produce.
+ */
 data class Produce(
     val produceId: String = "",
     val ownerId: String = "",

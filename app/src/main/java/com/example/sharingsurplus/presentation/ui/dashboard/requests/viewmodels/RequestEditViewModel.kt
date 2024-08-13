@@ -2,13 +2,9 @@ package com.example.sharingsurplus.presentation.ui.dashboard.requests.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sharingsurplus.data.model.Request
-import com.example.sharingsurplus.data.repository.AuthResult
-import com.example.sharingsurplus.data.repository.auth.AuthRepository
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
-import com.example.sharingsurplus.data.states.dashboard.produce.ViewAndRequestProduceUiState
 import com.example.sharingsurplus.data.states.dashboard.requests.RequestEditScreenUiState
-import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.presentation.utils.GlobalVariables
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This view model is used to edit a request.
+ */
 @HiltViewModel
 class RequestEditViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -35,7 +34,7 @@ class RequestEditViewModel @Inject constructor(
     private suspend fun getRequest() {
         val result = firestoreRepository.getRequest(_editRequestUiState.value.requestId)
 
-        if (result is AuthResult.Success) {
+        if (result is Result.Success) {
             val request = result.data
 
             _editRequestUiState.value = _editRequestUiState.value.copy(producePickUpDate = request.requestedDate)
@@ -48,7 +47,7 @@ class RequestEditViewModel @Inject constructor(
     private suspend fun getProduce() {
         val result = firestoreRepository.getProduce(_editRequestUiState.value.produceId)
 
-        if (result is AuthResult.Success){
+        if (result is Result.Success){
             val produce = result.data
             _editRequestUiState.value = _editRequestUiState.value.copy(imageUrl = produce.produceImageUrl)
             _editRequestUiState.value = _editRequestUiState.value.copy(ownerId = produce.ownerId)
@@ -78,13 +77,13 @@ class RequestEditViewModel @Inject constructor(
                         _editRequestUiState.value.requestedQuantity
                     )
 
-                    _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = AuthResult.Success(Unit))
+                    _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = Result.Success(Unit))
                 }
             } else{
-                _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = AuthResult.Error("Requested quantity exceeds produce quantity"))
+                _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = Result.Error("Requested quantity exceeds produce quantity"))
             }
         } else{
-            _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = AuthResult.Error("Please fill in all fields"))
+            _editRequestUiState.value = _editRequestUiState.value.copy(requestEditResult = Result.Error("Please fill in all fields"))
         }
     }
 

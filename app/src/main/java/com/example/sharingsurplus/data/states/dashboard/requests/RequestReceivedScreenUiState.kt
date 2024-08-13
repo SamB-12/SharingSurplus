@@ -1,7 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.requests
 
 import com.example.sharingsurplus.data.model.Request
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 
 data class RequestReceivedScreenUiState(
     val requestList: List<Request> = emptyList(),
@@ -9,6 +9,6 @@ data class RequestReceivedScreenUiState(
     val isAcceptDialogVisible: Boolean = false,
     val isRejectDialogVisible: Boolean = false,
     val reason: String = "",
-    val rejectResult: AuthResult<Unit>? = null,
-    val acceptResult: AuthResult<Unit>? = null
+    val rejectResult: Result<Unit>? = null,
+    val acceptResult: Result<Unit>? = null
 )

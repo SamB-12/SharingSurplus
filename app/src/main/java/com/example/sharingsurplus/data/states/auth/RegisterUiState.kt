@@ -1,6 +1,6 @@
 package com.example.sharingsurplus.data.states.auth
 
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.google.firebase.auth.FirebaseUser
 
 data class RegisterUiState(
@@ -10,5 +10,5 @@ data class RegisterUiState(
     val confirmPassword: String = "",
     val isChecked: Boolean = false,
     val isLoading: Boolean = false,
-    val authResult: AuthResult<FirebaseUser>? = null
+    val result: Result<FirebaseUser>? = null
 )

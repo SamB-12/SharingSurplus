@@ -3,7 +3,7 @@ package com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.User
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.profile.ProfileInfoScreenUiState
@@ -16,6 +16,9 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
+/**
+ * This view model is responsible to view the profile screen.
+ */
 @HiltViewModel
 class ProfileInfoScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
@@ -36,7 +39,7 @@ class ProfileInfoScreenViewModel @Inject constructor(
 
     private suspend fun getLoggedInUser() {
         val result = firestoreRepository.getUser(authRepository.currentUser!!.uid.toString())
-        if (result is AuthResult.Success) {
+        if (result is Result.Success) {
             loggedInUser.value = result.data
 
             val date = Date(loggedInUser.value.createdAt)

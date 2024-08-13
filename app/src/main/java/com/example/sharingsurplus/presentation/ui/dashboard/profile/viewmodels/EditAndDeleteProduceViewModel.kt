@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Produce
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.repository.storage.FirebaseStorageRepository
@@ -24,6 +24,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the edit and delete produce screen.
+ */
 @HiltViewModel
 class EditAndDeleteProduceViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -59,7 +62,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
         viewModelScope.launch {
             val result = firestoreRepository.getProduce(GlobalVariables.produceIdToView)
 
-            if (result is AuthResult.Success){
+            if (result is Result.Success){
                 val produce = result.data
                 _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(produceImageUrl = produce.produceImageUrl)
                 _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(produceName = produce.produceName)
@@ -89,7 +92,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
                         editAndDeleteProduceUiState.value.produceImageUri!!
                     )
                     when (imageResult) {
-                        is AuthResult.Success -> {
+                        is Result.Success -> {
                             val produce = Produce(
                                 produceId = GlobalVariables.produceIdToView,
                                 ownerId = authRepository.currentUser!!.uid,
@@ -114,10 +117,10 @@ class EditAndDeleteProduceViewModel @Inject constructor(
                             Log.i("SUCCESS", "It was a success")
                         }
 
-                        is AuthResult.Error -> {
+                        is Result.Error -> {
                             _editAndDeleteProduceUiState.value =
                                 _editAndDeleteProduceUiState.value.copy(
-                                    editResult = AuthResult.Error(imageResult.message)
+                                    editResult = Result.Error(imageResult.message)
                                 )
                             Log.i("SUCCESS", "It was a Failure")
                         }
@@ -154,7 +157,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
             }
         } else{
             _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(
-                editResult = AuthResult.Error("Please fill in all fields")
+                editResult = Result.Error("Please fill in all fields")
             )
         }
     }
@@ -164,11 +167,11 @@ class EditAndDeleteProduceViewModel @Inject constructor(
             val result = firestoreRepository.deleteProduce(GlobalVariables.produceIdToView)
 
             when(result){
-                is AuthResult.Success -> {
-                    _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(deleteResult = AuthResult.Success(Unit))
+                is Result.Success -> {
+                    _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(deleteResult = Result.Success(Unit))
                 }
-                is AuthResult.Error -> {
-                    _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(deleteResult = AuthResult.Error(result.message))
+                is Result.Error -> {
+                    _editAndDeleteProduceUiState.value = _editAndDeleteProduceUiState.value.copy(deleteResult = Result.Error(result.message))
                 }
                 else -> {
                     //Nothing
@@ -179,7 +182,7 @@ class EditAndDeleteProduceViewModel @Inject constructor(
 
     suspend fun getProducerName():String{
         val result = firestoreRepository.getUser(authRepository.currentUser!!.uid)
-        if (result is AuthResult.Success){
+        if (result is Result.Success){
             return result.data.name
         } else{
             return ""

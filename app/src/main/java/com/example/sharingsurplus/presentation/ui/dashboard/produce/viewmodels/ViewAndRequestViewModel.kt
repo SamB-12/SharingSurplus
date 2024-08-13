@@ -3,7 +3,7 @@ package com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Request
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.produce.ViewAndRequestProduceUiState
@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This view model is used to view and request a produce.
+ */
 @HiltViewModel
 class ViewAndRequestViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -34,7 +37,7 @@ class ViewAndRequestViewModel @Inject constructor(
     private suspend fun getProduce() {
         val result = firestoreRepository.getProduce(GlobalVariables.produceIdToView)
 
-        if (result is AuthResult.Success){
+        if (result is Result.Success){
             val produce = result.data
             _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(imageUrl = produce.produceImageUrl)
             _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(ownerId = produce.ownerId)
@@ -75,19 +78,19 @@ class ViewAndRequestViewModel @Inject constructor(
                     firestoreRepository.createRequest(request)
                     firestoreRepository.changeProduceStatus(produceId = _viewAndRequestUiState.value.produceId, status = ProduceStatus.Requested)
 
-                    _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = AuthResult.Success(Unit))
+                    _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = Result.Success(Unit))
                 }
             } else {
-                _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = AuthResult.Error("Requested quantity exceeds produce quantity"))
+                _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = Result.Error("Requested quantity exceeds produce quantity"))
             }
         } else {
-            _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = AuthResult.Error("Please fill in all fields"))
+            _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(requestResult = Result.Error("Please fill in all fields"))
         }
     }
 
     private suspend fun getRequesterName(): String {
         val user = firestoreRepository.getUser(authRepository.currentUser!!.uid)
-        if (user is AuthResult.Success){
+        if (user is Result.Success){
             return user.data.name
 
         } else {
@@ -131,7 +134,7 @@ class ViewAndRequestViewModel @Inject constructor(
         _viewAndRequestUiState.value = _viewAndRequestUiState.value.copy(isConfirmDialogVisible = show)
     }
 
-    private fun validateInput(): Boolean {
+    fun validateInput(): Boolean {
         if (_viewAndRequestUiState.value.producePickUpDate.isEmpty()
             || _viewAndRequestUiState.value.producePickupTime.isEmpty()
             || _viewAndRequestUiState.value.producePickUpRequirements.isEmpty()
@@ -144,7 +147,7 @@ class ViewAndRequestViewModel @Inject constructor(
         }
     }
 
-    private fun validateRequestedQuantity(): Boolean {
+    fun validateRequestedQuantity(): Boolean {
         if (_viewAndRequestUiState.value.requestedQuantity > _viewAndRequestUiState.value.produceQuantity){
             return false
         } else{

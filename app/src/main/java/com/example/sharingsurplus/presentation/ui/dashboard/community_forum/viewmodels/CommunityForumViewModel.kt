@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Post
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.community_forum.CommunityForumUiState
@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This ViewModel is responsible for managing the state of the Community Forum screen.
+ */
 @HiltViewModel
 class CommunityForumViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -55,25 +58,38 @@ class CommunityForumViewModel @Inject constructor(
     }
 
     fun addNewPost() {
-        viewModelScope.launch {
-            val result = firestoreRepository.getUser(_communityForumState.value.userId)
+        if (validateInput(_communityForumState.value.postTitle, _communityForumState.value.postContent)){
+            viewModelScope.launch {
+                val result = firestoreRepository.getUser(_communityForumState.value.userId)
 
-            if (result is AuthResult.Success) {
-                val user = result.data
+                if (result is Result.Success) {
+                    val user = result.data
 
-                _communityForumState.value = _communityForumState.value.copy(userName = user.name)
+                    _communityForumState.value = _communityForumState.value.copy(userName = user.name)
 
-                val newPost = Post(
-                    postTitle = _communityForumState.value.postTitle,
-                    postContent = _communityForumState.value.postContent,
-                    userName = _communityForumState.value.userName,
-                    userId = _communityForumState.value.userId
-                )
+                    val newPost = Post(
+                        postTitle = _communityForumState.value.postTitle,
+                        postContent = _communityForumState.value.postContent,
+                        userName = _communityForumState.value.userName,
+                        userId = _communityForumState.value.userId
+                    )
 
-                firestoreRepository.addPost(newPost)
+                    firestoreRepository.addPost(newPost)
 
-                _communityForumState.value = _communityForumState.value.copy(uploadResult = AuthResult.Success(Unit))
+                    _communityForumState.value = _communityForumState.value.copy(uploadResult = Result.Success(Unit))
+                }
             }
+        } else {
+            _communityForumState.value = _communityForumState.value.copy(uploadResult = Result.Error("Invalid input"))
+        }
+
+    }
+
+    fun validateInput(title: String, content: String): Boolean{
+        if (title.isEmpty() || content.isEmpty()){
+            return false
+        } else {
+            return true
         }
     }
 

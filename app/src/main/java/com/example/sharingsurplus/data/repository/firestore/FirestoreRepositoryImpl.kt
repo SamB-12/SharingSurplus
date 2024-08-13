@@ -5,26 +5,26 @@ import com.example.sharingsurplus.data.model.Post
 import com.example.sharingsurplus.data.model.Produce
 import com.example.sharingsurplus.data.model.Request
 import com.example.sharingsurplus.data.model.User
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.data.states.status.RequestStatus
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
-import com.google.rpc.context.AttributeContext.Auth
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import java.time.Year
 import javax.inject.Inject
 
+/**
+ * This class implements the FirestoreRepository interface and handles all the communication with the Firestore database.
+ */
 class FirestoreRepositoryImpl @Inject constructor(
     private val firestore : FirebaseFirestore
 ) : FirestoreRepository {
-    override suspend fun getUser(uid: String): AuthResult<User> {
+    override suspend fun getUser(uid: String): Result<User> {
         return try {
             val document = firestore.collection("users")
                 .document(uid)
@@ -33,16 +33,16 @@ class FirestoreRepositoryImpl @Inject constructor(
 
             if (document.exists()) {
                 val user = document.toObject(User::class.java)
-                AuthResult.Success(user!!)
+                Result.Success(user!!)
             } else {
-                AuthResult.Error("User not found")
+                Result.Error("User not found")
             }
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun updateUser(uid: String, updatedUser: User): AuthResult<User> {
+    override suspend fun updateUser(uid: String, updatedUser: User): Result<User> {
         val userToUpdate = hashMapOf(
             "name" to updatedUser.name,
             "email" to updatedUser.email,
@@ -56,9 +56,9 @@ class FirestoreRepositoryImpl @Inject constructor(
                 .set(userToUpdate, SetOptions.merge())
                 .await()
 
-            AuthResult.Success(updatedUser)
+            Result.Success(updatedUser)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
@@ -82,7 +82,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun updateKarmaPoints(uid: String, points: Int): AuthResult<Unit> {
+    override suspend fun updateKarmaPoints(uid: String, points: Int): Result<Unit> {
         return try {
             val document = firestore.collection("users")
                 .document(uid)
@@ -99,12 +99,12 @@ class FirestoreRepositoryImpl @Inject constructor(
                     .document(uid)
                     .set(updatedKarma, SetOptions.merge())
                     .await()
-                AuthResult.Success(Unit)
+                Result.Success(Unit)
             } else {
-                AuthResult.Error("User not found")
+                Result.Error("User not found")
             }
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
@@ -132,15 +132,15 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun addProduce(produce: Produce, uid: String): AuthResult<Unit> {
+    override suspend fun addProduce(produce: Produce, uid: String): Result<Unit> {
         return try {
             val produceId = firestore.collection("produce").document().id
             val newProduce = produce.copy(produceId = produceId, ownerId = uid)
             Log.d("FirestoreRepository", "addProduce: $newProduce")
             firestore.collection("produce").document(produceId).set(newProduce).await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
@@ -171,7 +171,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getProduce(produceId: String): AuthResult<Produce> {
+    override suspend fun getProduce(produceId: String): Result<Produce> {
         return try {
             val document = firestore.collection("produce")
                 .document(produceId)
@@ -180,19 +180,19 @@ class FirestoreRepositoryImpl @Inject constructor(
 
             if (document.exists()) {
                 val produce = document.toObject(Produce::class.java)
-                AuthResult.Success(produce!!)
+                Result.Success(produce!!)
             } else {
-                AuthResult.Error("User not found")
+                Result.Error("User not found")
             }
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
     override suspend fun updateProduce(
         produceId: String,
         updatedProduce: Produce
-    ): AuthResult<Unit> {
+    ): Result<Unit> {
 
         return try {
 
@@ -201,16 +201,16 @@ class FirestoreRepositoryImpl @Inject constructor(
                 .set(updatedProduce, SetOptions.merge())
                 .await()
 
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception){
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
     override suspend fun changeProduceStatus(
         produceId: String,
         status: ProduceStatus
-    ): AuthResult<Unit> {
+    ): Result<Unit> {
         val changedStatus = hashMapOf(
             "produceStatus" to status
         )
@@ -219,13 +219,13 @@ class FirestoreRepositoryImpl @Inject constructor(
                 .document(produceId)
                 .set(changedStatus, SetOptions.merge())
                 .await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception){
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun changeProduceQuantity(produceId: String, quantity: Int): AuthResult<Unit> {
+    override suspend fun changeProduceQuantity(produceId: String, quantity: Int): Result<Unit> {
         val changeQuantity = hashMapOf(
             "produceQuantity" to quantity
         )
@@ -234,13 +234,13 @@ class FirestoreRepositoryImpl @Inject constructor(
                 .document(produceId)
                 .set(changeQuantity, SetOptions.merge())
                 .await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception){
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun deleteProduce(produceId: String): AuthResult<Unit> {
+    override suspend fun deleteProduce(produceId: String): Result<Unit> {
         return try {
             val document = firestore.collection("produce")
                 .document(produceId)
@@ -249,27 +249,27 @@ class FirestoreRepositoryImpl @Inject constructor(
             if (document.exists()){
                 firestore.collection("produce")
                     .document(produceId).delete().await()
-                AuthResult.Success(Unit)
+                Result.Success(Unit)
             } else{
-                AuthResult.Error("Produce not found")
+                Result.Error("Produce not found")
             }
         } catch (e: Exception){
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun createRequest(produceRequest: Request): AuthResult<Unit> {
+    override suspend fun createRequest(produceRequest: Request): Result<Unit> {
         return try {
             val requestId = firestore.collection("requests").document().id
             val newRequest = produceRequest.copy(requestId = requestId)
             firestore.collection("requests").document(requestId).set(newRequest).await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun getRequest(requestId: String): AuthResult<Request> {
+    override suspend fun getRequest(requestId: String): Result<Request> {
         return try {
             val document = firestore.collection("requests")
                 .document(requestId)
@@ -278,12 +278,12 @@ class FirestoreRepositoryImpl @Inject constructor(
 
             if (document.exists()) {
                 val request = document.toObject(Request::class.java)
-                AuthResult.Success(request!!)
+                Result.Success(request!!)
             } else {
-                AuthResult.Error("Request not found")
+                Result.Error("Request not found")
             }
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
@@ -335,7 +335,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         pickUpTime: String,
         requirements:String,
         requestedQuantity: Int
-    ): AuthResult<Unit> {
+    ): Result<Unit> {
         val updatedRequest = hashMapOf(
             "requestedTime" to pickUpTime,
             "requestedDate" to pickUpDate,
@@ -346,22 +346,22 @@ class FirestoreRepositoryImpl @Inject constructor(
         return try {
             firestore.collection("requests").document(requestId)
                 .set(updatedRequest, SetOptions.merge()).await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun deleteRequest(requestId: String): AuthResult<Unit> {
+    override suspend fun deleteRequest(requestId: String): Result<Unit> {
         return try {
             firestore.collection("requests").document(requestId).delete().await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun respondToRequest(requestId: String, status: RequestStatus, response: String): AuthResult<Unit> {
+    override suspend fun respondToRequest(requestId: String, status: RequestStatus, response: String): Result<Unit> {
         val responseRequest = hashMapOf(
             "reason" to response,
             "status" to status
@@ -369,20 +369,20 @@ class FirestoreRepositoryImpl @Inject constructor(
         return try {
             firestore.collection("requests").document(requestId)
                 .set(responseRequest, SetOptions.merge()).await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 
-    override suspend fun addPost(post: Post): AuthResult<Unit> {
+    override suspend fun addPost(post: Post): Result<Unit> {
         return try {
             val postId = firestore.collection("posts").document().id
             val newPost = post.copy(postId = postId)
             firestore.collection("posts").document(postId).set(newPost).await()
-            AuthResult.Success(Unit)
+            Result.Success(Unit)
         } catch (e:Exception){
-            AuthResult.Error(e.message.toString())
+            Result.Error(e.message.toString())
         }
     }
 

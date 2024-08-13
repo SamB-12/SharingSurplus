@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the My Produce screen.
+ */
 @HiltViewModel
 class MyProduceViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository

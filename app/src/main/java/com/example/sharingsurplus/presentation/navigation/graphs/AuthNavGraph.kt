@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.navigation
+package com.example.sharingsurplus.presentation.navigation.graphs
 
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavGraphBuilder

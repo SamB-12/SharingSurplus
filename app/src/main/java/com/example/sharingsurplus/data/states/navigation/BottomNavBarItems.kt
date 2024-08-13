@@ -1,4 +1,4 @@
-package com.example.sharingsurplus.presentation.navigation
+package com.example.sharingsurplus.data.states.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
-import com.example.sharingsurplus.presentation.navigation.utils.Routes
 
 sealed class BottomNavBarItems (
     val route: String,

@@ -1,10 +1,9 @@
 package com.example.sharingsurplus.presentation.ui.auth.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.auth.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This view model is used to login the user.
+ */
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository
@@ -23,12 +25,12 @@ class LoginViewModel @Inject constructor(
         val currentState = _loginUiState.value
         if (validateForm(currentState.email,currentState.password)){
             viewModelScope.launch {
-                _loginUiState.value = _loginUiState.value.copy(authResult = AuthResult.Loading, isLoading = true)
+                _loginUiState.value = _loginUiState.value.copy(result = Result.Loading, isLoading = true)
                 val result = authRepository.login(email = currentState.email, password = currentState.password)
-                _loginUiState.value = _loginUiState.value.copy(authResult = result, isLoading = false)
+                _loginUiState.value = _loginUiState.value.copy(result = result, isLoading = false)
             }
         } else{
-            _loginUiState.value = _loginUiState.value.copy(authResult = AuthResult.Error("Invalid Credentials"))
+            _loginUiState.value = _loginUiState.value.copy(result = Result.Error("Invalid Credentials"))
         }
     }
 
@@ -41,10 +43,10 @@ class LoginViewModel @Inject constructor(
     }
 
     fun resetAuthResult(){
-        _loginUiState.value = _loginUiState.value.copy(authResult = null)
+        _loginUiState.value = _loginUiState.value.copy(result = null)
     }
 
-    private fun validateForm(email: String, password: String):Boolean{
+    fun validateForm(email: String, password: String):Boolean{
         return email.isNotEmpty() && password.isNotEmpty()
     }
 }

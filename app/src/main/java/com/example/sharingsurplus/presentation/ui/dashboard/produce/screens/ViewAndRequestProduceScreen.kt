@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
@@ -30,12 +30,12 @@ fun ViewAndRequestProduceScreen(
 
     LaunchedEffect(uiState.requestResult) {
         when (uiState.requestResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Request Successful", Toast.LENGTH_SHORT).show()
                 navController?.navigateUp()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.requestResult as AuthResult.Error).message?:"unknown error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.requestResult as Result.Error).message?:"unknown error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 //Nothing

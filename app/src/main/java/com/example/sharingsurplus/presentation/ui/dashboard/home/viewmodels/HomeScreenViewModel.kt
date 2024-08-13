@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the home screen.
+ */
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,

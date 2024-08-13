@@ -1,6 +1,6 @@
 package com.example.sharingsurplus.data.states.dashboard.requests
 
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.status.ProduceType
 
 data class RequestEditScreenUiState(
@@ -26,5 +26,5 @@ data class RequestEditScreenUiState(
     val isDatePickerVisible: Boolean = false,
     val isTimePickerVisible: Boolean = false,
     val isConfirmDialogVisible: Boolean = false,
-    val requestEditResult: AuthResult<Unit>? = null
+    val requestEditResult: Result<Unit>? = null
 )
