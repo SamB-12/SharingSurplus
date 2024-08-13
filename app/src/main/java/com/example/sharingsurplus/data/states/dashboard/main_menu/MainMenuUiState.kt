@@ -1,7 +1,6 @@
 package com.example.sharingsurplus.data.states.dashboard.main_menu
 
-import com.example.sharingsurplus.presentation.navigation.BottomNavBarItems
-import com.example.sharingsurplus.presentation.navigation.utils.Graphs
+import com.example.sharingsurplus.data.states.navigation.BottomNavBarItems
 
 data class MainMenuUiState(
     val bottomNavItems: List<BottomNavBarItems> = emptyList(),

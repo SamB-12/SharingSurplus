@@ -1,13 +1,11 @@
 package com.example.sharingsurplus.presentation.ui.dashboard.requests.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Request
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
-import com.example.sharingsurplus.data.states.dashboard.requests.RequestDisplayState
 import com.example.sharingsurplus.data.states.dashboard.requests.RequestReceivedScreenUiState
 import com.example.sharingsurplus.data.states.status.ProduceStatus
 import com.example.sharingsurplus.data.states.status.RequestStatus
@@ -18,6 +16,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This view model is used to handle requests received bu the producer.
+ */
 @HiltViewModel
 class RequestReceivedViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -65,7 +66,7 @@ class RequestReceivedViewModel @Inject constructor(
 
                 val produce = firestoreRepository.getProduce(_requestReceivedUiState.value.selectedRequest.produceId)
 
-                if (produce is AuthResult.Success){
+                if (produce is Result.Success){
                     firestoreRepository.updateKarmaPoints(_requestReceivedUiState.value.selectedRequest.ownerId,10)
                     firestoreRepository.updateKarmaPoints(_requestReceivedUiState.value.selectedRequest.requesterId,5)
                     if (produce.data.produceQuantity>_requestReceivedUiState.value.selectedRequest.requestedQuantity){
@@ -90,7 +91,7 @@ class RequestReceivedViewModel @Inject constructor(
                 )
             }
         } else{
-            _requestReceivedUiState.value = _requestReceivedUiState.value.copy(acceptResult = AuthResult.Error("Please fill out the reason"))
+            _requestReceivedUiState.value = _requestReceivedUiState.value.copy(acceptResult = Result.Error("Please fill out the reason"))
         }
     }
 
@@ -113,7 +114,7 @@ class RequestReceivedViewModel @Inject constructor(
                 )
             }
         } else{
-            _requestReceivedUiState.value = _requestReceivedUiState.value.copy(acceptResult = AuthResult.Error("Please fill out the reason"))
+            _requestReceivedUiState.value = _requestReceivedUiState.value.copy(acceptResult = Result.Error("Please fill out the reason"))
         }
     }
 
@@ -129,7 +130,7 @@ class RequestReceivedViewModel @Inject constructor(
         )
     }
 
-    private fun validateReason(): Boolean {
+    fun validateReason(): Boolean {
         return _requestReceivedUiState.value.reason.isNotEmpty()
     }
 

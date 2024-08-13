@@ -3,7 +3,7 @@ package com.example.sharingsurplus.presentation.ui.auth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.auth.RegisterUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This ViewModel is used to register a new user.
+ */
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val authRepository: AuthRepository
@@ -24,15 +27,15 @@ class RegisterViewModel @Inject constructor(
 
         if (validateForm(currentState.name, currentState.email, currentState.password, currentState.confirmPassword, currentState.isChecked) && matchPasswords(currentState.password, currentState.confirmPassword)){
             viewModelScope.launch {
-                _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Loading, isLoading = true)
+                _registerUiState.value = _registerUiState.value.copy(result = Result.Loading, isLoading = true)
                 val result = authRepository.register(email = currentState.email, name = currentState.name, password = currentState.password)
-                _registerUiState.value = _registerUiState.value.copy(authResult = result, isLoading = false)
+                _registerUiState.value = _registerUiState.value.copy(result = result, isLoading = false)
             }
         } else{
             if (!validateForm(currentState.name, currentState.email, currentState.password, currentState.confirmPassword, currentState.isChecked)){
-                _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Error("Please fill all fields"))
+                _registerUiState.value = _registerUiState.value.copy(result = Result.Error("Please fill all fields"))
             } else if (!matchPasswords(currentState.password,currentState.confirmPassword)){
-                _registerUiState.value = _registerUiState.value.copy(authResult = AuthResult.Error("Passwords do not match"))
+                _registerUiState.value = _registerUiState.value.copy(result = Result.Error("Passwords do not match"))
             }
         }
     }
@@ -66,7 +69,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun resetAuthResult(){
-        _registerUiState.value = _registerUiState.value.copy(authResult = null)
+        _registerUiState.value = _registerUiState.value.copy(result = null)
     }
 
 

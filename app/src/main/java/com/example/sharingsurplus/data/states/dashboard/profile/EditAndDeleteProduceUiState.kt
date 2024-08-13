@@ -1,7 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.profile
 
 import android.net.Uri
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.status.ProduceType
 
 data class EditAndDeleteProduceUiState(
@@ -24,9 +24,9 @@ data class EditAndDeleteProduceUiState(
     val produceImageUri: Uri? = Uri.EMPTY,
     val tempImageUri: Uri? = Uri.EMPTY,
     val isEditConfirmDialogVisible: Boolean = false,
-    val editResult: AuthResult<Unit>?= null,
+    val editResult: Result<Unit>?= null,
     val isDeleteConfirmDialogVisible: Boolean = false,
-    val deleteResult: AuthResult<Unit>?= null,
+    val deleteResult: Result<Unit>?= null,
     val isLocationEnabledDialogVisible: Boolean = false,
 
     val producerName:String = "",

@@ -1,7 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.community_forum
 
 import com.example.sharingsurplus.data.model.Post
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 
 data class CommunityForumUiState(
     val posts: List<Post> = emptyList(),
@@ -10,5 +10,5 @@ data class CommunityForumUiState(
     val userName: String = "",
     val postTitle: String = "",
     val postContent: String = "",
-    val uploadResult: AuthResult<Unit>?= null,
+    val uploadResult: Result<Unit>?= null,
 )

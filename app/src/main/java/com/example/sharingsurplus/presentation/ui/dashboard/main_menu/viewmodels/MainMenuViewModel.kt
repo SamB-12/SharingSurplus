@@ -2,12 +2,15 @@ package com.example.sharingsurplus.presentation.ui.dashboard.main_menu.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.sharingsurplus.data.states.dashboard.main_menu.MainMenuUiState
-import com.example.sharingsurplus.presentation.navigation.BottomNavBarItems
+import com.example.sharingsurplus.data.states.navigation.BottomNavBarItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+/**
+ * This is the view model for the main menu screen.
+ */
 @HiltViewModel
 class MainMenuViewModel @Inject constructor (
 

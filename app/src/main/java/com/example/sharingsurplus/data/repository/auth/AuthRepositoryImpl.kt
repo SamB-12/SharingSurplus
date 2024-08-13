@@ -1,14 +1,11 @@
 package com.example.sharingsurplus.data.repository.auth
 
 import com.example.sharingsurplus.data.model.User
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
-import com.example.sharingsurplus.data.repository.firestore.FirestoreRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +13,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
+/**
+ * This repository is responsible for all the authentication tasks.
+ */
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth, //it gets injected by dagger which finds def from module
     private val firestoreRepositoryImpl: FirestoreRepository
@@ -23,13 +23,13 @@ class AuthRepositoryImpl @Inject constructor(
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
-    override suspend fun login(email: String, password: String): AuthResult<FirebaseUser> {
-        return suspendCancellableCoroutine<AuthResult<FirebaseUser>> { continuation ->
+    override suspend fun login(email: String, password: String): Result<FirebaseUser> {
+        return suspendCancellableCoroutine<Result<FirebaseUser>> { continuation ->
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {task ->
                 if (task.isSuccessful) {
-                    continuation.resume(AuthResult.Success(firebaseAuth.currentUser!!))
+                    continuation.resume(Result.Success(firebaseAuth.currentUser!!))
                 } else {
-                    continuation.resume(AuthResult.Error(task.exception!!.message!!))
+                    continuation.resume(Result.Error(task.exception!!.message!!))
                 }
             }
         }
@@ -39,7 +39,7 @@ class AuthRepositoryImpl @Inject constructor(
         name: String,
         email: String,
         password: String
-    ): AuthResult<FirebaseUser> {
+    ): Result<FirebaseUser> {
         return suspendCancellableCoroutine {continuation ->
             firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {task ->
                 if (task.isSuccessful) {
@@ -49,14 +49,14 @@ class AuthRepositoryImpl @Inject constructor(
                         if (task.isSuccessful) {
                             CoroutineScope(Dispatchers.IO).launch {
                                 saveUserToFirestore(user.uid,name,email)
-                                continuation.resume(AuthResult.Success(firebaseAuth.currentUser!!))
+                                continuation.resume(Result.Success(firebaseAuth.currentUser!!))
                             }
                         } else {
-                            continuation.resume(AuthResult.Error(task.exception!!.message!!))
+                            continuation.resume(Result.Error(task.exception!!.message!!))
                         }
                     }
                 } else {
-                    continuation.resume(AuthResult.Error(task.exception!!.message!!))
+                    continuation.resume(Result.Error(task.exception!!.message!!))
                 }
             }
         }

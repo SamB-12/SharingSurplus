@@ -1,5 +1,8 @@
 package com.example.sharingsurplus.data.model
 
+/**
+ * This is data class for User.
+ */
 data class User(
     val uid: String = "",
     val name: String = "",

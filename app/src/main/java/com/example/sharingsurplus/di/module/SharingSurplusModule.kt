@@ -15,6 +15,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * This is a Dagger module that provides the necessary dependencies for the different repositories in the app.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object SharingSurplusModule {

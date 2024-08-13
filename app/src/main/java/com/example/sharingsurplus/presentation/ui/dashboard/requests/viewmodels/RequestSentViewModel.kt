@@ -13,6 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+/**
+ * This ViewModel is used to handle the request sent by the requester.
+ */
 @HiltViewModel
 class RequestSentViewModel @Inject constructor(
     private val authRepository: AuthRepository,

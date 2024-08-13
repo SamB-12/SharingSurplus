@@ -18,13 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.LocationSettingsDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
@@ -80,12 +78,12 @@ fun EditAndDeleteMyProduceScreen(
 
     LaunchedEffect(uiState.editResult) {
         when (uiState.editResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
                 navController?.navigateUp()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.editResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.editResult as Result.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 // Do nothing
@@ -95,12 +93,12 @@ fun EditAndDeleteMyProduceScreen(
 
     LaunchedEffect(uiState.deleteResult) {
         when (uiState.deleteResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
                 navController?.navigateUp()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.deleteResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.deleteResult as Result.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 // Do nothing

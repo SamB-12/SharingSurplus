@@ -1,7 +1,7 @@
 package com.example.sharingsurplus.data.states.dashboard.profile
 
 import com.example.sharingsurplus.data.model.User
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 
 data class EditProfileScreenUiState(
     val name: String = "",
@@ -9,7 +9,7 @@ data class EditProfileScreenUiState(
     val phone:String = "",
     val address: String = "",
     val imageAddress: String = "",
-    val isSuccess: AuthResult<User>? = null,
+    val isSuccess: Result<User>? = null,
     val isAlertDialogVisible: Boolean = false,
     val isBackPressed: Boolean = false,
     val isLoading: Boolean = false

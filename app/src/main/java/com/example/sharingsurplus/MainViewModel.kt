@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the main activity.
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository

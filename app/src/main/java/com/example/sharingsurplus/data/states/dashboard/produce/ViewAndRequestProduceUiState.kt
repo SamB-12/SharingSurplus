@@ -1,6 +1,6 @@
 package com.example.sharingsurplus.data.states.dashboard.produce
 
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.status.ProduceType
 
 data class ViewAndRequestProduceUiState(
@@ -25,5 +25,5 @@ data class ViewAndRequestProduceUiState(
     val isDatePickerVisible: Boolean = false,
     val isTimePickerVisible: Boolean = false,
     val isConfirmDialogVisible: Boolean = false,
-    val requestResult: AuthResult<Unit>? = null
+    val requestResult: Result<Unit>? = null
 )

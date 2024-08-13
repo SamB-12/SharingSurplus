@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharingsurplus.data.model.Produce
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.repository.storage.FirebaseStorageRepository
@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the add produce screen that adds produce to the database.
+ */
 @HiltViewModel
 class AddProduceViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
@@ -50,11 +53,11 @@ class AddProduceViewModel @Inject constructor(
     fun uploadProduce(){
         if (validateInput()){//since we are validating the inputs, we can be certain that the inputs are valid
             viewModelScope.launch {
-                _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = AuthResult.Loading)
+                _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = Result.Loading)
                 val imageResult = firebaseStorageRepository.uploadImageToStorage(authRepository.currentUser!!.uid,addProduceUiState.value.produceImageUri!!)
                 _addProduceUiState.value = _addProduceUiState.value.copy(producerName = getProducerName())
                 when(imageResult){
-                    is AuthResult.Success -> {
+                    is Result.Success -> {
                         val produce = Produce(
                             produceName = addProduceUiState.value.produceName,
                             producerName = addProduceUiState.value.producerName,
@@ -70,23 +73,23 @@ class AddProduceViewModel @Inject constructor(
                             produceImageUrl = imageResult.data
                         )
                         firestoreRepository.addProduce(produce,authRepository.currentUser!!.uid)
-                        _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = AuthResult.Success(Unit))
+                        _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = Result.Success(Unit))
                     }
-                    is AuthResult.Error -> {
-                        _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = AuthResult.Error(imageResult.message))
+                    is Result.Error -> {
+                        _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = Result.Error(imageResult.message))
                     } else -> {
                         //Can only add if there's an image
                     }
                 }
             }
         } else {
-            _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = AuthResult.Error("Please fill out all fields"))
+            _addProduceUiState.value = _addProduceUiState.value.copy(uploadResult = Result.Error("Please fill out all fields"))
         }
     }
 
     suspend fun getProducerName():String{
         val result = firestoreRepository.getUser(authRepository.currentUser!!.uid)
-        if (result is AuthResult.Success){
+        if (result is Result.Success){
             return result.data.name
         } else{
             return ""

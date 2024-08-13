@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This view model is used to get the request status for the requester.
+ */
 @HiltViewModel
 class RequestStatusViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,

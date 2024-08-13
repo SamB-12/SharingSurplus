@@ -13,8 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -25,9 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sharingsurplus.R
 import com.example.sharingsurplus.data.model.User
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.states.dashboard.profile.EditProfileScreenUiState
-import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ButtonComponent
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.TextFieldComponent
@@ -54,7 +51,7 @@ fun EditProfileScreenMinor(
     onConfirmBack: () -> Unit = {},
     onCancelBack: () -> Unit = {},
     navigateTo: () -> Unit = {},
-    isSuccess:AuthResult<User>? = null
+    isSuccess: Result<User>? = null
 ) {
     Column(
         modifier = modifier
@@ -104,12 +101,12 @@ fun EditProfileScreenMinor(
         LaunchedEffect(isSuccess) {
             when (isSuccess) {
 
-                is AuthResult.Success -> {
+                is Result.Success -> {
                     Toast.makeText(context, "Profile updated", Toast.LENGTH_SHORT).show()
                     navigateTo()
                 }
-                is AuthResult.Error -> {
-                    Toast.makeText(context, (uiState.isSuccess as AuthResult.Error).message, Toast.LENGTH_SHORT).show()
+                is Result.Error -> {
+                    Toast.makeText(context, (uiState.isSuccess as Result.Error).message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     //Nothing

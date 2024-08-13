@@ -4,25 +4,24 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
-import com.example.sharingsurplus.presentation.navigation.SampleNavGraph
-import com.example.sharingsurplus.presentation.ui.dashboard.main_menu.screens.MainMenuScreen
+import com.example.sharingsurplus.presentation.navigation.graphs.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
 import com.example.sharingsurplus.presentation.utils.Constants
 import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * This is the main activity of the application.
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 

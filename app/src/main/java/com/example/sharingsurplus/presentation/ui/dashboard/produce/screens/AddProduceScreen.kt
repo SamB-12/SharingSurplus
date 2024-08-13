@@ -6,8 +6,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -21,25 +19,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.activity.ComponentActivity
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sharingsurplus.R
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.LocationSettingsDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.PermissionDialogComponent
@@ -47,25 +34,19 @@ import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
 import com.example.sharingsurplus.presentation.ui.components.TopAppBarWithBackComponent
 import com.example.sharingsurplus.presentation.ui.dashboard.produce.viewmodels.AddProduceViewModel
 import com.example.sharingsurplus.presentation.utils.CameraPermissionTextProvider
-import com.example.sharingsurplus.presentation.utils.GalleryPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.LocationPermissionTextProvider
 import com.example.sharingsurplus.presentation.utils.createImageFile
-import com.example.sharingsurplus.presentation.utils.createImageUri
 import com.example.sharingsurplus.presentation.utils.getUriForFile
 import com.example.sharingsurplus.presentation.utils.handleCameraClick
 import com.example.sharingsurplus.presentation.utils.handleLocationClick
-import com.example.sharingsurplus.presentation.utils.isFileExistsAtUri
 import com.example.sharingsurplus.presentation.utils.isLocationEnabled
 import com.example.sharingsurplus.presentation.utils.openAppSettings
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import java.net.URI
 import java.util.Locale
 
 @SuppressLint("MissingPermission")//suppressing it cause we are checking the permission
@@ -100,12 +81,12 @@ fun AddProduceScreen(
 
     LaunchedEffect(uiState.uploadResult) {
         when (uiState.uploadResult) {
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Upload successful", Toast.LENGTH_SHORT).show()
                 navController?.navigateUp()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.uploadResult as AuthResult.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.uploadResult as Result.Error).message?:"Unknown Error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 // Do nothing

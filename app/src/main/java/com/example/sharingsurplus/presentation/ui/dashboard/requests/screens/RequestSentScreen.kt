@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.components.ConfirmationDialogComponent
 import com.example.sharingsurplus.presentation.ui.components.ScaffoldComponent
@@ -31,11 +31,11 @@ fun RequestSentScreen(
 
     LaunchedEffect(uiState.deleteStatus) {
         when (uiState.deleteStatus){
-            is AuthResult.Success -> {
+            is Result.Success -> {
                 Toast.makeText(localContext, "Request Deleted", Toast.LENGTH_SHORT).show()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(localContext, (uiState.deleteStatus as AuthResult.Error).message?:"Unknown error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(localContext, (uiState.deleteStatus as Result.Error).message?:"Unknown error", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 //Nothing

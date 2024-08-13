@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sharingsurplus.MainViewModel
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.LoginViewModel
@@ -54,9 +54,9 @@ fun LoginScreen(
     val uiState by loginViewModel.loginUiState.collectAsState()
 
 
-    LaunchedEffect(uiState.authResult) {
-        when (uiState.authResult) {
-            is AuthResult.Success -> {
+    LaunchedEffect(uiState.result) {
+        when (uiState.result) {
+            is Result.Success -> {
                 navController?.navigate(Routes.MainMenu.route){
                     popUpTo(Graphs.AuthenticationGraph.graph){
                         inclusive = true
@@ -64,8 +64,8 @@ fun LoginScreen(
                 }
                 mainViewModel.navigateToMainMenu()
             }
-            is AuthResult.Error -> {
-                Toast.makeText(context, (uiState.authResult as AuthResult.Error).message?: "Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(context, (uiState.result as Result.Error).message?: "Unknown Error", Toast.LENGTH_SHORT).show()
                 loginViewModel.resetAuthResult()
             }
             else -> {

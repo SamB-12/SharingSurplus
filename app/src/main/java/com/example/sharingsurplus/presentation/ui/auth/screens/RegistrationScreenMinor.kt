@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.presentation.navigation.utils.Graphs
 import com.example.sharingsurplus.presentation.navigation.utils.Routes
 import com.example.sharingsurplus.presentation.ui.auth.viewmodel.RegisterViewModel
@@ -45,9 +45,9 @@ fun RegistrationComponent(
     val context = LocalContext.current
     val uiState by registerViewModel.registerUiState.collectAsState()
 
-    LaunchedEffect(uiState.authResult) {
-        when (uiState.authResult) {
-            is AuthResult.Success -> {
+    LaunchedEffect(uiState.result) {
+        when (uiState.result) {
+            is Result.Success -> {
                 //Toast.makeText(context, "Successfully registered! please log in!", Toast.LENGTH_SHORT).show()
                 navController?.navigate(Routes.MainMenu.route){
                     popUpTo(Graphs.AuthenticationGraph.graph){
@@ -55,8 +55,8 @@ fun RegistrationComponent(
                     }
                 }
             }
-            is AuthResult.Error -> {
-                Toast.makeText(context, (uiState.authResult as AuthResult.Error).message?: "Unknown Error", Toast.LENGTH_SHORT).show()
+            is Result.Error -> {
+                Toast.makeText(context, (uiState.result as Result.Error).message?: "Unknown Error", Toast.LENGTH_SHORT).show()
                 registerViewModel.resetAuthResult()
             }
             else -> {

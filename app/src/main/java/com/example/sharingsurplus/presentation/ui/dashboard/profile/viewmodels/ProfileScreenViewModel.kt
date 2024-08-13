@@ -2,7 +2,7 @@ package com.example.sharingsurplus.presentation.ui.dashboard.profile.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sharingsurplus.data.repository.AuthResult
+import com.example.sharingsurplus.data.repository.Result
 import com.example.sharingsurplus.data.repository.auth.AuthRepository
 import com.example.sharingsurplus.data.repository.firestore.FirestoreRepository
 import com.example.sharingsurplus.data.states.dashboard.profile.ProfileScreenUiState
@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * This is the view model for the profile screen.
+ */
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
@@ -30,7 +33,7 @@ class ProfileScreenViewModel @Inject constructor(
             val result = firestoreRepository.getUser(authRepository.currentUser?.uid!!)
             GlobalVariables.ownerId = authRepository.currentUser?.uid!!
 
-            if (result is AuthResult.Success){
+            if (result is Result.Success){
                 val user = result.data
                 _profileUiState.value = _profileUiState.value.copy(name = user.name)
                 setupUpdateListener(authRepository.currentUser?.uid!!)
