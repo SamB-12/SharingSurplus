@@ -5,3 +5,13 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.48" apply false
     id("com.google.gms.google-services") version "4.4.2" apply false
 }
+
+buildscript{
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies{
+        classpath(libs.secrets.gradle.plugin)
+    }
+}

@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.sharingsurplus.presentation.navigation.graphs.SampleNavGraph
 import com.example.sharingsurplus.presentation.ui.theme.SharingSurplusTheme
-import com.example.sharingsurplus.presentation.utils.Constants
 import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            Places.initialize(applicationContext, Constants.API_KEY)
+            Places.initialize(applicationContext, BuildConfig.API_KEY)
 
             val mainState by mainViewModel.mainState.collectAsState()
             //val navController = rememberNavController()
